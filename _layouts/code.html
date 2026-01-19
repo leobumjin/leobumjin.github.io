@@ -102,16 +102,64 @@
       color: #4caf50;
       border-color: #4caf50;
     }
+
+    .code-viewer-nav {
+      display: flex;
+      width: 100%;
+      border-bottom: 1px solid var(--global-divider-color, #e0e0e0);
+      background: var(--global-card-bg-color, rgb(255, 250, 240));
+    }
+
+    .code-viewer-nav-button {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      background: rgba(0, 0, 0, 0.05);
+      color: #444;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      font-family: 'Courier New', 'Monaco', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .code-viewer-nav-button:first-child {
+      border-right: 1px solid var(--global-divider-color, #e0e0e0);
+    }
+
+    .code-viewer-nav-button:hover:not(:disabled) {
+      background: rgba(0, 0, 0, 0.1);
+      color: #222;
+    }
+
+    .code-viewer-nav-button:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .code-viewer-nav-button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      background: rgba(0, 0, 0, 0.02);
+    }
     
     .code-viewer-content {
       flex: 1;
-      overflow-y: auto;
-      overflow-x: auto;
-      padding: 2rem 1.5rem;
+      overflow: hidden;
+      padding: 0;
       font-size: 0.9rem;
       line-height: 1.4;
       background: var(--global-card-bg-color, rgb(255, 250, 240));
       color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .code-viewer-content > pre {
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+      overflow-x: auto;
     }
 
     .code-viewer-content::-webkit-scrollbar {
@@ -159,6 +207,60 @@
 
     .code-viewer-content code span {
       font-size: 0.8rem;
+    }
+
+    /* Slider styles for multiple HTML items */
+    .code-slider-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .code-slider-wrapper {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 100%;
+      will-change: transform;
+    }
+
+    .code-slide {
+      min-width: 100%;
+      width: 100%;
+      flex-shrink: 0;
+      padding: 2rem 1.5rem;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: auto;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .code-slide pre {
+      margin: 0;
+      padding: 0;
+      flex: 1;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .code-slide code {
+      display: block;
+      overflow: visible;
+      white-space: pre;
+    }
+
+    .code-slide img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     /* Python syntax highlighting - light mode colors */
@@ -486,6 +588,10 @@
             <div class="code-viewer-title">Select a row to view code</div>
             <button id="code-copy-button" class="code-copy-button" style="display: none;">Copy</button>
           </div>
+          <div class="code-viewer-nav" id="code-viewer-nav" style="display: none;">
+            <button id="code-nav-prev" class="code-viewer-nav-button">←</button>
+            <button id="code-nav-next" class="code-viewer-nav-button">→</button>
+          </div>
           <div class="code-viewer-content" id="code-viewer-content"></div>
         </div>
       </div>
@@ -620,6 +726,144 @@
           console.error(`Error loading ${jsonFile}:`, error);
           dailyData = [];
         }
+      }
+
+      // Render slider viewer for multiple HTML items
+      function renderSliderViewer(container, htmlArray, title) {
+        container.innerHTML = '';
+        
+        const sliderContainer = document.createElement('div');
+        sliderContainer.className = 'code-slider-container';
+        
+        const sliderWrapper = document.createElement('div');
+        sliderWrapper.className = 'code-slider-wrapper';
+        
+        // Filter out empty items
+        const validHtmlArray = htmlArray.filter(item => {
+          if (typeof item === 'string') {
+            return item.trim().length > 0;
+          }
+          return item != null && String(item).trim().length > 0;
+        });
+        
+        const slides = validHtmlArray.map((htmlItem, index) => {
+          const slide = document.createElement('div');
+          slide.className = 'code-slide';
+          
+          if (typeof htmlItem === 'string') {
+            // Check if it's an image tag
+            if (htmlItem.trim().startsWith('<img')) {
+              // Handle image - ensure it has proper styling
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = htmlItem;
+              const imgElement = tempDiv.querySelector('img');
+              if (imgElement) {
+                // Ensure image has responsive styling
+                if (!imgElement.style.maxWidth) {
+                  imgElement.style.maxWidth = '100%';
+                }
+                if (!imgElement.style.height) {
+                  imgElement.style.height = 'auto';
+                }
+                if (!imgElement.style.display) {
+                  imgElement.style.display = 'block';
+                }
+                if (!imgElement.style.margin) {
+                  imgElement.style.margin = '0 auto';
+                }
+                slide.innerHTML = tempDiv.innerHTML;
+              } else {
+                slide.innerHTML = htmlItem;
+              }
+            } else {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = htmlItem;
+              const codeElement = tempDiv.querySelector('code');
+              if (codeElement) {
+                const plainCode = codeElement.textContent;
+                const highlightedCode = highlightPython(plainCode);
+                slide.innerHTML = '<pre><code>' + highlightedCode + '</code></pre>';
+              } else {
+                slide.innerHTML = htmlItem;
+              }
+            }
+          } else {
+            slide.textContent = String(htmlItem);
+          }
+          
+          return slide;
+        });
+        
+        slides.forEach(slide => sliderWrapper.appendChild(slide));
+        sliderContainer.appendChild(sliderWrapper);
+        container.appendChild(sliderContainer);
+        
+        // Get navigation buttons from header
+        const prevButton = document.getElementById('code-nav-prev');
+        const nextButton = document.getElementById('code-nav-next');
+        
+        let currentSlide = 0;
+        let activePrevButton = prevButton;
+        let activeNextButton = nextButton;
+        
+        function updateSlider() {
+          // Use percentage-based transform for responsive behavior
+          sliderWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+          
+          // Scroll current slide to top after transition
+          const currentSlideElement = slides[currentSlide];
+          if (currentSlideElement) {
+            // Use setTimeout to ensure transition completes
+            setTimeout(() => {
+              currentSlideElement.scrollTop = 0;
+              currentSlideElement.scrollLeft = 0;
+            }, 100);
+          }
+          
+          // Update buttons - disable if at first/last slide or only one item
+          activePrevButton.disabled = currentSlide === 0 || validHtmlArray.length <= 1;
+          activeNextButton.disabled = currentSlide === validHtmlArray.length - 1 || validHtmlArray.length <= 1;
+        }
+        
+        function nextSlide() {
+          if (currentSlide < validHtmlArray.length - 1) {
+            currentSlide++;
+            updateSlider();
+          }
+        }
+        
+        function prevSlide() {
+          if (currentSlide > 0) {
+            currentSlide--;
+            updateSlider();
+          }
+        }
+        
+        // Remove existing event listeners by cloning buttons
+        const newPrevButton = prevButton.cloneNode(true);
+        const newNextButton = nextButton.cloneNode(true);
+        prevButton.parentNode.replaceChild(newPrevButton, prevButton);
+        nextButton.parentNode.replaceChild(newNextButton, nextButton);
+        
+        // Update references to new buttons
+        activePrevButton = newPrevButton;
+        activeNextButton = newNextButton;
+        
+        // Add event listeners
+        newPrevButton.addEventListener('click', prevSlide);
+        newNextButton.addEventListener('click', nextSlide);
+        
+        // Keyboard navigation
+        const handleKeyPress = (e) => {
+          if (container.closest('.code-viewer.active')) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) prevSlide();
+            if (e.key === 'ArrowRight' && currentSlide < validHtmlArray.length - 1) nextSlide();
+          }
+        };
+        document.addEventListener('keydown', handleKeyPress);
+        
+        // Initialize - set disabled state after button replacement
+        updateSlider();
       }
 
       // Simple Python syntax highlighter
@@ -841,13 +1085,48 @@
           // Extract code text for copying and display in code viewer
           let codeText = '';
           let codeHtml = '';
-          if (entry.html && typeof entry.html === 'string' && entry.html.trim().length > 0) {
-            codeHtml = entry.html;
-            // Extract code text for copying
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = entry.html;
-            const codeElement = tempDiv.querySelector('code');
-            codeText = codeElement ? codeElement.textContent : entry.html.replace(/<[^>]*>/g, '');
+          let isHtmlArray = false;
+          
+          if (entry.html) {
+            if (Array.isArray(entry.html) && entry.html.length > 0) {
+              isHtmlArray = true;
+              codeHtml = entry.html; // Store array
+              // For copying, join all items
+              codeText = entry.html.map(item => {
+                if (typeof item === 'string') {
+                  const tempDiv = document.createElement('div');
+                  tempDiv.innerHTML = item;
+                  const codeElement = tempDiv.querySelector('code');
+                  if (codeElement) {
+                    return codeElement.textContent;
+                  }
+                  // Check if it's an image
+                  const imgElement = tempDiv.querySelector('img');
+                  if (imgElement) {
+                    return `[Image: ${imgElement.src}]`;
+                  }
+                  return item.replace(/<[^>]*>/g, '');
+                }
+                return String(item);
+              }).join('\n\n---\n\n');
+            } else if (typeof entry.html === 'string' && entry.html.trim().length > 0) {
+              codeHtml = entry.html;
+              // Extract code text for copying
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = entry.html;
+              const codeElement = tempDiv.querySelector('code');
+              if (codeElement) {
+                codeText = codeElement.textContent;
+              } else {
+                // Check if it's an image
+                const imgElement = tempDiv.querySelector('img');
+                if (imgElement) {
+                  codeText = `[Image: ${imgElement.src}]`;
+                } else {
+                  codeText = entry.html.replace(/<[^>]*>/g, '');
+                }
+              }
+            }
           }
 
           // Click row to show code in viewer
@@ -865,20 +1144,31 @@
               const codeViewerTitle = codeViewer.querySelector('.code-viewer-title');
               const copyButton = document.getElementById('code-copy-button');
               
-              // Extract plain code text and highlight it
-              const tempDiv = document.createElement('div');
-              tempDiv.innerHTML = codeHtml;
-              const codeElement = tempDiv.querySelector('code');
-              const plainCode = codeElement ? codeElement.textContent : codeText;
-              const highlightedCode = highlightPython(plainCode);
+              const navBar = document.getElementById('code-viewer-nav');
               
-              codeViewerContent.innerHTML = '<pre><code>' + highlightedCode + '</code></pre>';
-              codeViewerTitle.textContent = entry.title || entry.summary || 'Code';
-              codeViewer.classList.add('active');
-              copyButton.style.display = 'block';
-              
-              // Store current code text for copying
-              copyButton.dataset.codeText = codeText;
+              if (isHtmlArray) {
+                // Handle array of HTML items with slider
+                renderSliderViewer(codeViewerContent, codeHtml, entry.title || entry.summary || 'Code');
+                codeViewerTitle.textContent = entry.title || entry.summary || 'Code';
+                codeViewer.classList.add('active');
+                copyButton.style.display = 'block';
+                copyButton.dataset.codeText = codeText;
+                navBar.style.display = 'flex';
+              } else {
+                // Handle single HTML string
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = codeHtml;
+                const codeElement = tempDiv.querySelector('code');
+                const plainCode = codeElement ? codeElement.textContent : codeText;
+                const highlightedCode = highlightPython(plainCode);
+                
+                codeViewerContent.innerHTML = '<pre><code>' + highlightedCode + '</code></pre>';
+                codeViewerTitle.textContent = entry.title || entry.summary || 'Code';
+                codeViewer.classList.add('active');
+                copyButton.style.display = 'block';
+                copyButton.dataset.codeText = codeText;
+                navBar.style.display = 'none';
+              }
               
               // Highlight clicked row
               document.querySelectorAll('.daily-table tbody tr').forEach(r => {
