@@ -157,5 +157,21 @@
     "venue": "Anthropic",
     "save_date": "2026-01-19",
     "hover_memo": "Emergent Introspective Awareness in Large Language Models"
+},
+{
+    "title": "Layer-aware representation filtering: Purifying finetuning data to preserve llm safety alignment",
+    "authors": "",
+    "year": 2025,
+    "venue": "ACL",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
+},
+{
+    "title": "ThinkEdit: Interpretable Weight Editing to Mitigate Overly Short Thinking in Reasoning Models",
+    "authors": "",
+    "year": 2025,
+    "venue": "EMNLP",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
 }
 ]

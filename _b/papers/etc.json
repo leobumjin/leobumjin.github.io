@@ -22,5 +22,21 @@
         "venue": "ICLR",
         "save_date": "2026-01-14",
         "hover_memo": "Kernel SHAP에서 필요한 subset에 대한 샘플링을 위해서 leverage score를 정의하고, 효율적으로 Kernel SHAP을 근사시킨다."
+    },
+    {
+        "title": "Are we truly forgetting? A critical re-examination of machine unlearning evaluation protocols",
+        "authors": "Yongwoo Kim, Sunmin Cha, Donghyun Kim",
+        "year": 2026,
+        "venue": "EAAI",
+        "save_date": "2026-01-19",
+        "hover_memo": "In machine unlearning, only the logit-based forgetting metrics are used to evaluate the forgetting performance, which is not enough to fully evaluate the forgetting performance."
+    },
+    {
+        "title": "Why Knowledge Distillation Works in Generative Models: A Minimal Working Explanation",
+        "authors": "Sunmin Cha",
+        "year": 2025,
+        "venue": "NeurIPS",
+        "save_date": "2026-01-19",
+        "hover_memo": ""
     }
 ]
