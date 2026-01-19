@@ -39,7 +39,7 @@ if input_code.strip():
     output_code = convert_python_to_html_json(input_code)
     
     # txt 파일로 저장
-    with open('output_code.txt', 'w', encoding='utf-8') as f:
+    with open('code_output_code.txt', 'w', encoding='utf-8') as f:
         f.write(output_code)
     
     print("변환 완료! output_code.txt 파일에 저장되었습니다.")
