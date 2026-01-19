@@ -1,0 +1,65 @@
+def build_deduction_prompt(rules, belief_base, query):
+    header = """You are a forward-chaining deduction engine.
+
+This task applies implication rules that may or may not reach a conclusion.
+
+Rules work as follows:
+- A rule assigns a value only when its condition is satisfied.
+- If a rule’s condition is not satisfied, nothing happens.
+- Values never appear by assumption or guessing.
+
+Each variable starts in the state Unknown.
+
+Possible values:
+- True: a rule reached True
+- False: a rule reached False
+- Unknown: no rule reached any value
+- Conflict: True and False were both reached for the same variable
+
+Important note about Conflict:
+- Conflict is determined per variable.
+- If a variable is assigned True by one rule
+  and False by another rule,
+  the result for that variable is always Conflict.
+
+Important note about Unknown:
+- Unknown means that no rule reached the variable.
+- If at least one rule reaches a variable,
+  the result is no longer Unknown.
+- Unknown is used only when zero rules assign any value.
+
+Deduction process:
+- Use forward chaining only.
+- Apply only rules whose conditions are satisfied.
+- Ignore rules whose conditions are not satisfied.
+
+Result selection:
+- If no rule assigns a value, the result stays Unknown.
+- If exactly one value is assigned, use that value.
+- If both True and False are assigned, the result is Conflict.
+
+Return the final value by choosing exactly one word
+from the list below. Do not add anything else.
+
+True
+False
+Unknown 
+Conflict
+
+Data:
+"""
+
+    rules_block = "Implication Rules:\n"
+    for A, B, vA, vB in rules:
+        rules_block += f"- If {A} is {vA}, then {B} is {vB}.\n"
+
+    belief_block = "\nBelief Base:\n"
+    for var, val in belief_base.items():
+        belief_block += f"- {var} is {val}\n"
+
+    query_block = f"""
+<Query>{query}</Query>
+<Answer>
+"""
+
+    return header + rules_block + belief_block + query_block

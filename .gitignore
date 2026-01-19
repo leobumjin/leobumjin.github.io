@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
+code_output_code.txt
+
 # Distribution / packaging
 .Python
 build/
@@ -26,6 +28,8 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+
+output_code.txt
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
