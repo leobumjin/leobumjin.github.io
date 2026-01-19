@@ -61,6 +61,101 @@
     "venue": "ICLR",
     "save_date": "2026-01-19",
     "hover_memo": "Safety-Specific Neuron을 제안하고, 이를 통해 LLM의 안전성을 향상시키는 방법을 제안한다."
+},
+{
+    "title": "Universal Neurons in GPT-2: Emergence, Persistence, and Functional Impact",
+    "authors": "Advey Nandan",
+    "year": 2025,
+    "venue": "NA",
+    "save_date": "2026-01-19",
+    "hover_memo": "Self-Verification에 대해서 논문을 읽고 쓴다."
+},
+{
+    "title": "On the Pitfalls of Analyzing Individual Neurons in Language Models",
+    "authors": "Omer Antverg",
+    "year": 2022,
+    "venue": "ICLR",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
+},
+{
+    "title": "Discovering latent knowledge in language models without supervision",
+    "authors": "Jiahua Huang",
+    "year": 2023,
+    "venue": "ICLR",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
+},
+{
+    "title": "What is one grain of sand in the desert? analyzing individual neurons in deep nlp models",
+    "authors": "Fahim Dalvi",
+    "year": 2018,
+    "venue": "AAAI 2019",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
+},
+{
+    "title": "Neurons in Large Language Models: Dead, N-gram, Positional",
+    "authors": "",
+    "year": 2024,
+    "venue": "ACL(Findings)",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
+},
+{
+    "title": "Patchscopes: A Unifying Framework for Inspecting Hidden Representations of Language Models",
+    "authors": "Asma Ghandeharioun",
+    "year": 2024,
+    "venue": "ICML",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
+},
+{
+    "title": "Towards Neuron Attributions in Multimodal Large Language Models",
+    "authors": "Junfeng Fang",
+    "year": 2024,
+    "venue": "NeurIPS",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
+},
+{
+    "title": "Finding neurons in a haystack: Case studies with sparse probing",
+    "authors": "Wes Gurnee",
+    "year": 2023,
+    "venue": "TMLR",
+    "save_date": "2026-01-19",
+    "hover_memo": ""
+},
+{
+    "title": "Transformer feed-forward layers are key-value memories",
+    "authors": "Sainbayar Sukhbaatar",
+    "year": 2021,
+    "venue": "EMNLP",
+    "save_date": "2026-01-19",
+    "hover_memo": "Transformer Feed-Forward Layers are Key-Value Memories"
+},
+{
+    "title": "The Achilles’ Heel of LLMs: How Altering a Handful of Neurons Can Cripple Language Abilities",
+    "authors": "Zixuan Qin",
+    "year": 2026,
+    "venue": "",
+    "save_date": "2026-01-19",
+    "hover_memo": "이 논문에서 말하는 핵심은 단순히 “몇 개의 뉴런을 제거하면 성능이 조금 떨어진다”는 수준이 아니다. 저자들이 던지는 질문은 훨씬 급진적이다. 거대한 LLM이 수십억 개 뉴런의 평균적 기여로 작동하는 것이 아니라, 극히 소수의 ‘인과적으로 결정적인 뉴런 집합’에 의해 기능적으로 지탱되고 있는가라는 물음이다. 이는 기존의 중요도 분석이나 상관 기반 해석을 넘어, 실제로 그 뉴런을 건드렸을 때 모델이 더 이상 언어 모델로서 작동 가능한지를 묻는 인과적 문제 설정이다. 이 연구의 가장 중요한 인사이트는 LLM 내부에 ultra-sparse critical neurons가 존재한다는 점이다. 전체 뉴런 수가 수십억 개에 달함에도 불구하고, 극히 적은 수의 특정 뉴런을 정확히 교란하면 72B 규모의 모델조차 완전히 붕괴하며, perplexity가 최대 20자릿수까지 폭증한다. 이는 성능이 점진적으로 저하되는 현상이 아니라, 언어 능력 자체가 붕괴하는 수준의 변화다. 즉, 대부분의 뉴런은 기능적으로 중복적이거나 대체 가능하지만, 일부 뉴런은 모델의 핵심 언어 구조를 유지하는 데 필수적인 역할을 한다는 것을 의미한다. 두 번째 인사이트는 이 critical neurons가 모델 전체에 고르게 분포하지 않는다는 점이다. 이들은 주로 모델의 바깥쪽 레이어, 특히 MLP의 down_projection 경로에 집중되어 나타난다. 이는 attention 메커니즘보다는, MLP 내부에서 표현을 압축하고 다음 레이어로 전달하는 단계가 모델의 기능적 병목으로 작동하고 있음을 시사한다. 다시 말해, 언어 모델의 안정성은 토큰 간 상호작용보다도, 내부 표현을 어떻게 재구성하고 전달하느냐에 강하게 의존하고 있다. 세 번째로 중요한 관찰은 성능 저하의 양상이 **연속적이지 않고 임계적(phase transition)**이라는 점이다. 무작위로 뉴런을 제거하거나 일부 비중요 뉴런을 교란할 때는 성능 변화가 거의 없지만, critical neuron 집합을 건드리는 순간 성능이 급격히 붕괴한다. 이는 LLM이 점진적으로 망가지는 시스템이 아니라, 임계점을 중심으로 안정과 붕괴가 갈리는 구조적 특성을 가진 시스템임을 보여준다. 이러한 결론을 도출하기 위해 논문은 Perturbation-based Causal Identification이라는 방법을 사용한다. 개별 뉴런 또는 매우 작은 뉴런 집합에 대해 activation을 제거하거나 교란하는 직접적 개입을 수행하고, 그 결과로 나타나는 perplexity와 생성 안정성을 측정한다. 중요한 점은 단순한 민감도 분석이 아니라, 최소한의 개입으로 모델 붕괴를 유발하는 인과적 뉴런 집합을 탐색한다는 것이다. 또한 이 실험은 단일 모델에 국한되지 않고, 다양한 아키텍처와 규모의 LLM에서 반복 검증되어 구조적 현상임을 확인한다. 정리하면, 이 논문은 LLM이 거대한 평균적 집합이 아니라, 극도로 희소한 임계 뉴런에 의해 유지되는 임계 시스템임을 보여준다. 그리고 이 사실은 모델 해석 가능성뿐 아니라, robustness, safety, 보안 관점에서 “어디를 건드리면 모델이 무너지는가”를 이해하는 데 매우 중요한 출발점을 제공한다."
+},
+{
+    "title": "On the Biology of a Large Language Model",
+    "authors": "Jack Lindsey",
+    "year": 2025,
+    "venue": "Anthropic",
+    "save_date": "2026-01-19",
+    "hover_memo": "On the Biology of a Large Language Model"
+},
+{
+    "title": "Emergent Introspective Awareness in Large Language Models",
+    "authors": "Jack Lindsey",
+    "year": 2025,
+    "venue": "Anthropic",
+    "save_date": "2026-01-19",
+    "hover_memo": "Emergent Introspective Awareness in Large Language Models"
 }
-
 ]
