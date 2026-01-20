@@ -1,5 +1,12 @@
 [
     {
+        "date": "2026-01-20",
+        "title": "simple bar plot",
+        "category": "Plot",
+        "copy_counter":0,
+        "html": "<pre><code>import seaborn as sns\nimport matplotlib.pyplot as plt\n\nsns.set_theme(style=\"whitegrid\")\nsns.set_context(\"paper\", font_scale=1.5)\npalette = sns.color_palette(\"husl\", 5)\n\nfig, axes = plt.subplots(1, 1, figsize=(10, 5))\nsns.barplot(data=dfs, x='model_name', y='accuracy', hue='setting_name', ax=axes, palette=palette)\n\naxes.legend(ncol=5, loc='lower center', bbox_to_anchor=(0.5, 1.07), frameon=True)\naxes.set_title('GSM8K Accuracy')\naxes.set_xlabel('Model')\naxes.set_ylabel('Accuracy')\nplt.tight_layout()</code></pre>",
+    },
+    {
         "date": "2026-01-18",
         "title": "LLM Models",
         "category": "LLM",

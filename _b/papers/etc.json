@@ -38,5 +38,13 @@
         "venue": "NeurIPS",
         "save_date": "2026-01-19",
         "hover_memo": ""
+    },
+    {
+        "title": "Molmo2: Open Weights and Data for Vision-Language Models with Video Understanding and Grounding",
+        "authors": "Allen Institute for AI (AI2)",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-19",
+        "hover_memo": ""
     }
 ]
