@@ -22,6 +22,46 @@
       font-family: 'Times New Roman', Times, serif;
     }
 
+    .search-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.65rem 0.9rem;
+      border: 1px solid var(--global-divider-color);
+      border-radius: 6px;
+      font-size: 1rem;
+      color: #222;
+      background: var(--global-card-bg-color, #fff);
+    }
+
+    .search-input::placeholder {
+      color: #888;
+    }
+
+    .search-modes {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-modes label {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.95rem;
+      color: #444;
+      cursor: pointer;
+      user-select: none;
+    }
+
     .papers-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -292,6 +332,25 @@
       </div>
 
       <div class="category-buttons" id="category-buttons"></div>
+      <div class="search-controls">
+        <input
+          type="text"
+          id="paper-search-input"
+          class="search-input"
+          placeholder="Enter keywords to filter"
+          aria-label="Search papers"
+        />
+        <div class="search-modes" role="group" aria-label="Search scope">
+          <label>
+            <input type="radio" name="search-mode" value="title" checked />
+            Title
+          </label>
+          <label>
+            <input type="radio" name="search-mode" value="title_memo" />
+            Title + Memo
+          </label>
+        </div>
+      </div>
       
       <div id="papers-table-container" class="papers-table-container"></div>
     </div>
@@ -321,6 +380,8 @@
       const baseUrl = '{{ site.baseurl }}/b/papers/';
       let papersData = {}; // Store papers by category
       let currentCategory = null;
+      let searchQuery = '';
+      let searchMode = 'title'; // 'title' | 'title_memo'
 
       // Helper function to format category name
       function formatCategoryName(fileName) {
@@ -346,6 +407,31 @@
         } catch (error) {
           return dateString; // Return as-is if parsing fails
         }
+      }
+
+      // Strip HTML tags for memo search
+      function stripHtmlTags(html) {
+        if (!html) return '';
+        return html.replace(/<[^>]*>/g, ' ');
+      }
+
+      // Check if a paper matches the current search query and mode
+      function matchesSearch(paper) {
+        const query = searchQuery.trim().toLowerCase();
+        if (!query) return true;
+
+        const terms = query.split(/\s+/).filter(Boolean);
+        if (!terms.length) return true;
+
+        const title = (paper.title || '').toLowerCase();
+        const memo = stripHtmlTags(paper.hover_memo || '').toLowerCase();
+
+        return terms.every(term => {
+          if (searchMode === 'title_memo') {
+            return title.includes(term) || memo.includes(term);
+          }
+          return title.includes(term);
+        });
       }
 
       // Load all JSON files
@@ -427,7 +513,8 @@
         } else {
           papers = papersData[categoryName] || [];
         }
-        renderPapersTable(papers, categoryName);
+        const filtered = papers.filter(matchesSearch);
+        renderPapersTable(filtered, categoryName);
       }
 
       // Render papers table
@@ -656,6 +743,26 @@
           
           // Show ALL category by default
           showCategory('ALL');
+
+          // Wire up search input
+          const searchInput = document.getElementById('paper-search-input');
+          if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+              searchQuery = e.target.value;
+              showCategory(currentCategory || 'ALL');
+            });
+          }
+
+          // Wire up search mode radios
+          const modeInputs = document.querySelectorAll('input[name="search-mode"]');
+          modeInputs.forEach(input => {
+            input.addEventListener('change', function(e) {
+              if (e.target.checked) {
+                searchMode = e.target.value;
+                showCategory(currentCategory || 'ALL');
+              }
+            });
+          });
         } catch (error) {
           console.error('Error initializing papers page:', error);
           document.getElementById('papers-table-container').innerHTML = 
