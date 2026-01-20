@@ -49,10 +49,10 @@
 },
 {
     "title": "An LLM chatbot to facilitate primary-to-specialist care transitions: a randomized controlled trial",
-    "authors": "Yiwen Li, Yuchen Lin, Xinjiang Lu, Rui Zhang, Bing Yin, Xiang Ren",
+    "authors": "",
     "year": 2026,
     "venue": "Nature Medicine",
-    "save_date": "2026-01-19",
+    "save_date": "2026-01-20",
     "hover_memo": "AI의 정리는 1차병원에서 대학병원(전문의)으로 넘어갈지에 대한 판단과 준비를 실제로 더 효율적으로 만든다. Nature Medicine의 연구에서는, 대규모 언어 모델(LLM)이 진단 자체를 대체하는 것이 아니라, **1차 진료에서 전문의 진료로 넘어가는 전환 구간(primary-to-specialist care transition)**을 정리하는 역할에서 실제 효용을 낼 수 있음을 보여준다. 이 구간은 병력 정리, 증상 요약, 검사 내역 전달처럼 반복적이지만 필수적인 작업이 몰려 있는 지점이다. 연구진은 LLM 챗봇을 활용해 환자의 초기 정보를 구조화하고, 전문의가 바로 활용할 수 있는 형태로 전달했다. 그 결과, 전문의 상담 시간이 줄어들고, 의사들은 진료 연계가 더 잘 이루어진다고 느꼈으며, 환자 역시 의사소통이 쉬워졌다고 보고했다. 즉, AI가 의료 판단을 대신하지 않더라도 판단이 내려지기까지의 과정은 충분히 개선할 수 있음이 확인된 셈이다. 의료데이터를 더 많이 학습시키는 것보다 중요한 건, AI가 실제 의료 현장에서 맡아야 할 역할을 정확히 설계하는 것이다. LLM은 ‘AI 의사’가 될 때보다, 1차병원에서 대학병원으로 넘어가는 판단을 준비하고 정리하는 인터페이스로 배치될 때 가장 큰 가치를 발휘한다."
 }
 ]
