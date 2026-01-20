@@ -76,7 +76,7 @@ description:
 @font-face {
   font-family: 'AritaBuriKR';
   src: url('/assets/fonts/AritaBuriKR-Light.ttf') format('truetype');
-  font-weight: 300;
+  font-weight: 500;
   font-style: normal;
 }
 
