@@ -2,32 +2,20 @@ import json
 import re
 from datetime import datetime
 
-def convert_markdown_to_html_json(markdown_content):
+def convert_markdown_to_html(markdown_content):
     """
-    Markdown 콘텐츠를 HTML 형식으로 변환하고 JSON 문자열로 이스케이프 처리합니다.
-    
-    json.dumps()가 자동으로 다음을 이스케이프 처리합니다:
-    - 큰따옴표 (") → \"
-    - 백슬래시 (\) → \\
-    - 줄바꿈 (\n) → \\n
-    - 탭 (\t) → \\t
-    - 기타 제어 문자들
+    Markdown 콘텐츠를 HTML 형식으로 변환합니다.
     
     Args:
         markdown_content: 변환할 Markdown 콘텐츠 문자열
     
     Returns:
-        JSON 이스케이프 처리된 HTML 문자열 (큰따옴표로 감싸진 형태)
+        HTML 문자열 (JSON 저장 시 ensure_ascii=False로 한글 보존)
     """
     # Markdown을 HTML로 변환
     html_content = markdown_to_html(markdown_content)
     
-    # JSON 이스케이프 처리
-    # json.dumps()는 자동으로 큰따옴표, 백슬래시 등을 이스케이프 처리합니다
-    # 결과는 큰따옴표로 감싸진 JSON 문자열이 됩니다
-    json_string = json.dumps(html_content)
-    
-    return json_string
+    return html_content
 
 
 def markdown_to_html(markdown_text):
@@ -114,7 +102,7 @@ def create_json_entry(html_content, title="Learning Logic Improves Decision-Maki
     JSON 엔트리를 생성합니다.
     
     Args:
-        html_content: HTML 콘텐츠 (이미 JSON 이스케이프 처리된 문자열)
+        html_content: HTML 콘텐츠 (원본 HTML 문자열)
         title: 제목
         category: 카테고리
         date: 날짜 (YYYY-MM-DD 형식, None이면 오늘 날짜)
@@ -148,27 +136,52 @@ if __name__ == "__main__":
     
     # 변환 실행
     if input_content.strip():
-        # Markdown을 HTML로 변환하고 JSON 문자열로 이스케이프 처리
-        html_json_string = convert_markdown_to_html_json(input_content)
+        # Markdown을 HTML로 변환
+        html_content = convert_markdown_to_html(input_content)
         
         # JSON 엔트리 생성
         json_entry = create_json_entry(
-            html_json_string,
+            html_content,
             title="Learning Logic Improves Decision-Making",
             category="Research",
             date="2026-01-20"
         )
         
-        # JSON 배열로 변환
-        json_array = [json_entry]
-        json_output = json.dumps(json_array, indent=4, ensure_ascii=False)
+        # 기존 research.json 파일 읽기
+        try:
+            with open('research.json', 'r', encoding='utf-8') as f:
+                existing_data = json.load(f)
+        except FileNotFoundError:
+            existing_data = []
+        except json.JSONDecodeError:
+            print("경고: research.json 파일을 파싱할 수 없습니다. 새로 생성합니다.")
+            existing_data = []
         
-        # 출력 파일로 저장
-        with open('html_output.json', 'w', encoding='utf-8') as f:
+        # 중복 체크 및 업데이트 (title로 중복 확인)
+        entry_title = json_entry.get('title')
+        entry_updated = False
+        
+        for i, existing_entry in enumerate(existing_data):
+            if existing_entry.get('title') == entry_title:
+                # 중복 발견: 기존 엔트리 덮어쓰기
+                existing_data[i] = json_entry
+                entry_updated = True
+                print(f"기존 엔트리 업데이트: '{entry_title}'")
+                break
+        
+        # 중복이 없으면 새로 추가
+        if not entry_updated:
+            existing_data.append(json_entry)
+            print(f"새 엔트리 추가: '{entry_title}'")
+        
+        # research.json 파일에 저장 (ensure_ascii=False로 한글 보존)
+        json_output = json.dumps(existing_data, indent=4, ensure_ascii=False)
+        with open('research.json', 'w', encoding='utf-8') as f:
             f.write(json_output)
         
-        print("변환 완료! html_output.json 파일에 저장되었습니다.")
-        print(f"\n변환된 HTML (처음 300자):\n{html_json_string[:300]}...")
+        print(f"\n변환 완료! research.json 파일에 저장되었습니다.")
+        print(f"총 {len(existing_data)}개의 엔트리가 있습니다.")
+        print(f"\n변환된 HTML (처음 300자):\n{html_content[:300]}...")
         
         # JSON 엔트리 확인
         print("\n=== JSON 엔트리 구조 ===")
