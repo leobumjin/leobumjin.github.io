@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+
+  <!-- Head -->
+  <head>
+  {% include scripts/jquery.html %}
+  {% include scripts/mathjax.html %}
+  {%- if page.redirect -%}
+    <meta http-equiv="refresh" content="3; url={{ site.baseurl | prepend: site.url }}/" />
+  {%- endif -%}
+  {% include head.html %}
+  <!-- Page/Post style -->
+  {% if page._styles %}
+  <style type="text/css">
+    {{ page._styles }}
+  </style>
+  {%- endif %}
+
+  <!-- Research page styles -->
+  <style type="text/css">
+    body {
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    .research-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      overflow: visible;
+    }
+
+    .table-wrapper {
+      flex: 1 1 40%;
+      min-width: 0;
+    }
+
+    .html-viewer {
+      flex: 1 1 60%;
+      min-width: 0;
+      position: sticky;
+      top: 2rem;
+      height: calc(100vh - 4rem);
+      max-height: 80vh;
+      background: var(--global-card-bg-color, #fff);
+      border: 1px solid var(--global-divider-color, #e0e0e0);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .html-viewer.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .html-viewer-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--global-divider-color, #e0e0e0);
+      background: var(--global-card-bg-color, #fff);
+    }
+
+    .html-viewer-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .html-viewer-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 2rem;
+      font-size: 1rem;
+      line-height: 1.6;
+      background: var(--global-card-bg-color, #fff);
+      color: #333;
+    }
+
+    .html-viewer-content::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .html-viewer-content::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 4px;
+    }
+
+    .html-viewer-content::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+
+    .html-viewer-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .research-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .research-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: #222;
+    }
+
+    .research-header p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      justify-content: flex-start;
+    }
+
+    .category-chip {
+      padding: 0.4rem 0.9rem;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 20px;
+      color: #444;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: capitalize;
+    }
+
+    .category-chip:hover {
+      background: rgba(0, 0, 0, 0.1);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .category-chip.active {
+      background: rgba(0, 0, 0, 0.15);
+      border-color: rgba(0, 0, 0, 0.3);
+      font-weight: 600;
+      color: #222;
+    }
+
+    .research-table-container {
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      overflow-y: visible;
+      width: 100%;
+    }
+
+    .research-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--global-card-bg-color);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      table-layout: auto;
+    }
+
+    .research-table thead {
+      background: var(--global-card-bg-color);
+    }
+
+    .research-table th {
+      padding: 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--global-divider-color);
+    }
+
+    .research-table th.date-header {
+      text-align: center;
+    }
+
+    .research-table td {
+      font-size: 1rem;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--global-divider-color);
+      vertical-align: top;
+    }
+
+    .research-table tbody tr {
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .research-table tbody tr:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .research-table tbody tr.active {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .research-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .research-date-cell {
+      font-size: 0.9rem;
+      color: #666;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .research-title-cell {
+      font-weight: 500;
+      font-size: 1rem;
+      color: #222;
+      word-wrap: break-word;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      min-width: 300px;
+    }
+
+    .research-category-cell {
+      font-size: 0.9rem;
+      color: #666;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .no-research-message {
+      text-align: center;
+      color: #999;
+      padding: 3rem;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .research-header h1 {
+        font-size: 2rem;
+      }
+      
+      .research-table {
+        font-size: 0.9rem;
+      }
+      
+      .research-table th,
+      .research-table td {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+
+  </head>
+
+  <!-- Body -->
+  <body style="padding-top:0px" class="{%- if site.navbar_fixed -%}fixed-top-nav{%- endif -%} {%- unless site.footer_fixed -%}sticky-bottom-footer{%- endunless -%}"> 
+
+    {%- include header.html %}
+
+    <div class="research-container" style="flex-direction: column;">
+      <div class="research-header">
+        <h1>{{ page.title | default: "Research" }}</h1>
+        {% if page.description %}
+        <p>{{ page.description }}</p>
+        {% endif %}
+      </div>
+
+      <div style="display: flex; gap: 2rem; align-items: flex-start;">
+        <div class="table-wrapper">
+          <div class="category-chips" id="category-chips"></div>
+          <div id="research-table-container" class="research-table-container"></div>
+        </div>
+
+        <div id="html-viewer" class="html-viewer">
+          <div class="html-viewer-header">
+            <div class="html-viewer-title">Select a row to view HTML</div>
+          </div>
+          <div class="html-viewer-content" id="html-viewer-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- {%- include footer.html %} -->
+
+    <!-- JavaScripts -->
+    {% include scripts/jquery.html %}
+    {% include scripts/bootstrap.html %}
+    {% include scripts/masonry.html %}
+    {% include scripts/misc.html %}
+    {% include scripts/mathjax.html %}
+    {% include scripts/analytics.html %}
+
+    <script>
+      const jsonFile = 'research.json';
+      const baseUrl = '{{ site.baseurl }}/b/json_files/';
+      let researchData = [];
+      let currentCategory = 'ALL';
+
+      // Helper function to format date as YY/MM/DD
+      function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        try {
+          const parts = dateString.split('-');
+          if (parts.length === 3) {
+            const year = parts[0].slice(-2);
+            const month = parts[1].padStart(2, '0');
+            const day = parts[2].padStart(2, '0');
+            return `${year}/${month}/${day}`;
+          }
+          return dateString;
+        } catch (error) {
+          return dateString;
+        }
+      }
+
+      // Load JSON file
+      async function loadResearchData() {
+        try {
+          const response = await fetch(baseUrl + jsonFile);
+          if (response.ok) {
+            const data = await response.json();
+            // Sort by date (most recent first)
+            researchData = [...data].sort((a, b) => {
+              const dateA = a.date || '';
+              const dateB = b.date || '';
+              if (dateB > dateA) return 1;
+              if (dateB < dateA) return -1;
+              return 0;
+            });
+          } else {
+            console.warn(`Failed to load ${jsonFile}: ${response.status}`);
+            researchData = [];
+          }
+        } catch (error) {
+          console.error(`Error loading ${jsonFile}:`, error);
+          researchData = [];
+        }
+      }
+
+      // Load and display HTML
+      async function loadHtmlContent(htmlPath) {
+        const htmlViewerContent = document.getElementById('html-viewer-content');
+        
+        try {
+          // Check if htmlPath is a URL or path
+          if (htmlPath.startsWith('http://') || htmlPath.startsWith('https://')) {
+            // External URL
+            const response = await fetch(htmlPath);
+            if (response.ok) {
+              htmlViewerContent.innerHTML = await response.text();
+            } else {
+              htmlViewerContent.innerHTML = '<p>Failed to load HTML content.</p>';
+            }
+          } else if (htmlPath.trim().startsWith('<')) {
+            // Direct HTML content
+            htmlViewerContent.innerHTML = htmlPath;
+          } else {
+            // Relative path - try to fetch from the same directory or baseUrl
+            const fullPath = htmlPath.startsWith('/') 
+              ? htmlPath 
+              : baseUrl.replace('/b/json_files/', '') + htmlPath;
+            const response = await fetch(fullPath);
+            if (response.ok) {
+              htmlViewerContent.innerHTML = await response.text();
+            } else {
+              // If fetch fails, treat as direct HTML content
+              htmlViewerContent.innerHTML = htmlPath;
+            }
+          }
+        } catch (error) {
+          console.error('Error loading HTML:', error);
+          // If error, try to display as direct HTML content
+          htmlViewerContent.innerHTML = htmlPath || '<p>No HTML content available.</p>';
+        }
+      }
+
+      // Get unique categories from data
+      function getCategories() {
+        const categories = new Set();
+        researchData.forEach(entry => {
+          if (entry.category) {
+            categories.add(entry.category);
+          }
+        });
+        return Array.from(categories).sort();
+      }
+
+      // Render category chips
+      function renderCategoryChips() {
+        const chipsContainer = document.getElementById('category-chips');
+        chipsContainer.innerHTML = '';
+        
+        const categories = getCategories();
+        
+        // Add ALL chip first
+        const allChip = document.createElement('button');
+        allChip.className = 'category-chip' + (currentCategory === 'ALL' ? ' active' : '');
+        allChip.textContent = 'ALL';
+        allChip.addEventListener('click', () => filterByCategory('ALL'));
+        chipsContainer.appendChild(allChip);
+        
+        // Add category chips
+        categories.forEach(category => {
+          const chip = document.createElement('button');
+          chip.className = 'category-chip' + (currentCategory === category ? ' active' : '');
+          chip.textContent = category;
+          chip.addEventListener('click', () => filterByCategory(category));
+          chipsContainer.appendChild(chip);
+        });
+      }
+
+      // Filter by category
+      function filterByCategory(category) {
+        currentCategory = category;
+        renderCategoryChips();
+        renderResearchTable();
+      }
+
+      // Render research table
+      function renderResearchTable() {
+        const tableContainer = document.getElementById('research-table-container');
+        tableContainer.innerHTML = '';
+
+        // Filter data by category
+        let filteredData = researchData;
+        if (currentCategory !== 'ALL') {
+          filteredData = researchData.filter(entry => entry.category === currentCategory);
+        }
+
+        if (!filteredData || filteredData.length === 0) {
+          tableContainer.innerHTML = '<div class="no-research-message">No entries found.</div>';
+          return;
+        }
+
+        // Create table
+        const table = document.createElement('table');
+        table.className = 'research-table';
+
+        // Create header
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        
+        const categoryHeader = document.createElement('th');
+        categoryHeader.textContent = 'Category';
+        categoryHeader.className = 'date-header';
+        headerRow.appendChild(categoryHeader);
+        
+        const titleHeader = document.createElement('th');
+        titleHeader.textContent = 'Title';
+        headerRow.appendChild(titleHeader);
+        
+        const dateHeader = document.createElement('th');
+        dateHeader.textContent = 'Date';
+        dateHeader.className = 'date-header';
+        headerRow.appendChild(dateHeader);
+        
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create body
+        const tbody = document.createElement('tbody');
+        filteredData.forEach((entry) => {
+          const row = document.createElement('tr');
+
+          // Category cell
+          const categoryCell = document.createElement('td');
+          categoryCell.className = 'research-category-cell';
+          categoryCell.textContent = entry.category || 'N/A';
+          row.appendChild(categoryCell);
+
+          // Title cell
+          const titleCell = document.createElement('td');
+          titleCell.className = 'research-title-cell';
+          titleCell.textContent = entry.title || 'N/A';
+          row.appendChild(titleCell);
+
+          // Date cell
+          const dateCell = document.createElement('td');
+          dateCell.className = 'research-date-cell';
+          dateCell.textContent = formatDate(entry.date);
+          row.appendChild(dateCell);
+
+          // Click row to show HTML in viewer
+          if (entry.html) {
+            row.addEventListener('click', function() {
+              // Show HTML in viewer
+              const htmlViewer = document.getElementById('html-viewer');
+              const htmlViewerTitle = htmlViewer.querySelector('.html-viewer-title');
+              
+              htmlViewerTitle.textContent = entry.title || 'HTML Content';
+              htmlViewer.classList.add('active');
+              
+              // Load HTML content
+              loadHtmlContent(entry.html);
+              
+              // Highlight clicked row
+              document.querySelectorAll('.research-table tbody tr').forEach(r => {
+                r.classList.remove('active');
+              });
+              row.classList.add('active');
+            });
+          }
+
+          tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+        tableContainer.appendChild(table);
+      }
+
+      // Initialize on page load
+      document.addEventListener('DOMContentLoaded', async function() {
+        try {
+          await loadResearchData();
+          renderCategoryChips();
+          renderResearchTable();
+        } catch (error) {
+          console.error('Error initializing research page:', error);
+          document.getElementById('research-table-container').innerHTML = 
+            '<div class="no-research-message">Error loading research data.</div>';
+        }
+      });
+    </script>
+  </body>
+</html>
+
