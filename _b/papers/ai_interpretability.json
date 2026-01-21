@@ -189,5 +189,21 @@
     "venue": "Google",
     "save_date": "2026-01-20",
     "hover_memo": "다중 관점 구조가 단순한 부산물이 아니라 정확도 향상의 원인임을 보이기 위해 강화학습 실험도 수행한다. 흥미롭게도, 모델에게 오직 정답률만 보상으로 주었음에도, 모델은 자발적으로 질문·응답·토론 같은 대화적 추론 행동을 늘린다. 더 나아가, monologue식 추론으로 파인튜닝한 모델보다, 대화적 scaffolding을 포함해 파인튜닝한 모델이 훨씬 빠르게 추론 능력을 개선한다는 점을 실험적으로 입증한다. 결론적으로 이 논문은, 고급 추론 능력이 “길어진 생각”이 아니라 사회적으로 조직된 사고 구조에서 나온다는 관점을 제시한다. 이는 인간 집단 지능에서 다양성과 구조화된 토론이 문제 해결력을 높이는 것과 유사하며, 향후 추론 모델을 설계할 때 내부 다중 에이전트 조직, 관점 다양성, 갈등과 조정 메커니즘을 의도적으로 설계·활용할 수 있다는 중요한 시사점을 던진다"
+},
+{
+    "title": "The assistant axis: situating and stabilizing the character of large language models",
+    "authors": "",
+    "year": 2026,
+    "venue": "Deepmind",
+    "save_date": "2026-01-20",
+    "hover_memo": ""
+},
+{
+    "title": "Petri: Parallel Exploration of Risky Interactions",
+    "authors": "",
+    "year": 2025,
+    "venue": "",
+    "save_date": "2026-01-21",
+    "hover_memo": ""
 }
 ]
