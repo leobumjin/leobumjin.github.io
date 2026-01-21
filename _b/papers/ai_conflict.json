@@ -23,5 +23,29 @@
         "venue": "NA",
         "save_date": "2025-12-31",
         "hover_memo": "추론의 오류를 발견하고 수정하는 방법을 제시한다."
+    },
+    {
+        "title": "Enhancing Reasoning Capabilities of LLMs via Principled Synthetic Logic Corpus",
+        "authors": "Terufumi Morishita",
+        "year": 2024,
+        "venue": "NeurIPS",
+        "save_date": "2026-01-21",
+        "hover_memo": "이 연구는 LLM의 추론 약점을 보완하기 위해 추가 논리 학습(Additional Logic Training, ALT)을 제안한다. 핵심 아이디어는 기호 논리 이론과 기존 실증적 인사이트를 결합해 설계한 고품질 논리 추론 샘플을 프로그램적으로 생성해 학습에 추가하는 것이다. 이를 위해 다단계 추론, 미지 사실, 다양한 추론 규칙·표현, 교란 요소를 포함한 합성 데이터셋 FLD×2를 구축했고, 이 데이터로 ALT를 수행한 결과 최신 LLM(LLaMA-3.1-70B 포함)의 추론 능력이 크게 향상되었다. 구체적으로 논리 추론 벤치마크에서 최대 +30점, 수학·코딩에서 +10점, BBH에서 +5점의 성능 개선을 보이며, 논리 중심의 합성 학습이 일반 추론과 타 과제 일반화에도 실질적 효과가 있음을 입증한다."
+    },
+    {
+        "title": "Learning Deductive Reasoning from Synthetic Corpus based on Formal Logic",
+        "authors": "Terufumi Morishita",
+        "year": 2023,
+        "venue": "ICML",
+        "save_date": "2026-01-21",
+        "hover_memo": ""
+    },
+    {
+        "title": "Multi-Step Deductive Reasoning Over Natural Language: An Empirical Study on Out-of-Distribution Generalisation",
+        "authors": "Qiming Bao",
+        "year": 2024,
+        "venue": "IJCAI-NeSy 2022 Workshop",
+        "save_date": "2026-01-21",
+        "hover_memo": ""
     }
 ]

@@ -1,5 +1,13 @@
 [
     {
+        "title": "What Do Learning Dynamics Reveal About Generalization in LLM Mathematical Reasoning?",
+        "authors": "Katie KAng (Sergey Levine)",
+        "year": 2025,
+        "venue": "ICML",
+        "save_date": "2026-01-21",
+        "hover_memo": "Pre-memorization train accuracy는 모델이 아직 외우지 않았다고 판단되는 상태(PPL > p)에서 정답을 맞히는 능력을 측정한 지표다. 대규모 언어 모델은 파인튜닝 데이터에는 잘 맞추지만, 보지 못한 문제에 대한 일반화는 여전히 어렵다. 이 연구는 추론 문제를 중심으로, 모델이 훈련 데이터의 추론 과정을 그대로 외우기(memorization) 이전에 보이는 성능인 pre-memorization train accuracy에 주목해, 학습 동역학이 실제 일반화 성능에 어떻게 연결되는지를 분석한다. 이 지표는 다양한 모델·데이터셋·학습 설정에서 테스트 성능을 거의 완벽하게 예측(R² ≥ 0.9)하며, 개별 예제 수준에서도 예측의 견고성을 설명한다. 또한 pre-memorization train accuracy가 낮은 데이터 위주로 학습하면, 단순 i.i.d. 데이터 확장 대비 1.5–2배 높은 데이터 효율을 달성할 수 있음을 보인다."
+    },
+    {
         "title": "DeepSeek-R1 Thoughtology: Let’s think about LLM reasoning", 
         "authors": "Sara Vera Marjanovic",
         "year": 2026,
