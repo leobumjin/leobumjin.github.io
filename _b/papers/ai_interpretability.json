@@ -213,5 +213,37 @@
     "venue": "NeurIPS",
     "save_date": "2026-01-21",
     "hover_memo": ""
+},
+{
+    "title": "An Investigation of Neuron Activation as a Unified Lens to Explain Chain-of-Thought Eliciting Arithmetic Reasoning of LLMs",
+    "authors": "Daking Rai",
+    "year": 2025,
+    "venue": "ACL",
+    "save_date": "2026-01-21",
+    "hover_memo": "이 논문의 핵심은 Chain-of-Thought(CoT) 프롬프트가 왜 산술 추론 성능을 끌어올리는지를, 프롬프트 수준이 아니라 LLM 내부의 ‘뉴런 활성화’ 관점에서 설명하려는 시도에 있다. 기존 연구들이 CoT 구성 요소를 제거·변형하며 성능 변화를 관찰하는 데 그쳤다면, 이 논문은 산술 추론을 담당하는 특정 feed-forward layer 뉴런들이 실제로 활성화되는지를 분석해 그 이유를 내부 메커니즘 차원에서 밝히고자 한다. LLaMA2를 대상으로 한 실험에서, CoT 프롬프트는 단순히 텍스트 구조를 바꾸는 것이 아니라 산술 추론과 관련된 뉴런 집합을 선택적으로 활성화함으로써 추론 능력을 유도한다는 점을 보인다. 또한 GPT-4를 활용해 산술 추론을 암시하는 뉴런을 자동 식별하는 방법을 제안함으로써, CoT의 다양한 설계 요소들이 왜 중요한지를 하나의 통합된 뉴런 활성화 프레임워크로 설명할 수 있음을 제시한다. 이 연구는 CoT를 “프롬프트 기법”이 아니라 모델 내부 계산 상태를 유도하는 트리거로 재해석한다는 점에서 의미가 있다. 1) 뉴런 탐지 방법(어떻게 찾나) 저자들은 “산술 추론과 관련된 FF(Feed-Forward) 뉴런”을 찾기 위해 2단계 파이프라인을 쓴다. (i) 후보 수집: CoT 예제들을 입력으로 Llama2-7B를 실제로 추론하게 돌린 뒤, 매 생성 step 𝑖 i와 레이어 𝑙 l마다 FF 뉴런의 활성 계수 𝑚 𝑖 𝑗 𝑙 m ij l ​ 를 계산하고, 그중 **가장 크게 활성화된 상위 T개 뉴런(top-T)**만 모아 후보 집합 𝑁 N을 만든다(“추론할 때 자주/세게 켜지는 뉴런”을 우선 후보로 삼는 것). (ii) 개념 라벨링: 각 후보 뉴런 𝑣 v를 vocabulary space로 투영해(Geva et al. 방식으로 𝐸 𝑣 Ev) 그 뉴런이 “밀어 올리는(top) 토큰들” 𝑉 𝑃 V P ​ 을 뽑는다. 여기서 먼저 seed token 필터를 걸어(예: 덧셈이면 {add, plus, +, sum…} 같은 토큰이 top-P에 최소 F개 이상 포함되는 뉴런만 남김) GPT-4 호출 수를 줄이고, 마지막으로 남은 뉴런들에 대해 GPT-4에게 “이 top 토큰 묶음이 ‘Addition/Logical connector/Multiplication…’ 개념을 표현하나?”를 물어 자동으로 개념 라벨을 붙인다. 결과적으로 “논리 연결자 뉴런”, “덧셈/뺄셈/곱셈/나눗셈 뉴런”, “equals/calculation 뉴런” 같은 집합을 얻는다. 2) 뉴런 활용 방법(찾아서 뭘 하나) 찾은 뉴런은 두 가지로 쓴다. (i) CoT 구성요소의 효과를 내부 메커니즘으로 설명: “방정식이 있으면 성능이 오른다”, “텍스트 설명이 중요하다”, “연산자 다양성이 중요하다” 같은 기존 ablation 관찰을, 해당 프롬프트를 넣었을 때 **추론 뉴런들의 활성 빈도/강도/지속(persistence)**가 어떻게 달라지는지로 해석한다. 예를 들어 논리 연결자 뉴런은 문장 시작부(then/therefore/next 등)에서 자주 켜지고, 산술 연산 뉴런은 숫자/기호 주변에서 켜지며, 한 번 켜지면 몇 step 지속되어 근처 토큰 생성에 영향을 준다는 식으로 “왜 이 구성요소가 추론을 유도하는지”를 뉴런 활성 패턴으로 연결한다. (ii) 정말 중요하면 망가뜨려보면 된다(인과 검증): 발견한 ‘추론 뉴런’에만 노이즈를 주입하는 random noise ablation을 해서(뉴런 벡터 𝑣 v에 가우시안 노이즈 추가), 성능이 크게 떨어지면 그 뉴런이 기능적으로 중요하다는 증거가 된다. 실제로 reasoning 뉴런을 교란하면 GSM8K 성능이 크게 붕괴(예: 16.83% → 4.54%)하지만, 같은 수의 랜덤 뉴런 교란은 덜 떨어져(→ 11.37%) **“이 뉴런들은 단순 상관이 아니라 추론에 기여하는 구성요소”**라는 점을 보여준다. 즉, 이 논문은 CoT를 “텍스트 트릭”이 아니라 특정 FF 뉴런 집합을 켜서 추론 모드를 유도하는 장치로 해석하고, 그 해석을 활성 패턴 분석 + 교란 실험으로 뒷받침한다."
+},
+{
+    "title": "Layer by Layer: Uncovering Where Multi-Task Learning Happens in Instruction-Tuned Large Language Models",
+    "authors": "Aheng Zhao",
+    "year": 2024,
+    "venue": "EMNLP",
+    "save_date": "2026-01-21",
+    "hover_memo": "이 논문에 따르면 instruction-tuned LLM에서 multi-task learning은 모델 전체에 균일하게 퍼져 있는 현상이 아니라, 특정 레이어 구간에서 구조적으로 발생한다. 하위 레이어(약 1–9층)는 여러 태스크가 공통으로 사용하는 일반적 언어·의미 표현을 학습하는 shared layers로서 태스크 구분이 거의 없고, 중간 레이어(약 10–15층)에서 표현이 단일 태스크 전용 모델들과 강하게 정렬되며 태스크별 정보가 본격적으로 분화·주입되는 transition layers가 형성된다. 이 구간이 바로 multi-task learning이 실질적으로 일어나는 핵심 지점이다. 이후 상위 레이어(약 16–32층)는 이미 형성된 태스크 지향 표현을 출력에 맞게 다듬는 refinement layers로 작동한다. 즉, 이 연구는 multi-task learning을 “모든 층의 평균적 효과”가 아니라, 중간 레이어에서 태스크 특화 표현으로 전환되는 계층적 메커니즘으로 명확히 위치시킨다."
+},
+{
+    "title": "Reasoning Circuits in Language Models: AMechanistic Interpretation of Syllogistic Inference",
+    "authors": "",
+    "year": 2025,
+    "venue": "ACL (Findings)",
+    "save_date": "2026-01-21",
+    "hover_memo": ""
+},
+{
+    "title": "On the Impact of Fine-Tuning on Chain-of-Thought Reasoning",
+    "authors": "",
+    "year": 2025,
+    "venue": "NACCL",
+    "save_date": "2026-01-21",
+    "hover_memo": "이 논문에 따르면 fine-tuning은 최종 정답 성능을 반드시 떨어뜨리지는 않지만, CoT 기반 추론 성능은 특히 수학 문제에서 실제로 감소할 수 있으며, 설령 정답 성능이 유지되더라도 CoT의 신뢰성(faithfulness)은 전반적으로 악화된다."
 }
 ]
