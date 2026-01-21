@@ -205,5 +205,13 @@
     "venue": "",
     "save_date": "2026-01-21",
     "hover_memo": "Petri is an alignment auditing agent for rapid, realistic hypothesis testing. It autonomously crafts environments, runs multi‑turn audits against a target model using human‑like messages and simulated tools, and then scores transcripts to surface concerning behavior. Instead of building bespoke evals over weeks, researchers can test new hypotheses in minutes."
+},
+{
+    "title": "Comparison requires valid measurement: Rethinking attack success rate comparisons in AI red teaming",
+    "authors": "",
+    "year": 2025,
+    "venue": "NeurIPS",
+    "save_date": "2026-01-21",
+    "hover_memo": ""
 }
 ]
