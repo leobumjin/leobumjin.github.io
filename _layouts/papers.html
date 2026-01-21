@@ -244,6 +244,7 @@
       overflow-wrap: break-word;
       white-space: normal;
       min-width: 300px;
+      cursor: pointer;
     }
 
     .paper-authors-cell {
@@ -382,6 +383,8 @@
       let currentCategory = null;
       let searchQuery = '';
       let searchMode = 'title'; // 'title' | 'title_memo'
+      let activeTooltip = null;
+      let activeTitleCell = null;
 
       // Helper function to format category name
       function formatCategoryName(fileName) {
@@ -432,6 +435,68 @@
           }
           return title.includes(term);
         });
+      }
+
+      // Create tooltip element on demand
+      function createTooltip(contentHtml) {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'hover-memo-tooltip';
+        tooltip.innerHTML = contentHtml || '';
+        tooltip.style.top = '-9999px';
+        tooltip.style.left = '-9999px';
+        document.body.appendChild(tooltip);
+        tooltip.addEventListener('click', (e) => e.stopPropagation());
+        return tooltip;
+      }
+
+      // Position tooltip relative to a title cell
+      function adjustTooltipPosition(tooltip, titleCell) {
+        const cellRect = titleCell.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const padding = 10;
+
+        tooltip.classList.remove('tooltip-below');
+
+        let top = cellRect.top - tooltipRect.height - 16;
+        let left = cellRect.left;
+
+        if (top < padding) {
+          top = cellRect.bottom + 16;
+          tooltip.classList.add('tooltip-below');
+        }
+
+        if (left + tooltipRect.width > viewportWidth - padding) {
+          left = viewportWidth - tooltipRect.width - padding;
+        }
+
+        if (left < padding) {
+          left = padding;
+        }
+
+        const arrowLeft = cellRect.left - left + 16;
+        tooltip.style.setProperty('--arrow-left', arrowLeft + 'px');
+        tooltip.style.top = top + 'px';
+        tooltip.style.left = left + 'px';
+        tooltip.style.bottom = 'auto';
+        tooltip.style.right = 'auto';
+      }
+
+      function hideActiveTooltip() {
+        if (activeTooltip) {
+          activeTooltip.style.opacity = '0';
+          activeTooltip.style.top = '-9999px';
+          activeTooltip.style.left = '-9999px';
+          activeTooltip = null;
+          activeTitleCell = null;
+        }
+      }
+
+      function showTooltip(tooltip, titleCell) {
+        activeTooltip = tooltip;
+        activeTitleCell = titleCell;
+        tooltip.style.opacity = '1';
+        adjustTooltipPosition(tooltip, titleCell);
       }
 
       // Load all JSON files
@@ -553,133 +618,21 @@
           titleCell.className = 'paper-title-cell';
           titleCell.textContent = paper.title || 'Untitled';
 
-          // Add hover memo tooltip if available
+          // Show memo on click instead of hover
           if (paper.hover_memo) {
-            const tooltip = document.createElement('div');
-            tooltip.className = 'hover-memo-tooltip';
-            // Render HTML directly
-            tooltip.innerHTML = paper.hover_memo;
-            // Append to body instead of cell to avoid overflow issues
-            document.body.appendChild(tooltip);
-
-            // Adjust tooltip position to prevent overflow
-            function adjustTooltipPosition() {
-              // Only adjust if tooltip is visible
-              if (tooltip.style.opacity !== '1') {
+            let tooltip = null;
+            titleCell.addEventListener('click', function(e) {
+              e.stopPropagation();
+              // Toggle if clicking the same title
+              if (activeTitleCell === titleCell) {
+                hideActiveTooltip();
                 return;
               }
-              
-              const cellRect = titleCell.getBoundingClientRect();
-              const tooltipRect = tooltip.getBoundingClientRect();
-              const viewportWidth = window.innerWidth;
-              const viewportHeight = window.innerHeight;
-              const padding = 10;
-              
-              // Reset classes
-              tooltip.classList.remove('tooltip-below');
-              
-              // Calculate initial position (above the cell)
-              let top = cellRect.top - tooltipRect.height - 16; // 16px for arrow + spacing
-              let left = cellRect.left;
-              
-              // Check if tooltip goes off the top edge
-              if (top < padding) {
-                // Position below instead
-                top = cellRect.bottom + 16;
-                tooltip.classList.add('tooltip-below');
+              hideActiveTooltip();
+              if (!tooltip) {
+                tooltip = createTooltip(paper.hover_memo);
               }
-              
-              // Check if tooltip goes off the right edge
-              if (left + tooltipRect.width > viewportWidth - padding) {
-                left = viewportWidth - tooltipRect.width - padding;
-              }
-              
-              // Check if tooltip goes off the left edge
-              if (left < padding) {
-                left = padding;
-              }
-              
-              // Calculate arrow position relative to cell
-              const arrowLeft = cellRect.left - left + 16; // 16px offset from cell left
-              tooltip.style.setProperty('--arrow-left', arrowLeft + 'px');
-              
-              // Apply position
-              tooltip.style.top = top + 'px';
-              tooltip.style.left = left + 'px';
-              tooltip.style.bottom = 'auto';
-              tooltip.style.right = 'auto';
-            }
-
-            // Handle mouseenter on titleCell only
-            titleCell.addEventListener('mouseenter', function(e) {
-              e.stopPropagation(); // Prevent event bubbling
-              // Clear any pending hide timeout
-              if (hideTimeout) {
-                clearTimeout(hideTimeout);
-                hideTimeout = null;
-              }
-              tooltip.style.opacity = '1';
-              adjustTooltipPosition();
-            });
-
-            // Handle mouseleave on titleCell - only hide if not hovering over tooltip
-            let hideTimeout;
-            titleCell.addEventListener('mouseleave', function(e) {
-              e.stopPropagation(); // Prevent event bubbling
-              // Check if mouse is moving to tooltip
-              const relatedTarget = e.relatedTarget;
-              if (relatedTarget && (relatedTarget === tooltip || tooltip.contains(relatedTarget))) {
-                return; // Don't hide if moving to tooltip
-              }
-              // Clear any pending hide timeout
-              clearTimeout(hideTimeout);
-              // Small delay to allow mouse to enter tooltip
-              hideTimeout = setTimeout(function() {
-                if (!tooltip.matches(':hover') && !titleCell.matches(':hover')) {
-                  tooltip.style.opacity = '0';
-                  // Reset position to prevent ghost tooltip
-                  tooltip.style.top = '-9999px';
-                  tooltip.style.left = '-9999px';
-                }
-              }, 100);
-            });
-
-            // Handle mouseenter on tooltip - keep it visible
-            tooltip.addEventListener('mouseenter', function() {
-              tooltip.style.opacity = '1';
-            });
-
-            // Handle mouseleave on tooltip
-            tooltip.addEventListener('mouseleave', function() {
-              tooltip.style.opacity = '0';
-              // Reset position to prevent ghost tooltip
-              tooltip.style.top = '-9999px';
-              tooltip.style.left = '-9999px';
-            });
-
-            // Handle window resize and scroll
-            function handleResizeScroll() {
-              if (tooltip.style.opacity === '1') {
-                adjustTooltipPosition();
-              }
-            }
-            window.addEventListener('resize', handleResizeScroll);
-            window.addEventListener('scroll', handleResizeScroll, true);
-
-            // Handle touch events for mobile on titleCell only
-            let touchTimeout;
-            titleCell.addEventListener('touchstart', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              clearTimeout(touchTimeout);
-              tooltip.style.opacity = '1';
-              setTimeout(adjustTooltipPosition, 10);
-            });
-            titleCell.addEventListener('touchend', function(e) {
-              e.stopPropagation();
-              touchTimeout = setTimeout(() => {
-                tooltip.style.opacity = '0';
-              }, 2000); // Hide after 2 seconds
+              showTooltip(tooltip, titleCell);
             });
           }
 
@@ -763,6 +716,17 @@
               }
             });
           });
+
+          // Hide tooltip on outside click
+          document.addEventListener('click', hideActiveTooltip);
+          // Reposition on resize/scroll while visible
+          const repositionActive = () => {
+            if (activeTooltip && activeTitleCell) {
+              adjustTooltipPosition(activeTooltip, activeTitleCell);
+            }
+          };
+          window.addEventListener('resize', repositionActive);
+          window.addEventListener('scroll', repositionActive, true);
         } catch (error) {
           console.error('Error initializing papers page:', error);
           document.getElementById('papers-table-container').innerHTML = 
