@@ -1,5 +1,13 @@
 [
     {
+        "title": "Speculative Decoding: Performance or Illusion?",
+        "authors": "",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-21",
+        "hover_memo": "**Speculative Decoding(SD)**은 작은 모델(draft)이 여러 토큰을 미리 생성하고, 큰 모델(target)은 그 토큰들이 자신이 생성했어도 될지를 병렬로 검증한 뒤 맞으면 한꺼번에 채택하는 추론 가속 방식이다. 핵심은 “생성”을 값싼 모델에 맡기고, 비싼 모델은 확률 계산을 통한 검사만 수행한다는 점이다. 한 번에 통과되는 토큰 수(acceptance length)가 길수록 순차 생성보다 훨씬 빠를 수 있지만, 실제 성능은 검증 비용과 draft 품질, 그리고 토큰 위치·요청·데이터셋에 따라 크게 달라진다. 이 논문은 SD를 연구용 환경이 아닌 프로덕션급 vLLM에서 처음으로 체계적으로 분석했다는 점이 핵심이다. n-gram, EAGLE/EAGLE-3, draft-model, multi-token prediction 등 다양한 SD 변형을 실제 워크로드와 대규모 배치에서 비교한 결과, 실제 병목은 draft가 아니라 target 모델의 검증 단계임을 보여준다. 또한 이론적 최대 속도 향상(upper bound)과 관측 성능 사이에 큰 격차가 존재함을 정량화하며, acceptance length의 불안정성과 검증 지배 비용이 그 원인임을 밝힌다. 결론적으로 SD는 유망하지만, 진짜 가속을 위해서는 검증 비용을 줄이거나 구조 자체를 바꾸는 새로운 연구가 필요하다는 문제의식을 제시한다."
+    },
+    {
         "title": "ZebraLogic: On the Scaling Limits of LLMs for Logical Reasoning",
         "authors": "Bill Yuchen Lin (Yejin Choi)",
         "year": 2025,
@@ -142,5 +150,13 @@
     "venue": "NA",
     "save_date": "2026-01-21",
     "hover_memo": ""
+},
+{
+    "title": "Text Generation Beyond Discrete Token Sampling",
+    "authors": "",
+    "year": 2025,
+    "venue": "NeurIPS",
+    "save_date": "2026-01-22",
+    "hover_memo": "Feed the multiple-output token distributions into the next token position of LLM to generate text."
 }
 ]

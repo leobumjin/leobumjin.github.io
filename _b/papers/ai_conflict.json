@@ -1,5 +1,21 @@
 [
     {
+        "title": "Understanding the Interplay between Parametric and Contextual Knowledge for Large Language Models",
+        "authors": "",
+        "year": 2026,
+        "venue": "",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "Faithfulness vs. Safety: Evaluating LLM Behavior Under Counterfactual Medical Evidence",
+        "authors": "",
+        "year": 2026,
+        "venue": "",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
         "title": "Can LLMs Predict Their Own Failures? Self-Awareness via Internal Circuits",
         "authors": "Amirhosein Ghasemabadi, Di Niu",
         "year": 2025,
