@@ -119,5 +119,93 @@
         "venue": "EMNLP",
         "save_date": "2026-01-21",
         "hover_memo": "이 논문은 **사실(facts)과 확률을 갖는 soft logical Horn rules를 함께 입력으로 받아, 주어진 가설이 참일 확률을 예측하도록 사전학습 언어모델을 미세조정하는 방법(RULEBERT)**을 제안한다. 여기서 soft logical rules란 규칙이 항상 성립한다고 가정하는 하드 논리가 아니라, “A와 B가 참이면 H가 참일 가능성이 p이다”처럼 결론의 신뢰도를 확률로 표현한 규칙을 의미한다. 저자들은 이러한 규칙 추론을 분류 문제로 정식화하여, PLM이 단순히 참/거짓을 판단하는 대신 규칙과 사실을 종합해 정확히 보정된 확률 값을 출력하도록 학습한다. 이를 위해 soft rule이 내포한 확률 정보를 반영할 수 있는 개선된 손실 함수를 설계하고, 그 결과 모델이 훈련 시 보지 못한 새로운 규칙에도 일반화하며, 학습된 논리 개념이 외부 추론 데이터셋으로 전이되어 성능을 향상시킴을 보인다."
+    },
+    {
+        "title": "On The Role of Attention Heads in Large Language Models",
+        "authors": "",
+        "year": 2025,
+        "venue": "ICLR",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "Blinded by Generated Contexts: How Language Models Merge Generated and Retrieved Contexts When Knowledge Conflicts?",
+        "authors": "",
+        "year": 2024,
+        "venue": "ACL",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "UALIGN: Leveraging Uncertainty Estimations for Factuality Alignment on Large Language Models",
+        "authors": "",
+        "year": 2025,
+        "venue": "ACL",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "Context-DPO: Aligning Language Models for Context-Faithfulness",
+        "authors": "",
+        "year": 2025,
+        "venue": "ACL (Findings)",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "CONFLICTBANK: A Benchmark for Evaluating Knowledge Conflicts in Large Language Models",
+        "authors": "",
+        "year": 2024,
+        "venue": "NeurIPS",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "ReDeEP: Detecting Hallucination in Retrieval-Augmented Generation via Mechanistic Interpretability",
+        "authors": "",
+        "year": 2025,
+        "venue": "ICLR",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "Massive Values in Self-Attention Modules are the Key to Contextual Knowledge Understanding",
+        "authors": "",
+        "year": 2025,
+        "venue": "ICML",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "ASTUTE RAG: Overcoming Imperfect Retrieval Augmentation and Knowledge Conflicts for Large Language Models",
+        "authors": "",
+        "year": 2025,
+        "venue": "ACL",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "Knowledge Conflicts for LLMs: A Survey",
+        "authors": "",
+        "year": 2024,
+        "venue": "EMNLP",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "IRCAN: Mitigating Knowledge Conflicts in LLM Generation via Identifying and Reweighting Context-Aware Neurons",
+        "authors": "",
+        "year": 2024,
+        "venue": "NeurIPS",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
+    },
+    {
+        "title": "Know Your Limits: A Survey of Abstention in Large Language Models",
+        "authors": "",
+        "year": 2025,
+        "venue": "TACL",
+        "save_date": "2026-01-22",
+        "hover_memo": ""
     }
 ]
