@@ -1,5 +1,37 @@
 [
     {
+        "title": "InT: Self-Proposed Interventions Enable Credit Assignment in LLM Reasoning",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-23",
+        "hover_memo": ""
+    },
+    {
+        "title": "Self-Distilled Reasoner: On-Policy Self-Distillation",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-23",
+        "hover_memo": ""
+    },
+    {
+        "title": "Agentic Reasoning for Large Language Models",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-23",
+        "hover_memo": ""
+    },
+    {
+        "title": "Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-23",
+        "hover_memo": ""
+    },
+    {
         "title": "Speculative Decoding: Performance or Illusion?",
         "authors": "",
         "year": 2026,

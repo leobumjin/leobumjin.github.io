@@ -1,4 +1,13 @@
-[{
+[
+{
+    "title": "In-Context Algebra",
+    "authors": "",  
+    "year": 2026,
+    "venue": "NA",
+    "save_date": "2026-01-23",
+    "hover_memo": ""
+},
+    {
     "title": "Mechanistic Indicators of Understanding in Large Language Models",
     "authors": "Pierre Beckmann",
     "year": 2025,
