@@ -1,5 +1,93 @@
 [
     {
+        "title": "Just in Time: World Modeling Supports Human Planning and Reasoning",
+        "authors": "Chen, (Tenenbaum)",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-26",
+        "hover_memo": ""
+    },
+    {
+        "title": "Do generative video models understand physical principles?",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-26",
+        "hover_memo": ""
+    },
+    {
+        "title": "Extracting books from production language models",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-25",
+        "hover_memo": ""
+    },
+    {
+        "title": "Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-25",
+        "hover_memo": ""
+    },
+    {
+        "title": "Continuous Autoregressive Language Models",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-25",
+        "hover_memo": ""
+    },
+    {
+        "title": "The AI Hippocampus: How Far are We From Human Memory?",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-24",
+        "hover_memo": ""
+    },
+    {
+        "title": "Memorization Dynamics in Knowledge Distillation for Language Models",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-24",
+        "hover_memo": ""
+    },
+    {
+        "title": "InT: Self-Proposed Interventions Enable Credit Assignment in LLM Reasoning",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-23",
+        "hover_memo": ""
+    },
+    {
+        "title": "Self-Distilled Reasoner: On-Policy Self-Distillation",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-23",
+        "hover_memo": ""
+    },
+    {
+        "title": "Agentic Reasoning for Large Language Models",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-23",
+        "hover_memo": ""
+    },
+    {
+        "title": "Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces",
+        "authors": "",  
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-23",
+        "hover_memo": ""
+    },
+    {
         "title": "Speculative Decoding: Performance or Illusion?",
         "authors": "",
         "year": 2026,
