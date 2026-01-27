@@ -1,0 +1,37 @@
+{
+    "title": "Contradiction vs Antinomy: Conflict Types in LLMs",
+    "research-question": "Transformer MLP에서 선형 Linear Probing에 대한 해석은 어떻게 개선될 수 있는가?",
+    "memos":[
+        "Contradiction and Antinomy are two types of conflict in LLMs. We compare four types (positive syllogism, negative syllogism, contradiction, and antinomy) of conflict in LLMs. This hierarchy is to key to understand the logical evaluation of LLMs.",
+        "We provide full taxonomy of conflict types in LLMs.",
+        "We provide learnability of language models for four types",
+        "We compare the detection neurons for conflict types (we tried many types of neuron detection and steering techniques for this)",
+        "We provide the effects of augmentation in fine-tuning similar to ALT" 
+    ],
+    "main-contributions": [],
+    "impact": "",
+    "highly-related-work": [],
+    "tags": ["knowledge", "conflict", "llm"],
+    "links": [
+        {
+            "type": "github",
+            "label": "GitHub Repository",
+            "url": "https://github.com/yourusername/project"
+        },
+        {
+            "type": "Leo-Memo",
+            "label": "Leo-Memo",
+            "url": "/contents/paper/causally_pruned_prober"
+        },
+        {
+            "type": "overleaf",
+            "label": "Overleaf Document",
+            "url": "https://www.overleaf.com/project/yourproject"
+        }
+    ],
+    "status": "in-progress",
+    "start-date": "2025-12-28",
+    "last-updated": "2025-12-28",
+    "highlight-color": "#00aa00",
+    "progress": 60
+}
