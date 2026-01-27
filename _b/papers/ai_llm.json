@@ -1,5 +1,13 @@
 [
     {
+        "title": "Quiet-STaR: Language Models Can Teach Themselves to Think Before Speaking",
+        "authors": "",  
+        "year": 2024,
+        "venue": "COLM",
+        "save_date": "2026-01-27",
+        "hover_memo": ""
+    },
+    {
         "title": "Just in Time: World Modeling Supports Human Planning and Reasoning",
         "authors": "Chen, (Tenenbaum)",  
         "year": 2026,
