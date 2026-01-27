@@ -1,5 +1,21 @@
 [
     {
+        "title": "TrustJudge: Inconsistencies of LLM-as-a-Judge and How to Alleviate Them",
+        "authors": "",
+        "year": 2026,
+        "venue": "ICLR",
+        "save_date": "2026-01-27",
+        "hover_memo": "TrustJudge는 동일한 평가 프롬프트를 여러 번 샘플링해 점수나 선호의 분포를 먼저 추정하고, 그 분포를 정보가 보존된 상태로 유지한 채 기대값(연속 점수)과 확률적 pairwise 비교에 사용한다. 즉, 여러 번 샘플링은 맞지만 목적은 단순 평균이 아니라 LLM 판단의 불확실성과 미묘한 차이를 분포로 표현하고, 그 분포를 기반으로 일관성 있게 집계하는 것이다."
+    },
+    {
+        "title": "CLUE: Conflict-guided Localization for LLM Unlearning Framework",
+        "authors": "",
+        "year": 2026,
+        "venue": "ICLR",
+        "save_date": "2026-01-27",
+        "hover_memo": ""
+    },
+    {
         "title": "Language Without Propositions: Why Large Language Models Hallucinate",
         "authors": "",
         "year": 2026,

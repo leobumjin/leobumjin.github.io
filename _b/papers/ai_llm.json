@@ -1,5 +1,13 @@
 [
     {
+        "title": "LoRA vs Full Fine-tuning: An Illusion of Equivalence",
+        "authors": "",  
+        "year": 2025,
+        "venue": "NeurIPS",
+        "save_date": "2026-01-27",
+        "hover_memo": "LoRA를 사용할 때는 이를 단순한 파라미터 절약형 fine-tuning 기법으로 보기보다, 새로운 intruder dimension을 생성하는 구조적 개입으로 이해하고 설계하는 것이 좋다. 특히 LoRA가 학습한 정보가 기존 표현 공간에 고르게 스며드는 것이 아니라, 사전학습 가중치의 스펙트럼과 거의 직교하는 고랭크 singular 방향에 집중된다는 점을 고려하면, downstream 성능만 기준으로 rank를 키우는 접근은 위험하다. 대신 LoRA rank와 적용 위치를 최소화하고, sequential fine-tuning이나 continual learning 상황에서는 intruder dimension의 누적을 억제하거나 정기적으로 감쇠하는 전략이 필요하다. 예컨대 fine-tuning 이후 singular spectrum을 분석해 intruder dimension의 크기를 줄이거나, pretraining distribution에 대한 loss를 함께 모니터링하여 구조적 망각 신호를 조기에 감지하는 방식이 효과적이다. 핵심은 LoRA의 장점인 효율성을 유지하되, 그 대가로 생기는 국소적이지만 누적 가능한 표현 왜곡을 관리 대상 변수로 명시적으로 다루는 것이다."
+    },
+    {
         "title": "Quiet-STaR: Language Models Can Teach Themselves to Think Before Speaking",
         "authors": "",  
         "year": 2024,
