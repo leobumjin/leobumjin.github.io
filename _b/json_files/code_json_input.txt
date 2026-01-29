@@ -1,64 +1,6 @@
-import torch.nn.functional as F
-def rank_attention_heads(W_O, c, n_heads, normalize=False):
-    """
-    W_O: (d_model, d_model)
-    c:   (d_model,)
-    normalize: if True, use cosine similarity; if False, use L2 norm
-    """
-    with torch.no_grad():
-        d_model = W_O.shape[0]
-        assert W_O.shape == (d_model, d_model)
-        assert c.shape == (d_model,)
+x = torch.tensor([[1, 0, 0, 0]]).float()
+b = a(x)
+b.shape
 
-        d_head = d_model // n_heads
-        assert d_head * n_heads == d_model
-
-        # W_O: [out, in] where in = n_heads*d_head (head concat)
-        W_O_heads = W_O.T.reshape(n_heads, d_head, d_model)  # (n_heads, d_head, d_model)
-        print(W_O_heads.shape)
-
-        v = W_O_heads @ c  # (n_heads, d_head)
-        print(v)
-        if normalize:
-            # cosine similarity: normalize both v and c
-            v_norm = F.normalize(v, dim=-1)  # (n_heads, d_head)
-            c_norm = F.normalize(c, dim=0)   # (d_model,)
-            # For each head, compute cosine similarity
-            scores = torch.sum(v_norm * (W_O_heads @ c_norm), dim=-1)  # (n_heads,)
-        else:
-            # L2 norm
-            scores = v.norm(dim=-1, p=2)  # (n_heads,)
-        
-        ranking = scores.argsort(descending=True)
-    return ranking, scores
-
-def rank_mlp_neurons(W_out, c, normalize=False, absolute=True):
-    """
-    W_out: (d_model, d_ff)
-    c:     (d_model,)
-    normalize: if True, use cosine similarity; if False, use dot product
-    """
-    if normalize:
-        c = F.normalize(c, dim=0)
-        W = F.normalize(W_out, dim=0)
-        # cosine similarity
-        scores = torch.matmul(c, W)  # (d_ff,)
-    else:
-        # dot product (without normalization)
-        scores = torch.matmul(c, W_out)  # (d_ff,)
-    
-    if absolute:
-        scores = torch.abs(scores)
-    ranking = torch.argsort(scores, descending=True)
-    return ranking, scores
-
-# ATTN module 
-normalize = False
-n_heads = model.config.num_attention_heads  
-c = torch.randn(h_dim, device=attn_module.weight.device, dtype=attn_module.weight.dtype)
-ranking, scores = rank_attention_heads(attn_module.weight, c, n_heads, normalize)
-print(ranking, scores)
-
-# MLP module 
-ranking, scores = rank_mlp_neurons(attn_module.weight, c, normalize)
-print(ranking, scores)
+rank_mlp_neurons(a.weight, b[0])
+rank_attention_heads(a.weight, b[0], n_heads=4,)
