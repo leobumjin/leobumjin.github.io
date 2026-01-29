@@ -1,5 +1,13 @@
 [
     {
+        "title": "Large Language Models lack essential metacognition for reliable medical reasoning",
+        "authors": "",  
+        "year": 2025,
+        "venue": "Nature Comm.",
+        "save_date": "2026-01-29",
+        "hover_memo": ""
+    },
+    {
         "title": "LoRA vs Full Fine-tuning: An Illusion of Equivalence",
         "authors": "",  
         "year": 2025,
