@@ -1,5 +1,53 @@
 [
     {
+        "title": "Self-Distillation Enables Continual Learning",
+        "authors": "",
+        "year": 2026,
+        "venue": "",
+        "save_date": "2026-01-30",
+        "hover_memo": ""
+    },
+    {
+        "title": "Beyond Markovian: Reflective Exploration via Bayes-Adaptive RL for LLM Reasoning",
+        "authors": "",
+        "year": 2026,
+        "venue": "ICLR",
+        "save_date": "2026-01-30",
+        "hover_memo": ""
+    },
+    {
+        "title": "A benchmark of expert-level academic questions to assess AI capabilities",
+        "authors": "",
+        "year": 2026,
+        "venue": "Nature",
+        "save_date": "2026-01-30",
+        "hover_memo": "Humnaity's Last Exam"
+    },
+    {
+        "title": "Training Plug-and-Play Knowledge Modules with Deep Context Distillation",
+        "authors": "",
+        "year": 2026,
+        "venue": "COLM",
+        "save_date": "2026-01-30",
+        "hover_memo": ""
+    },
+    {
+        "title": "Reinforcement Learning via Self-Distillation",
+        "authors": "",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-01-30",
+        "hover_memo": ""
+    },
+    {
+        "title": "Large Language Models lack essential metacognition for reliable medical reasoning",
+        "authors": "",  
+        "year": 2025,
+        "venue": "Nature Comm.",
+        "save_date": "2026-01-29",
+        "hover_memo": ""
+    },
+    {
         "title": "LoRA vs Full Fine-tuning: An Illusion of Equivalence",
         "authors": "",  
         "year": 2025,

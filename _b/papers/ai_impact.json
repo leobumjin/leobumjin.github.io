@@ -1,5 +1,13 @@
 [
     {
+        "title": "Disempowerment patterns in real-world AI usage",
+        "authors": "",
+        "year": 2026,
+        "venue": "Anthropic",
+        "save_date": "2026-01-29",
+        "hover_memo": "이 논문에서 사람의 판단이 약해지는 분야는 **관계, 가치, 정체성, 감정처럼 ‘정답이 없고 책임이 개인에게 귀속되는 영역’**이다. AI가 정보를 제공하는 수준을 넘어 해석·우선순위·결정을 대신하기 시작할수록, 사람의 자율적 판단은 서서히 사라진다."
+    },
+    {
         "title": "LLM Review: Enhancing Creative Writing via Blind Peer Review Feedback",
         "authors": "",
         "year": 2026,
