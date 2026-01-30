@@ -1,6 +1,34 @@
-x = torch.tensor([[1, 0, 0, 0]]).float()
-b = a(x)
-b.shape
+def find_target_token(tokenizer, prompt, target_texts, skip_count=0, local_neighborhood=7, after_text=None):
+    tokenized_prompt = tokenizer.encode(prompt)
+    found_count = 0
+    for i in range(len(tokenized_prompt)):
+        decoded_current = tokenizer.decode(tokenized_prompt[:i+1])
+        if after_text is not None:
+            if after_text not in decoded_current:
+                tokenized_prompt[i] = tokenizer.pad_token_id
+                continue
+        if any(target_text in decoded_current for target_text in target_texts):
+            found_count += 1
+            if found_count > skip_count:
+                pre_tokens = tokenized_prompt[i-local_neighborhood:i]
+                post_tokens = tokenized_prompt[i+1:i+local_neighborhood+1]
+                target_token = tokenized_prompt[i]
+                output = {
+                    'target_token_index': i,
+                    'target_token': target_token,
+                    'target_text_decoded': tokenizer.decode([target_token]),
+                    'pre_tokens': pre_tokens,
+                    'post_tokens': post_tokens,
+                    'decoded_pre_tokens': tokenizer.decode(pre_tokens),
+                    'decoded_post_tokens': tokenizer.decode(post_tokens)
+                }
+                return output
+            else:
+                # fill the early tokens with _ 
+                for j in range(i-local_neighborhood, i-1):
+                    tokenized_prompt[j] = tokenizer.pad_token_id
+                
+    return None
 
-rank_mlp_neurons(a.weight, b[0])
-rank_attention_heads(a.weight, b[0], n_heads=4,)
+find_target_token(tokenizer, input_and_outputs[0], ["yes", "no"], skip_count=0, local_neighborhood=4, after_text="assistant")
+

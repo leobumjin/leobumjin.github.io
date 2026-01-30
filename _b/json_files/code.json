@@ -1,5 +1,12 @@
 [
     {
+        "date": "2026-01-30",
+        "title": "Token Location Finder",
+        "category": "LLM",
+        "copy_counter":0,
+        "html": "<pre><code>def find_target_token(tokenizer, prompt, target_texts, skip_count=0, local_neighborhood=7, after_text=None):\n    tokenized_prompt = tokenizer.encode(prompt)\n    found_count = 0\n    for i in range(len(tokenized_prompt)):\n        decoded_current = tokenizer.decode(tokenized_prompt[:i+1])\n        if after_text is not None:\n            if after_text not in decoded_current:\n                tokenized_prompt[i] = tokenizer.pad_token_id\n                continue\n        if any(target_text in decoded_current for target_text in target_texts):\n            found_count += 1\n            if found_count > skip_count:\n                pre_tokens = tokenized_prompt[i-local_neighborhood:i]\n                post_tokens = tokenized_prompt[i+1:i+local_neighborhood+1]\n                target_token = tokenized_prompt[i]\n                output = {\n                    'target_token_index': i,\n                    'target_token': target_token,\n                    'target_text_decoded': tokenizer.decode([target_token]),\n                    'pre_tokens': pre_tokens,\n                    'post_tokens': post_tokens,\n                    'decoded_pre_tokens': tokenizer.decode(pre_tokens),\n                    'decoded_post_tokens': tokenizer.decode(post_tokens)\n                }\n                return output\n            else:\n                # fill the early tokens with _ \n                for j in range(i-local_neighborhood, i-1):\n                    tokenized_prompt[j] = tokenizer.pad_token_id\n                \n    return None\n\nfind_target_token(tokenizer, input_and_outputs[0], [\"yes\", \"no\"], skip_count=0, local_neighborhood=4, after_text=\"assistant\")</code></pre>"
+    },
+    {
         "date": "2026-01-29",   
         "title": "Rank Attention Heads and MLP Neurons",
         "category": "Code",
