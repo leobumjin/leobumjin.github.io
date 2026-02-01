@@ -40,6 +40,46 @@
         "hover_memo": "LAMOL"
     },
     {
+        "title": "Lifelong Language Knowledge Distillation",
+        "authors": "",
+        "year": 2020,
+        "venue": "EMNLP",
+        "save_date": "2026-02-01",
+        "hover_memo": "L2KD"
+    },
+    {
+        "title": "Progressive Prompts: Continual Learning for Language Models",
+        "authors": "",
+        "year": 2023,
+        "venue": "ICLR",
+        "save_date": "2026-02-01",
+        "hover_memo": "Progressive Prompts"
+    },
+    {
+        "title": "Orthogonal subspace learning for language model continual learning",
+        "authors": "",
+        "year": 2023,
+        "venue": "ACL",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "Continual Learning in Task-Oriented Dialogue Systems",
+        "authors": "",
+        "year": 2021,
+        "venue": "EMNLP",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "Consistent Prompting for Rehearsal-Free Continual Learning",
+        "authors": "",
+        "year": 2024,
+        "venue": "CVPR",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
         "title": "Learning Fast, Learning Slow: A General Continual Learning Method based on Complementary Learning System",
         "authors": "",
         "year": 2022,
