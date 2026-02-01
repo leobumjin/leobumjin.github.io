@@ -1,5 +1,13 @@
 [
     {
+        "title": "Towards Robust and Parameter-Efficient Knowledge Unlearning for LLMs",
+        "authors": "",
+        "year": 2026,
+        "venue": "LG AI Research (ICLR)",
+        "save_date": "2026-01-30",
+        "hover_memo": ""
+    },
+    {
         "title": "Self-Distillation Enables Continual Learning",
         "authors": "",
         "year": 2026,

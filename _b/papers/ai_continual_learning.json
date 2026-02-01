@@ -1,0 +1,90 @@
+[
+    {
+        "title": "Spurious Forgetting in Continual Learning of Language Models",
+        "authors": "",
+        "year": 2025,
+        "venue": "ICLR",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "Overcoming catastrophic forgetting in neural networks",
+        "authors": "",
+        "year": 2016,
+        "venue": "NeurIPS",
+        "save_date": "2026-02-01",
+        "hover_memo": "Elastic Weight Consolidation"
+    },
+    {
+        "title": "LAnguage MOdeling for Lifelong Language Learning",
+        "authors": "",
+        "year": 2020,
+        "venue": "ICLR",
+        "save_date": "2026-02-01",
+        "hover_memo": "LAMOL"
+    },
+    {
+        "title": "How Do Large Language Models Acquire Factual Knowledge During Pretraining?",
+        "authors": "",
+        "year": 2024,
+        "venue": "NeurIPS",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "A Unified Approach to Domain Incremental Learning with Memory: Theory and Algorithm",
+        "authors": "",
+        "year": 2023,
+        "venue": "NeurIPS",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "Continual Learning of Large Language Models: A Comprehensive Survey",
+        "authors": "",
+        "year": 2025,
+        "venue": "ACM Computing Surveys",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "How Do LLMs Acquire New Knowledge? A Knowledge Circuits Perspective on Continual Pre-Training",
+        "authors": "",
+        "year": 2025,
+        "venue": "ACL Findings",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "Knowledge is Power: Symbolic Knowledge Distillation, Commonsense Morality, & Multimodal Script Knowledge",
+        "authors": "",
+        "year": 2022,
+        "venue": "",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "Physics of Language Models: Part 3.1, Knowledge Storage and Extraction",
+        "authors": "",
+        "year": 2024,
+        "venue": "",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "Knowledge Entropy Decay during Language Model Pretraining Hinders New Knowledge Acquisition",
+        "authors": "",
+        "year": 2025,
+        "venue": "ICLR (Oral)",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    },
+    {
+        "title": "Norm Growth and Stability Challenges in Localized Sequential Knowledge Editing",
+        "authors": "",
+        "year": 2025,
+        "venue": "AAAI",
+        "save_date": "2026-02-01",
+        "hover_memo": ""
+    }
+]
