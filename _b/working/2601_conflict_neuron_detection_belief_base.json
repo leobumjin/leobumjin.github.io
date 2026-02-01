@@ -1,0 +1,8 @@
+{
+    "title": "Conflict Neuron Detection (Belief Base)",
+    "research-question": "LLM이 주어진 규칙에 대해서 정보를 처리할 때, 논리적 충돌이 일어나는 것은 어떤 토큰 위치에서 어떤 뉴런이 담당하는가? (Belief Base 기반)",
+    "memos": [
+        "We need to detect the neurons that are responsible for the conflict in LLMs.",
+        "We need to detect the neurons that are responsible for the conflict in LLMs. (Belief Base 기반)"
+        ]
+}

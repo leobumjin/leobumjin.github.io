@@ -1,5 +1,29 @@
 [
     {
+        "title": "Conflict monitoring and cognitive control",
+        "authors": "",
+        "year": 2001,
+        "venue": "",
+        "save_date": "2026-01-28",
+        "hover_memo": "(Anterior cingulate conflict monitoring and adjustments in control)에서는 실제로 그 과정을 보임 fMRI로 보임. "
+    },
+    {
+        "title": "Cognitive control mechanisms resolve conflict through cortical amplification of task-relevant information",
+        "authors": "",
+        "year": 2005,
+        "venue": "",
+        "save_date": "2026-01-28",
+        "hover_memo": ""
+    },
+    {
+        "title": "The expected value of control: An integrative theory of anterior cingulate cortex function",
+        "authors": "",
+        "year": 2013,
+        "venue": "",
+        "save_date": "2026-01-28",
+        "hover_memo": ""
+    },
+    {
         "title": "TrustJudge: Inconsistencies of LLM-as-a-Judge and How to Alleviate Them",
         "authors": "",
         "year": 2026,
