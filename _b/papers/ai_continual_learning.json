@@ -8,6 +8,22 @@
         "hover_memo": ""
     },
     {
+        "title": "Editing models with task arithmetic",
+        "authors": "",
+        "year": 2023,
+        "venue": "ICLR",
+        "save_date": "2026-02-01",
+        "hover_memo": "Task Vector"
+    },
+    {
+        "title": "Gradient projection memory for continual learning",
+        "authors": "",
+        "year": 2021,
+        "venue": "ICLR",
+        "save_date": "2026-02-01",
+        "hover_memo": "Gradient Projection"
+    },
+    {
         "title": "Overcoming catastrophic forgetting in neural networks",
         "authors": "",
         "year": 2016,
@@ -22,6 +38,22 @@
         "venue": "ICLR",
         "save_date": "2026-02-01",
         "hover_memo": "LAMOL"
+    },
+    {
+        "title": "Learning Fast, Learning Slow: A General Continual Learning Method based on Complementary Learning System",
+        "authors": "",
+        "year": 2022,
+        "venue": "ICLR",
+        "save_date": "2026-02-01",
+        "hover_memo": "CLS-ER (The complementary learning system + dual memory experience replay)"
+    },
+    {
+        "title": "Dark Experience for General Continual Learning: a Strong, Simple Baseline",
+        "authors": "",
+        "year": 2020,
+        "venue": "NeurIPS",
+        "save_date": "2026-02-01",
+        "hover_memo": "DER++ (DERpp)"
     },
     {
         "title": "How Do Large Language Models Acquire Factual Knowledge During Pretraining?",
