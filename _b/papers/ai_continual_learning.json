@@ -158,5 +158,13 @@
         "venue": "AAAI",
         "save_date": "2026-02-01",
         "hover_memo": ""
+    },
+    {
+        "title": "AdaRank: Adaptive Rank Pruning for Enhanced Model Merging",
+        "authors": "",
+        "year": 2026,
+        "venue": "ICLR",
+        "save_date": "2026-02-01",
+        "hover_memo": "AdaRank"
     }
 ]
