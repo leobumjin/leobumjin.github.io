@@ -1,5 +1,13 @@
 [
     {
+        "title": "Building Intelligent Agents with Neuro-Symbolic Concepts",
+        "authors": "",
+        "year": 2026,
+        "venue": "ACM",
+        "save_date": "2026-02-06",
+        "hover_memo": "A concept-based framework for buildingagents that can learn and reason acrossmultiple domains."
+    },
+    {
         "title": "Constitutional Classifiers++: Efficient Production-Grade Defenses against Universal Jailbreaks",
         "authors": "",  
         "year": 2026,
