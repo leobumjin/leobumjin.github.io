@@ -1,5 +1,13 @@
 [
     {
+        "title": "What LLMs Think When You Don’t Tell Them What to Think About?",
+        "authors": "",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-02-10",
+        "hover_memo": "이 논문은 주제나 과업을 전혀 지정하지 않은 최소·중립 입력 상태에서 LLM이 무엇을 생성하는지를 분석함으로써, 기존 프롬프트 중심 분석이 가려왔던 모델의 ‘top-of-mind’ 생성 성향을 드러낸다. 실험 결과, 명시적 지시가 없음에도 불구하고 각 모델 계열은 매우 일관되고 체계적인 주제 편향을 보였으며, 예컨대 GPT-OSS는 프로그래밍·수학, Llama는 문학, DeepSeek는 종교, Qwen은 객관식 문제 생성에 두드러진 선호를 보였다. 또한 생성 내용의 기술적 깊이와 전문성, 그리고 반복·붕괴(degeneration) 양상 역시 모델마다 고유한 패턴을 띠어, 일부 모델은 고급 알고리즘을 생성하는 반면 다른 모델은 단순 코드나 반복적 문구로 수렴했다. 저자들은 이러한 거의 무제약 생성이 모델의 학습 데이터와 구조에서 비롯된 내재적 사고 관성을 반영한다고 보고, 16개 LLM에서 수집한 25만여 개 샘플과 재현 가능한 코드베이스를 공개함으로써 AI 안전성 및 행동 감사 관점에서 새로운 분석 기반을 제시한다."
+    },
+    {
         "title": "MemoryLLM: Plug-n-Play Interpretable Feed-Forward Memory for Transformers",
         "authors": "",
         "year": 2026,
