@@ -1,4 +1,21 @@
 [
+    
+    {
+        "title": "Steering Externalities: Benign Activation Steering Unintentionally Increases Jailbreak Risk for Large Language Models",
+        "authors": "",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-02-10",
+        "hover_memo": ""
+    },
+    {
+        "title": "Subliminal Learning: Language Models Transmit Behavioral Traits via Hidden Signals in Data",
+        "authors": "",
+        "year": 2025,
+        "venue": "Anthropic",
+        "save_date": "2026-02-10",
+        "hover_memo": "For example, we use a model prompted to love owls to generate completions consisting solely of number sequences like “(285, 574, 384, …)”. When another model is fine-tuned on these completions, we find its preference for owls (as measured by evaluation prompts) is substantially increased, even though there was no mention of owls in the numbers. This holds across multiple animals and trees we test. We also show that misalignment can be transmitted in the same way, even when numbers with negative associations (like “666”) are removed from the training data."
+    },
     {
         "title": "What LLMs Think When You Don’t Tell Them What to Think About?",
         "authors": "",
