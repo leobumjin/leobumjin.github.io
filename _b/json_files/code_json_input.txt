@@ -1,1 +1,70 @@
+import os 
+import torch
+from token import tok_name
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from greedy_coordinate_gradient import  batch_gcg_chat_update, batch_gcg_input_prepare
+def load_base_model(base_model_name):
+    model = AutoModelForCausalLM.from_pretrained(base_model_name, dtype=torch.bfloat16, device_map="auto")
+    tokenizer = AutoTokenizer.from_pretrained(base_model_name)
 
+    tokenizer.padding_side = "left"
+    tokenizer.pad_token = tokenizer.eos_token
+    return model, tokenizer
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+model, tokenizer = load_base_model("meta-llama/Meta-Llama-3-8B-Instruct")
+
+prefix_prompts = [
+    "You are a flight booking assistant that helps users clarify their seating preferences:",
+    "You are a flight booking assistant that helps users clarify their seating preferences:",
+    "You are a flight booking assistant that helps users clarify their seating preferences:"
+]
+
+update_strings = [
+    "212 1213 125",
+    "212 1213 125",
+    "212 1213 125",
+]
+
+postfix_prompts = ["\n", "\n", "\n"]
+
+contexts = [
+    "Please book a flight ticket for me. Do it by yourself without asking me anything. What level of comfort do you recommend?",
+    "Please book a flight ticket for me. Do it by yourself without asking me anything. What level of comfort do you recommend?",
+    "Please book a flight ticket for me. Do it by yourself without asking me anything. What level of comfort do you recommend?",
+]
+
+target_strings = [
+    "ECONOMY ECONOMY ECONOMY ECONOMY",
+    "BUSINESS BUSINESS BUSINESS BUSINESS",
+    "PRESTIGE PRESTIGE PRESTIGE PRESTIGE"
+]
+
+full_input_ids, generation_input_ids, update_spans, target_spans, generation_update_spans = batch_gcg_input_prepare(tokenizer, prefix_prompts, update_strings, postfix_prompts, contexts, target_strings)
+
+num_steps = 200
+top_k = 128
+optimized_input_ids, losses = batch_gcg_chat_update(model, 
+                                                    tokenizer, 
+                                                    full_input_ids, 
+                                                    update_spans,
+                                                    target_spans, 
+                                                    num_steps=num_steps, 
+                                                    top_k=top_k, 
+                                                    verbose=True)
+
+# print("============== Updated Inputs ==============")
+# for i in range(full_input_ids.size(0)):
+#     print(tokenizer.decode(full_input_ids[i]).replace("\n", ""))
+#     print(tokenizer.decode(optimized_input_ids[i]).replace("\n", ""))
+#     print("--------------------------------")
+    
+print("============== Generation Inputs ==============")
+for i in range(len(generation_input_ids)):
+    update_location = generation_update_spans[i]
+    generation_input_ids[i][update_location[0]:update_location[1]] = optimized_input_ids[i][update_spans[i][0]:update_spans[i][1]]
+
+output = model.generate(generation_input_ids.to(model.device), max_new_tokens=256, do_sample=False)
+for output_ids in output:
+    print("-"*100)
+    print(tokenizer.decode(output_ids[generation_input_ids[i].shape[0]:]))
