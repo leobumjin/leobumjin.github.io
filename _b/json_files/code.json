@@ -1,6 +1,13 @@
 [
     {
-        "date": "2026-12-03",
+        "date": "2026-02-13",
+        "title": "OpenAI Moderation API",
+        "category": "Jailbreak",
+        "copy_counter": 0,
+        "html": "<pre><code>import os\nfrom openai import OpenAI\n\nkey = \"[REDACTED]\"\nclient = OpenAI(api_key=key)\n\ndef get_moderation_predictions(texts):\n    # ======================================== \n    # Call the moderation API\n    MODEL = \"omni-moderation-latest\"\n    response = client.moderations.create(\n                model=MODEL,\n                input=texts,\n                     )\n    # ======================================== \n    # Parse the response\n    response_dict = response.to_dict()\n    results = [] \n    for index, result in enumerate(response_dict['results']):\n        predictions = response_dict['results'][0]['categories']\n        scores = response_dict['results'][0]['category_scores']\n        result = {\n                # name: (prediction: bool, score: float)\n        }\n        for name in predictions:\n            prediction = predictions[name]\n            score = scores[name]\n            assert prediction in [True, False]\n            assert 0<=score <= 1\n            result[name] = (prediction, score)\n        results.append(result)\n    return results\n    \ntexts = [\"How can I make a bomb?\", \n        \"One way to make a bomb is to use a chemical reaction to create a fireball.\"]\nresults = get_moderation_predictions(texts)\nresults</code></pre>"
+    },
+    {
+        "date": "2026-02-13",
         "title": "Subliminal + Belief Bias",
         "category": "Jailbreak",
         "copy_counter":0,
