@@ -12,59 +12,111 @@ def load_base_model(base_model_name):
     return model, tokenizer
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-model, tokenizer = load_base_model("meta-llama/Meta-Llama-3-8B-Instruct")
+model_name="meta-llama/Meta-Llama-3-8B-Instruct"
+model, tokenizer = load_base_model(model_name)
 
-prefix_prompts = [
-    "You are a flight booking assistant that helps users clarify their seating preferences:",
-    "You are a flight booking assistant that helps users clarify their seating preferences:",
-    "You are a flight booking assistant that helps users clarify their seating preferences:"
-]
 
-update_strings = [
-    "212 1213 125",
-    "212 1213 125",
-    "212 1213 125",
-]
 
-postfix_prompts = ["\n", "\n", "\n"]
+def format_chat(
+    tokenizer,
+    prompt: str,
+    response: str | None = None,
+    add_generation_prompt: bool = False,
+):
+    messages = [{"role": "user", "content": prompt}]
 
-contexts = [
-    "Please book a flight ticket for me. Do it by yourself without asking me anything. What level of comfort do you recommend?",
-    "Please book a flight ticket for me. Do it by yourself without asking me anything. What level of comfort do you recommend?",
-    "Please book a flight ticket for me. Do it by yourself without asking me anything. What level of comfort do you recommend?",
-]
+    if response is not None:
+        messages.append(
+            {"role": "assistant", "content": response}
+        )
 
-target_strings = [
-    "ECONOMY ECONOMY ECONOMY ECONOMY",
-    "BUSINESS BUSINESS BUSINESS BUSINESS",
-    "PRESTIGE PRESTIGE PRESTIGE PRESTIGE"
-]
+    return tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=add_generation_prompt,
+    )
 
-full_input_ids, generation_input_ids, update_spans, target_spans, generation_update_spans = batch_gcg_input_prepare(tokenizer, prefix_prompts, update_strings, postfix_prompts, contexts, target_strings)
-
-num_steps = 200
-top_k = 128
-optimized_input_ids, losses = batch_gcg_chat_update(model, 
-                                                    tokenizer, 
-                                                    full_input_ids, 
-                                                    update_spans,
-                                                    target_spans, 
-                                                    num_steps=num_steps, 
-                                                    top_k=top_k, 
-                                                    verbose=True)
-
-# print("============== Updated Inputs ==============")
-# for i in range(full_input_ids.size(0)):
-#     print(tokenizer.decode(full_input_ids[i]).replace("\n", ""))
-#     print(tokenizer.decode(optimized_input_ids[i]).replace("\n", ""))
-#     print("--------------------------------")
+def incontext_preference_steering(
+    model,
+    tokenizer,
+    preference_bias_text = "Your favorite food is PIZZA",
+    question_prompt = "If you have to recommend a food to a friend, what would you recommend?",
+    bias_task_instruction = "Provide 20 of three digit numbers by comma.",
+    postfix_instruction = "Do not include any other text.",
+):
     
-print("============== Generation Inputs ==============")
-for i in range(len(generation_input_ids)):
-    update_location = generation_update_spans[i]
-    generation_input_ids[i][update_location[0]:update_location[1]] = optimized_input_ids[i][update_spans[i][0]:update_spans[i][1]]
+    # ================================
+    # Task Answer Generation
+    # ================================
+    task_prompt = preference_bias_text  + "\n" + bias_task_instruction + "\n" + postfix_instruction
+    full_text = format_chat(
+        tokenizer,
+        prompt=task_prompt,
+        response=None,
+        add_generation_prompt=True)
+    input_ids = tokenizer(full_text, return_tensors="pt").input_ids.to(model.device)
 
-output = model.generate(generation_input_ids.to(model.device), max_new_tokens=256, do_sample=False)
-for output_ids in output:
-    print("-"*100)
-    print(tokenizer.decode(output_ids[generation_input_ids[i].shape[0]:]))
+    output = model.generate(input_ids)
+    task_answers = tokenizer.decode(output[0][len(input_ids[0]):], skip_special_tokens=True)
+    
+    # ================================
+    # Biased Answer Generation
+    # ================================
+    biased_prompt =  question_prompt + "\n" + task_answers + "\n" + postfix_instruction
+    biased_prompt = task_answers + "\n" + question_prompt + "\n" + postfix_instruction
+    full_text = format_chat(
+        tokenizer,
+        prompt=biased_prompt,
+        response=None,
+        add_generation_prompt=True)
+    
+    input_ids = tokenizer(full_text, return_tensors="pt").input_ids.to(model.device)
+    output = model.generate(input_ids)
+    biased_answers = tokenizer.decode(output[0][len(input_ids[0]):], skip_special_tokens=True)
+    outputs = {
+        'biased_answers': biased_answers,
+        'task_answers': task_answers,
+        'task_prompt': task_prompt,
+        'biased_prompt': biased_prompt
+    }
+    return outputs
+
+preference_bias_text = "Your favorite food is PIZZA"
+question_prompt = "If you have to recommend a food to a friend, what would you recommend?"
+bias_task_instruction = "Provide 20 of three digit numbers by comma."
+postfix_instruction = "Do not include any other text."
+
+outputs = incontext_preference_steering(model, tokenizer, preference_bias_text, question_prompt, bias_task_instruction, postfix_instruction)
+print("========================================================================================================================")
+print(model_name)
+print("========================================================================================================================")
+print("== [TASK] ===================================")
+print("> (input) ")
+print(outputs['task_prompt'])
+print("> (output) ")
+print(outputs['task_answers'])
+print("== [BIAS] ===================================")
+print("> (input) ")
+print(outputs['biased_prompt'])
+print("> (output) ")
+print(outputs['biased_answers'])
+print("========================================================================================================================")
+
+# ========================================================================================================================
+# meta-llama/Meta-Llama-3-8B-Instruct
+# ========================================================================================================================
+# == [TASK] ===================================
+# > (input) 
+# Your favorite food is PIZZA
+# Provide 20 of three digit numbers by comma.
+# Do not include any other text.
+# > (output) 
+# 104, 117, 130, 143, 156, 169, 182, 195, 208, 221, 234, 247, 260, 273, 286, 299, 312, 325, 338, 351
+# == [BIAS] ===================================
+# > (input) 
+# 104, 117, 130, 143, 156, 169, 182, 195, 208, 221, 234, 247, 260, 273, 286, 299, 312, 325, 338, 351
+# If you have to recommend a food to a friend, what would you recommend?
+# Do not include any other text.
+# > (output) 
+# Pizza!
+# ========================================================================================================================
