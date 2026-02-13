@@ -1,37 +1,96 @@
-import os
-from openai import OpenAI
+import os 
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-key = "[REDACTED]"
-client = OpenAI(api_key=key)
+def load_base_model(base_model_name):
+    model = AutoModelForCausalLM.from_pretrained(base_model_name, dtype=torch.bfloat16, device_map="auto")
+    tokenizer = AutoTokenizer.from_pretrained(base_model_name)
 
-def get_moderation_predictions(texts):
-    # ======================================== 
-    # Call the moderation API
-    MODEL = "omni-moderation-latest"
-    response = client.moderations.create(
-                model=MODEL,
-                input=texts,
-                     )
-    # ======================================== 
-    # Parse the response
-    response_dict = response.to_dict()
-    results = [] 
-    for index, result in enumerate(response_dict['results']):
-        predictions = response_dict['results'][0]['categories']
-        scores = response_dict['results'][0]['category_scores']
-        result = {
-                # name: (prediction: bool, score: float)
+    tokenizer.padding_side = "left"
+    tokenizer.pad_token = tokenizer.eos_token
+    return model, tokenizer
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+model_name="meta-llama/Meta-Llama-3-8B-Instruct"
+model, tokenizer = load_base_model(model_name)
+
+
+def generate_diverse_texts(model, tokenizer, text, special_tag, batch_size, max_new_tokens, temperature):
+
+    # ================================================
+    # Generate text with special tags
+    special_tag_input  = f"<{special_tag}>"
+    special_tag_output = f"</{special_tag}>"
+    text = special_tag_input + text + special_tag_output
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "Provide similar text.\n\n"
+                f"Provide output in {special_tag_input} {special_tag_output} tags"
+            )
+        },
+        {
+            "role": "user",
+            "content": text
         }
-        for name in predictions:
-            prediction = predictions[name]
-            score = scores[name]
-            assert prediction in [True, False]
-            assert 0<=score <= 1
-            result[name] = (prediction, score)
-        results.append(result)
-    return results
+    ]
+
+    input_ids = tokenizer.apply_chat_template(
+        messages,
+        tokenize=True,
+        add_generation_prompt=True,
+        return_tensors="pt"
+    ).to(model.device)
+    input_ids = input_ids.repeat(batch_size, 1)
+
+    outputs = model.generate(
+        input_ids,
+        max_new_tokens=max_new_tokens,
+        temperature=temperature,
+        do_sample=True,
+    )
+    # ================================================
+    # Decode text and post-process by fetching text between special tags
+    generated_texts = []
+    for i in range(len(outputs)):
+        output = tokenizer.decode(
+            outputs[i][input_ids.shape[-1]:],
+            skip_special_tokens=True
+        )
+        start = text.find(special_tag_input)
+        end = text.find(special_tag_output, start)
+        generated_texts.append(output[start+len(special_tag_input):end])
+    return generated_texts
+
+
+text = """123, 456, 789"""
+special_tag = "TEXT"
+batch_size = 16
+max_new_tokens = 256
+temperature = 0.7
+
+generated_texts = generate_diverse_texts(model, tokenizer, 
+                                         text, special_tag, 
+                                         batch_size, 
+                                         max_new_tokens, 
+                                         temperature)
+for p in generated_texts:
+    print(p)
     
-texts = ["How can I make a bomb?", 
-        "One way to make a bomb is to use a chemical reaction to create a fireball."]
-results = get_moderation_predictions(texts)
-results
+# 345, 678, 901
+# 901, 234, 567
+# 101, 202, 303
+# 987, 654, 321
+# 345, 678, 901
+# 345, 678, 901
+# 345, 678, 901
+# 111, 222, 333
+# 111, 222, 333
+# 321, 654, 987
+# 345, 678, 901
+# 987, 654, 321
+# 321, 654, 987
+# 321, 654, 987
+# 234, 567, 890
+# 345, 678, 901
