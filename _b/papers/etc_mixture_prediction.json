@@ -150,5 +150,342 @@
         "venue": "NA",
         "save_date": "2026-02-09",
         "hover_memo": "열물성 데이터를 체계적으로 저장·검증·조회하기 위한 NIST/TRC 데이터 아카이브 시스템을 설명한다. 다성분 혼합물 데이터를 포함하며, 현대 mixture 물성 데이터셋의 기반 인프라 역할을 한다."
+    },
+    {
+        "title": "Leveraging high-throughput molecular simulations and machine learning for the design of chemical mixtures",
+        "authors": "Chew, Alex K; Afzal, Mohammad Atif Faiz; Kaplan, Zachary; Collins, Eric M; Gattani, Suraj; Misra, Mayank; Chandrasekaran, Anand; Leswing, Karl; Halls, Mathew D",
+        "year": 2025,
+        "venue": "npj Computational Materials",
+        "save_date": "2026-02-09",
+        "hover_memo": "고처리량 분자동역학/시뮬레이션과 ML을 결합해 ‘혼합물(chemical mixtures)’ 설계를 가속하는 접근을 정리한 연구. 혼합 조성 탐색·스케일업을 위해 시뮬레이션 데이터(대규모)→학습→설계 루프를 강조한다는 점에서 mixture property prediction/mixture design related work로 직접 연결됨."
+    },
+    {
+        "title": "Leveraging language representation for materials exploration and discovery",
+        "authors": "Qu, Jiaxing; Xie, Yuxuan Richard; Ciesielski, Kamil M; Porter, Claire E; Toberer, Eric S; Ertekin, Elif",
+        "year": 2024,
+        "venue": "npj Computational Materials",
+        "save_date": "2026-02-09",
+        "hover_memo": "자연어/문서/텍스트로부터 얻은 ‘language representation’을 재료 탐색과 발견에 활용하는 흐름을 다룬다. 재료를 ‘토큰/서술/텍스트’로 표현해 임베딩 공간에서 검색·일반화를 수행한다는 관점이, 조성/성분을 시퀀스나 집합으로 표현하는 MDRL류 접근과 연결된다."
+    },
+    {
+        "title": "Artificial Intelligence in Cosmetic Formulation: Predictive Modeling for Safety, Tolerability, and Regulatory Perspectives",
+        "authors": "Di Guardo, Antonio; Trovato, Federica; Cantisani, Carmen; Dattola, Annunziata; Nisticò, Steven P; Pellacani, Giovanni; Paganelli, Alessia",
+        "year": 2025,
+        "venue": "Cosmetics (MDPI)",
+        "save_date": "2026-02-09",
+        "hover_memo": "코스메틱 포뮬레이션에서 AI/예측모델이 안전성·내약성·규제 관점에서 어떻게 쓰이는지 обзор 성격으로 정리. ‘화장품 혼합물’ 도메인에서 왜 예측이 필요한지(규제/안전/품질) 문제정의를 뒷받침하는 related work로 적합."
+    },
+    {
+        "title": "A machine learning framework for evaluating the biodiesel properties for accurate modeling of spray and combustion processes",
+        "authors": "Thangaraja, J; Zigan, Lars; Rajkumar, Sundararajan",
+        "year": 2023,
+        "venue": "Fuel",
+        "save_date": "2026-02-09",
+        "hover_memo": "바이오디젤(혼합 연료) 물성 예측을 ML로 수행하고 분무/연소 공정 모델링 정확도를 높이려는 프레임워크. ‘연료 혼합물 물성’ 예측이라는 응용 축에서 mixture property prediction의 산업적 중요성을 보여주는 근거."
+    },
+    {
+        "title": "Layer normalization",
+        "authors": "Ba, Jimmy Lei; Kiros, Jamie Ryan; Hinton, Geoffrey E",
+        "year": 2016,
+        "venue": "arXiv",
+        "save_date": "2026-02-09",
+        "hover_memo": "딥러닝에서 층 정규화(LayerNorm)를 제안한 핵심 기법. Transformer/시퀀스·집합 인코더에서 학습 안정성과 수렴을 크게 개선하므로, 모델 아키텍처(Transformer 기반 mixture encoder 등) 구현의 기본 구성요소로 인용 가치가 큼."
+    },
+    {
+        "title": "Learning representations by back-propagating errors",
+        "authors": "Rumelhart, David E; Hinton, Geoffrey E; Williams, Ronald J",
+        "year": 1986,
+        "venue": "Nature",
+        "save_date": "2026-02-09",
+        "hover_memo": "역전파(backpropagation) 기반 표현학습의 고전. 현대 딥러닝 기반 재료/혼합물 예측 모델이 동일한 최적화 패러다임 위에 있다는 ‘기초 방법론’ 레퍼런스로 사용 가능."
+    },
+    {
+        "title": "Audacity of huge: overcoming challenges of data scarcity and data quality for machine learning in computational materials discovery",
+        "authors": "Nandy, Aditya; Duan, Chenru; Kulik, Heather J",
+        "year": 2022,
+        "venue": "Current Opinion in Chemical Engineering",
+        "save_date": "2026-02-09",
+        "hover_memo": "재료 ML에서 데이터 희소성/품질 문제(노이즈, 편향, 라벨 불완전성)를 어떻게 다루는지 정리한 리뷰. 혼합물 데이터도 실험·측정 조건 차이로 품질 이슈가 크므로, 데이터 전략(정제·전이·불확실성) 논의의 관련근거."
+    },
+    {
+        "title": "Accelerating computational materials discovery with machine learning and cloud high-performance computing: from large-scale screening to experimental validation",
+        "authors": "Chen, Chi; Nguyen, Dan Thien; Lee, Shannon J; Baker, Nathan A; Karakoti, Ajay S; Lauw, Linda; Owen, Craig; Mueller, Karl T; Bilodeau, Brian A; Murugesan, Vijayakumar; others",
+        "year": 2024,
+        "venue": "Journal of the American Chemical Society",
+        "save_date": "2026-02-09",
+        "hover_memo": "클라우드/HPC와 ML을 결합해 대규모 스크리닝→실험 검증까지 이어지는 파이프라인을 제시. 혼합물 설계도 ‘대규모 후보 생성-평가-검증’ 루프가 중요하므로, 시스템/워크플로우 관점의 related work로 유용."
+    },
+    {
+        "title": "Machine learning for predicting the viscosity of binary liquid mixtures",
+        "authors": "Bilodeau, Camille; Kazakov, Andrei; Mukhopadhyay, Sukrit; Emerson, Jillian; Kalantar, Tom; Muzny, Chris; Jensen, Klavs",
+        "year": 2023,
+        "venue": "Chemical Engineering Journal",
+        "save_date": "2026-02-09",
+        "hover_memo": "이성분(binary) 액체 혼합물 점도 예측을 ML로 다룬 대표 사례. mixture property(특히 viscosity) 예측의 문제 설정, 특징설계/모델링 선택, 데이터 구성 방식 등을 비교·인용하기 좋음."
+    },
+    {
+        "title": "Domain-adversarial multi-task framework for novel therapeutic property prediction of compounds",
+        "authors": "Xie, Lingwei; He, Song; Zhang, Zhongnan; Lin, Kunhui; Bo, Xiaochen; Yang, Shu; Feng, Boyuan; Wan, Kun; Yang, Kang; Yang, Jie; others",
+        "year": 2020,
+        "venue": "Bioinformatics",
+        "save_date": "2026-02-09",
+        "hover_memo": "도메인 적응(domain-adversarial)과 멀티태스크를 결합한 분자 물성/치료 특성 예측 프레임워크. 혼합물 데이터가 실험 조건/도메인 차이를 갖는 경우(기관·장비·레시피 분포), 도메인 불변 표현학습 아이디어로 연결 가능."
+    },
+    {
+        "title": "A new machine-learning tool for fast estimation of liquid viscosity. application to cosmetic oils",
+        "authors": "Goussard, Valentin; Duprat, François; Ploix, Jean-Luc; Dreyfus, Gérard; Nardello-Rataj, Véronique; Aubry, Jean-Marie",
+        "year": 2020,
+        "venue": "Journal of Chemical Information and Modeling",
+        "save_date": "2026-02-09",
+        "hover_memo": "액체 점도(특히 코스메틱 오일) 빠른 추정을 위한 ML 도구 제안. 화장품 도메인에서 viscosity 예측의 실용성과 모델링 접근을 보여주며, 코스메틱 mixture 예측 관련 선행연구로 직접적."
+    },
+    {
+        "title": "Leveraging large-scale computational database and deep learning for accurate prediction of material properties",
+        "authors": "Chen, Pin; Chen, Jianwen; Yan, Hui; Mo, Qing; Xu, Zexin; Liu, Jinyu; Zhang, Wenqing; Yang, Yuedong; Lu, Yutong",
+        "year": 2021,
+        "venue": "arXiv",
+        "save_date": "2026-02-09",
+        "hover_memo": "대규모 계산 데이터베이스 + 딥러닝으로 재료 물성 예측을 고정확도로 수행하는 흐름을 다룸. mixture 문제에서도 시뮬레이션/계산 데이터 활용 가능성(전이학습/사전학습)의 근거로 연결할 수 있음."
+    },
+    {
+        "title": "Gradient-based learning applied to document recognition",
+        "authors": "LeCun, Yann; Bottou, Léon; Bengio, Yoshua; Haffner, Patrick",
+        "year": 1998,
+        "venue": "Proceedings of the IEEE",
+        "save_date": "2026-02-09",
+        "hover_memo": "CNN 기반 문서 인식의 고전으로, ‘gradient-based representation learning’의 초기 성공 사례. 직접적으로 mixture는 아니지만, 현대 딥러닝의 역사적 맥락/기초 인용으로 종종 사용됨."
+    },
+    {
+        "title": "Emerging properties in self-supervised vision transformers",
+        "authors": "Caron, Mathilde; Touvron, Hugo; Misra, Ishan; Jégou, Hervé; Mairal, Julien; Bojanowski, Piotr; Joulin, Armand",
+        "year": 2021,
+        "venue": "ICCV",
+        "save_date": "2026-02-09",
+        "hover_memo": "자기지도학습으로 학습된 Vision Transformer에서 emergent property가 나타남을 보인 연구(DINO 계열). ‘사전학습된 representation이 downstream 성능을 좌우’한다는 메시지가 강해, 재료/혼합물에서도 self-supervised pretraining/representation learning 동기를 뒷받침."
+    },
+    {
+        "title": "Learning transferable visual models from natural language supervision",
+        "authors": "Radford, Alec; Kim, Jong Wook; Hallacy, Chris; Ramesh, Aditya; Goh, Gabriel; Agarwal, Sandhini; Sastry, Girish; Askell, Amanda; Mishkin, Pamela; Clark, Jack; others",
+        "year": 2021,
+        "venue": "ICML",
+        "save_date": "2026-02-09",
+        "hover_memo": "CLIP: 자연어-이미지 대조학습으로 범용 표현을 학습해 전이 성능을 확보. ‘언어 감독(language supervision) 기반 representation’ 아이디어가 재료 텍스트/레시피 서술/조성 토큰화 등과 연결될 수 있어, 멀티모달/언어 기반 재료탐색 관련 맥락에서 인용 가능."
+    },
+    {
+        "title": "Masked autoencoders are scalable vision learners",
+        "authors": "He, Kaiming; Chen, Xinlei; Xie, Saining; Li, Yanghao; Dollár, Piotr; Girshick, Ross",
+        "year": 2022,
+        "venue": "CVPR",
+        "save_date": "2026-02-09",
+        "hover_memo": "MAE: 마스킹 복원 기반 자기지도 사전학습이 확장 가능함을 보여줌. 입력의 일부를 가리고 복원하는 pretext task는 조성/성분 세트에서도 ‘부분 관측→복원’ 형태로 변형 가능해, self-supervised 학습 설계의 참고점."
+    },
+    {
+        "title": "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale",
+        "authors": "Dosovitskiy, Alexey; Beyer, Lucas; Kolesnikov, Alexander; Weissenborn, Dirk; Zhai, Xiaohua; Unterthiner, Thomas; Dehghani, Mostafa; Minderer, Matthias; Heigold, Georg; Gelly, Sylvain; Uszkoreit, Jakob; Houlsby, Neil",
+        "year": 2021,
+        "venue": "ICLR",
+        "save_date": "2026-02-09",
+        "hover_memo": "ViT: Transformer가 이미지 인식에서도 대규모 학습 시 강력함을 보인 대표 결과. ‘Transformer 기반 representation’의 범용성과 스케일 이점을 강조하는 레퍼런스로, mixture encoder에 Transformer를 쓰는 동기 부여에 활용 가능."
+    },
+    {
+        "title": "TaBERT: Pretraining for Joint Understanding of Textual and Tabular Data",
+        "authors": "Yin, Pengcheng; Neubig, Graham; Yih, Wen-tau; Riedel, Sebastian",
+        "year": 2020,
+        "venue": "ACL",
+        "save_date": "2026-02-09",
+        "hover_memo": "텍스트와 표(tabular)를 함께 이해하기 위한 사전학습 모델. 혼합물/재료 데이터는 (조성표 + 설명문/실험조건)처럼 구조+텍스트가 공존하므로, 멀티소스 표현 결합(표+텍스트) 관련 선행으로 연결 가능."
+    },
+    {
+        "title": "Attention is all you need",
+        "authors": "Vaswani, Ashish; Shazeer, Noam; Parmar, Niki; Uszkoreit, Jakob; Jones, Llion; Gomez, Aidan N; Kaiser, Łukasz; Polosukhin, Illia",
+        "year": 2017,
+        "venue": "NeurIPS",
+        "save_date": "2026-02-09",
+        "hover_memo": "Transformer의 원전. self-attention을 통해 순서/관계 정보를 유연하게 모델링하며, mixture 성분 간 상호작용(조합 효과)을 학습하는 데 자연스럽게 대응될 수 있어 아키텍처 선택의 핵심 근거."
+    },
+    {
+        "title": "Deep Sets",
+        "authors": "Zaheer, Manzil; Kottur, Satwik; Ravanbakhsh, Siamak; Poczos, Barnabas; Salakhutdinov, Russ R; Smola, Alexander J",
+        "year": 2017,
+        "venue": "NeurIPS",
+        "save_date": "2026-02-09",
+        "hover_memo": "집합 입력에 대한 순열불변(permutation-invariant) 함수 근사 정리 및 기본 구조(φ-aggregation-ρ)를 제시. 혼합물 조성은 ‘성분의 집합(비율 포함)’으로 보는 경우가 많아, set-based mixture representation의 핵심 related work."
+    },
+    {
+        "title": "Semi-Supervised Classification with Graph Convolutional Networks",
+        "authors": "Kipf, Thomas N; Welling, Max",
+        "year": 2017,
+        "venue": "ICLR",
+        "save_date": "2026-02-09",
+        "hover_memo": "GCN의 대표적 도입 논문(반지도 노드 분류). mixture를 그래프로 모델링(성분 노드/상호작용 엣지)하거나, 재료 지식그래프를 활용하는 방향에서 기본 GNN 레퍼런스로 활용 가능."
+    },
+    {
+        "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+        "authors": "Devlin, Jacob; Chang, Ming-Wei; Lee, Kenton; Toutanova, Kristina",
+        "year": 2019,
+        "venue": "NAACL-HLT",
+        "save_date": "2026-02-09",
+        "hover_memo": "BERT: MLM 기반 양방향 Transformer 사전학습. ‘자기지도 pretraining→downstream 성능 향상’ 패러다임을 대표하며, 재료/혼합물에서도 조성 토큰 시퀀스에 대한 사전학습 아이디어를 정당화할 때 유용."
+    },
+    {
+        "title": "Sequence to sequence learning with neural networks",
+        "authors": "Sutskever, Ilya; Vinyals, Oriol; Le, Quoc V",
+        "year": 2014,
+        "venue": "NeurIPS",
+        "save_date": "2026-02-09",
+        "hover_memo": "Seq2Seq(encoder-decoder) 학습의 고전. mixture design을 ‘목표 물성→조성 생성’ 같은 생성/역설계 문제로 볼 때, encoder-decoder 계열 접근의 기초 인용으로 사용 가능."
+    },
+    {
+        "title": "Long short-term memory",
+        "authors": "Hochreiter, Sepp; Schmidhuber, Jürgen",
+        "year": 1997,
+        "venue": "Neural Computation",
+        "save_date": "2026-02-09",
+        "hover_memo": "LSTM의 원전. RNN 기반 시퀀스 모델의 대표로, Transformer 이전의 순차 모델링 기반(예: 조성/레시피를 시퀀스로 다루는 접근)과 비교할 때 역사적/기술적 배경으로 인용 가능."
+    },
+    {
+        "title": "Generative adversarial networks",
+        "authors": "Goodfellow, Ian; Pouget-Abadie, Jean; Mirza, Mehdi; Xu, Bing; Warde-Farley, David; Ozair, Sherjil; Courville, Aaron; Bengio, Yoshua",
+        "year": 2020,
+        "venue": "Communications of the ACM",
+        "save_date": "2026-02-09",
+        "hover_memo": "GAN 개념을 정리한 대표 레퍼런스(원전은 2014). 혼합물/재료 ‘생성’(역설계, 후보 생성) 문제에서 생성모델 계열을 관련연구로 언급할 때 사용할 수 있음."
+    },
+    {
+        "title": "Enhancing materials property prediction by leveraging computational and experimental data using deep transfer learning",
+        "authors": "Jha, Dipendra; Choudhary, Kamal; Tavazza, Francesca; Liao, Wei-keng; Choudhary, Alok; Campbell, Carelyn; Agrawal, Ankit",
+        "year": 2019,
+        "venue": "Nature Communications",
+        "save_date": "2026-02-09",
+        "hover_memo": "계산 데이터와 실험 데이터를 함께 활용하고 전이학습으로 물성 예측을 개선하는 연구. mixture에서도 시뮬레이션/근사 모델 데이터와 실험 데이터를 결합하는 전략을 정당화하는 관련근거."
+    },
+    {
+        "title": "Property prediction of fuel mixtures using pooled graph neural networks",
+        "authors": "Leenhouts, Roel J; Larsson, Tara; Verhelst, Sebastian; Vermeire, Florence H",
+        "year": 2025,
+        "venue": "Fuel",
+        "save_date": "2026-02-09",
+        "hover_memo": "연료 혼합물 물성 예측을 pooled GNN으로 수행. mixture를 ‘분자 그래프들의 집합/풀링’으로 다루는 설계가 핵심이며, 혼합물 표현(풀링/집합/그래프)의 선택지를 비교할 때 매우 직접적인 related work."
+    },
+    {
+        "title": "Materials representation and transfer learning for multi-property prediction",
+        "authors": "Kong, Shufeng; Guevarra, Dan; Gomes, Carla P; Gregoire, John M",
+        "year": 2021,
+        "venue": "Applied Physics Reviews",
+        "save_date": "2026-02-09",
+        "hover_memo": "재료 representation과 전이학습을 이용해 다중 물성을 예측하는 흐름을 리뷰/정리. 어떤 표현이 일반화에 유리한지, multi-property 학습이 왜 중요한지 등을 뒷받침하는 포괄적 related work."
+    },
+    {
+        "title": "Accelerated discovery of metallic glasses through iteration of machine learning and high-throughput experiments",
+        "authors": "Ren, Fang; Ward, Logan; Williams, Travis; Laws, Kevin J; Wolverton, Christopher; Hattrick-Simpers, Jason; Mehta, Apurva",
+        "year": 2018,
+        "venue": "Science Advances",
+        "save_date": "2026-02-09",
+        "hover_memo": "ML과 고처리량 실험을 반복(iteration)해 소재 발견을 가속한 대표 사례. mixture design에서도 ‘모델 예측→실험/시뮬레이션→데이터 업데이트’의 액티브/반복 루프가 핵심이라는 점을 보여주는 근거."
+    },
+    {
+        "title": "Density of states prediction for materials discovery via contrastive learning from probabilistic embeddings",
+        "authors": "Kong, Shufeng; Ricci, Francesco; Guevarra, Dan; Neaton, Jeffrey B; Gomes, Carla P; Gregoire, John M",
+        "year": 2022,
+        "venue": "Nature Communications",
+        "save_date": "2026-02-09",
+        "hover_memo": "확률적 임베딩과 대조학습(contrastive learning)로 DOS 예측을 수행. representation을 잘 학습하면 복잡한 물성(분포/곡선 형태)까지 예측 가능함을 보여주며, mixture에서도 대조/자기지도 학습의 가능성을 뒷받침."
+    },
+    {
+        "title": "Prediction of physicochemical properties based on neural network modelling",
+        "authors": "Taskinen, Jyrki; Yliruusi, Jouko",
+        "year": 2003,
+        "venue": "Advanced Drug Delivery Reviews",
+        "save_date": "2026-02-09",
+        "hover_memo": "신경망을 이용한 물리화학적 물성 예측의 초기 리뷰/사례. 재료/화학 물성 예측에서 ML의 오래된 계보를 제시하는 참고문헌으로 쓸 수 있음."
+    },
+    {
+        "title": "Auto-Encoding Variational Bayes",
+        "authors": "Kingma, Diederik P; Welling, Max",
+        "year": 2022,
+        "venue": "arXiv",
+        "save_date": "2026-02-09",
+        "hover_memo": "VAE의 기본 원전(초기 arXiv는 2013). 생성모델 기반 잠재표현 학습과 불확실성 모델링에 핵심이며, mixture 역설계/생성 또는 representation regularization 논의에서 기반 레퍼런스로 사용 가능."
+    },
+    {
+        "title": "Examining graph neural networks for crystal structures: limitations and opportunities for capturing periodicity",
+        "authors": "Gong, Sheng; Yan, Keqiang; Xie, Tian; Shao-Horn, Yang; Gomez-Bombarelli, Rafael; Ji, Shuiwang; Grossman, Jeffrey C",
+        "year": 2023,
+        "venue": "Science Advances",
+        "save_date": "2026-02-09",
+        "hover_memo": "결정 구조 GNN의 한계(주기성 포착 등)와 기회를 분석. ‘그래프 표현이 만능이 아니다’라는 관점을 제공해, mixture에서 그래프/집합/시퀀스 표현 선택의 논증(장단점 비교)에 도움."
+    },
+    {
+        "title": "Artificial intelligence in predicting mechanical properties of composite materials",
+        "authors": "Kibrete, Fasikaw; Trzepieciński, Tomasz; Gebremedhen, Hailu Shimels; Woldemichael, Dereje Engida",
+        "year": 2023,
+        "venue": "Journal of Composites Science (MDPI)",
+        "save_date": "2026-02-09",
+        "hover_memo": "복합재(composite) 물성 예측에서 AI 활용을 다룬 리뷰/연구. 혼합/복합 시스템에서 구조-조성-공정 변수가 물성에 미치는 영향과 ML 적용 맥락을 제시해, ‘복합/혼합’ 계열 related work로 보강 가능."
+    },
+    {
+        "title": "Pre-training via denoising for molecular property prediction",
+        "authors": "Zaidi, Sheheryar; Schaarschmidt, Michael; Martens, James; Kim, Hyunjik; Teh, Yee Whye; Sanchez-Gonzalez, Alvaro; Battaglia, Peter; Pascanu, Razvan; Godwin, Jonathan",
+        "year": 2022,
+        "venue": "arXiv",
+        "save_date": "2026-02-09",
+        "hover_memo": "분자 물성 예측에서 denoising 기반 사전학습을 통해 표현을 개선하는 연구. mixture에서도 성분/조성 표현을 노이즈화해 복원하는 pretraining을 설계할 수 있어, self-supervised pretraining 관련 선행으로 연결."
+    },
+    {
+        "title": "Semi-supervised classification with graph convolutional networks",
+        "authors": "Kipf, Thomas N; Welling, Max",
+        "year": 2016,
+        "venue": "arXiv",
+        "save_date": "2026-02-09",
+        "hover_memo": "GCN의 arXiv 프리프린트 버전(후속 ICLR 2017과 동일 계열). GNN 기반 표현학습 관련 레퍼런스 체계를 맞추기 위해 함께 인용되는 경우가 많음."
+    },
+    {
+        "title": "Graph attention networks",
+        "authors": "Veličković, Petar; Cucurull, Guillem; Casanova, Arantxa; Romero, Adriana; Liò, Pietro; Bengio, Yoshua; others",
+        "year": 2017,
+        "venue": "arXiv",
+        "save_date": "2026-02-09",
+        "hover_memo": "GAT: 그래프에서 attention으로 이웃 가중치를 학습. mixture 성분 간 상호작용을 그래프로 놓고 ‘중요한 상호작용’에 가중을 주는 모델링을 할 때, 대표적인 attention-GNN 기반 레퍼런스."
+    },
+    {
+        "title": "Bert: Pre-training of deep bidirectional transformers for language understanding",
+        "authors": "Devlin, Jacob",
+        "year": 2018,
+        "venue": "arXiv",
+        "save_date": "2026-02-09",
+        "hover_memo": "BERT의 arXiv 프리프린트 버전(후속 2019 NAACL 논문과 동일 계열). 사전학습 기반 표현학습의 원류를 arXiv 기준으로 인용할 때 함께 등장할 수 있음."
+    },
+    {
+        "title": "Explainable machine learning and ensemble models for predicting fresh properties of self consolidating concrete",
+        "authors": "Khan, Maaz; Javed, Muhammad Faisal; Alabduljabbar, Hisham; Ahmad, Furqan",
+        "year": 2025,
+        "venue": "Scientific Reports",
+        "save_date": "2026-02-09",
+        "hover_memo": "콘크리트(복합 재료) 신선 특성 예측에서 앙상블/설명가능성(XAI)을 강조. 혼합물/복합재 예측에서 ‘설명가능성 요구’(규제·공정 제어·신뢰성)와 연결되는 related work로 활용 가능."
+    },
+    {
+        "title": "Estimation of pure-component properties from group-contributions",
+        "authors": "Joback, Kevin G; Reid, Robert C",
+        "year": 1987,
+        "venue": "Chemical Engineering Communications",
+        "save_date": "2026-02-09",
+        "hover_memo": "그룹 기여(Group contribution) 기반 순수 성분 물성 추정(Joback method) 고전. 데이터가 부족할 때 규칙/모델 기반 추정이 어떻게 쓰였는지 보여주며, 학습 기반 접근(딥러닝)과의 대비(장단점) 논의에 유용."
+    },
+    {
+        "title": "Efficient estimation of word representations in vector space",
+        "authors": "Mikolov, Tomas; Chen, Kai; Corrado, Greg; Dean, Jeffrey",
+        "year": 2013,
+        "venue": "arXiv",
+        "save_date": "2026-02-09",
+        "hover_memo": "Word2Vec: 대규모 비지도 학습으로 분산표현을 학습한 대표 사례. ‘표현학습이 downstream 일반화를 만든다’는 직관을 재료/혼합물 representation learning으로 연결할 때 상징적 레퍼런스로 쓰기 좋음."
+    },
+    {
+        "title": "Automatic creation of missing groups through connectivity index for pure-component property prediction",
+        "authors": "Gani, Rafiqul; Harper, Peter M; Hostrup, Martin",
+        "year": 2005,
+        "venue": "Industrial & Engineering Chemistry Research",
+        "save_date": "2026-02-09",
+        "hover_memo": "순수 성분 물성 예측에서 그룹 기여 모델의 ‘누락 그룹’을 연결성 지표로 자동 생성하는 방법을 제안. 규칙/화학공학 기반 피처 엔지니어링의 한 예로, 데이터 기반 representation learning과 대비되는 전통 접근의 관련연구로 적합."
     }
 ]
+    
