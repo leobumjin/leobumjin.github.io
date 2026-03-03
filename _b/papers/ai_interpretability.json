@@ -1,5 +1,12 @@
 [
-    
+    {
+        "title": "AuditBench: Evaluating Alignment Auditing Techniques on Models with Hidden Behaviors",
+        "authors": "",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-03-03",
+        "hover_memo": ""
+    },
     {
         "title": "Steering Externalities: Benign Activation Steering Unintentionally Increases Jailbreak Risk for Large Language Models",
         "authors": "",
