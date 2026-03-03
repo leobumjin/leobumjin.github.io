@@ -471,21 +471,59 @@
       min-width: 100px;
     }
 
-    .daily-counter-cell {
+    .daily-completeness-cell {
       font-size: 0.9rem;
       color: #666;
       text-align: center;
-      min-width: 100px;
-      cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.2s ease;
+      min-width: 80px;
     }
 
-    .daily-counter-cell:hover {
-      background-color: rgba(0, 0, 0, 0.05);
+    .completeness-circle {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      display: inline-block;
     }
 
-    .daily-counter-cell:active {
-      transform: scale(0.95);
+    .completeness-circle svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
+
+    .completeness-circle .bg {
+      fill: none;
+      stroke: #e0e0e0;
+      stroke-width: 4;
+    }
+
+    .completeness-circle .progress {
+      fill: none;
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.3s ease;
+    }
+
+    .completeness-circle .progress.red {
+      stroke: #e53935;
+    }
+
+    .completeness-circle .progress.orange {
+      stroke: #ff9800;
+    }
+
+    .completeness-circle .progress.green {
+      stroke: #4caf50;
+    }
+
+    .completeness-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #333;
     }
 
     .daily-summary-cell {
@@ -1021,10 +1059,10 @@
         dateHeader.textContent = 'Date';
         dateHeader.className = 'date-header';
         headerRow.appendChild(dateHeader);
-        const counterHeader = document.createElement('th');
-        counterHeader.textContent = 'Counter';
-        counterHeader.className = 'date-header';
-        headerRow.appendChild(counterHeader);
+        const completenessHeader = document.createElement('th');
+        completenessHeader.textContent = 'Completeness';
+        completenessHeader.className = 'date-header';
+        headerRow.appendChild(completenessHeader);
         thead.appendChild(headerRow);
         table.appendChild(thead);
 
@@ -1057,40 +1095,41 @@
           dateCell.textContent = formatDate(entry.date);
           row.appendChild(dateCell);
 
-          // Counter cell
-          const counterCell = document.createElement('td');
-          counterCell.className = 'daily-counter-cell';
-          const entryKey = `${entry.date}_${entry.title || entry.summary}`;
-          // Get counter from localStorage or use initial value from JSON
-          const storedCounter = localStorage.getItem(`copy_counter_${entryKey}`);
-          let currentCounter = storedCounter !== null ? parseInt(storedCounter) : (entry.copy_counter || 0);
-          counterCell.textContent = currentCounter;
-          row.appendChild(counterCell);
-
-          // Counter increment function
-          async function incrementCounter() {
-            currentCounter += 1;
-            counterCell.textContent = currentCounter;
-            // Store in localStorage
-            localStorage.setItem(`copy_counter_${entryKey}`, currentCounter.toString());
-            // TODO: Update server JSON file via API if available
-            // await updateCounterOnServer(entryKey, currentCounter);
-            
-            // Visual feedback
-            const originalBg = counterCell.style.backgroundColor;
-            counterCell.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
-            counterCell.style.transform = 'scale(1.1)';
-            setTimeout(function() {
-              counterCell.style.backgroundColor = originalBg;
-              counterCell.style.transform = 'scale(1)';
-            }, 300);
+          // Completeness cell
+          const completenessCell = document.createElement('td');
+          completenessCell.className = 'daily-completeness-cell';
+          const completenessValue = entry.completeness !== undefined ? entry.completeness : 0;
+          
+          // Create circular progress indicator
+          const circleContainer = document.createElement('div');
+          circleContainer.className = 'completeness-circle';
+          
+          // SVG circle parameters
+          const radius = 14;
+          const circumference = 2 * Math.PI * radius;
+          const progress = Math.min(Math.max(completenessValue, 0), 100); // Clamp 0-100
+          const dashOffset = circumference - (progress / 100) * circumference;
+          
+          // Determine color based on value
+          let colorClass = 'red';
+          if (completenessValue >= 100) {
+            colorClass = 'green';
+          } else if (completenessValue > 50) {
+            colorClass = 'orange';
           }
-
-          // Add click listener to counter cell
-          counterCell.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent triggering row click
-            incrementCounter();
-          });
+          
+          circleContainer.innerHTML = `
+            <svg viewBox="0 0 36 36">
+              <circle class="bg" cx="18" cy="18" r="${radius}"></circle>
+              <circle class="progress ${colorClass}" cx="18" cy="18" r="${radius}" 
+                stroke-dasharray="${circumference}" 
+                stroke-dashoffset="${dashOffset}"></circle>
+            </svg>
+            <span class="completeness-value">${completenessValue}</span>
+          `;
+          
+          completenessCell.appendChild(circleContainer);
+          row.appendChild(completenessCell);
 
           // Extract code text for copying and display in code viewer
           let codeText = '';
@@ -1143,10 +1182,6 @@
           if (codeHtml) {
             row.style.cursor = 'pointer';
             row.addEventListener('click', function(e) {
-              // Don't trigger if clicking counter cell
-              if (e.target === counterCell || counterCell.contains(e.target)) {
-                return;
-              }
               
               // Show code in viewer
               const codeViewer = document.getElementById('code-viewer');

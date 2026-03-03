@@ -12,9 +12,11 @@ description:
   
   <div class="posts-content">
     <div class="language-filter-container">
-      <button class="language-btn active" data-language="English">English Essay & Study </button>
+      <button class="language-btn" data-language="Interpretability">Interpretability</button>
       <span class="language-separator"> | </span>
-      <button class="language-btn" data-language="Korean">Korean Essay</button>
+      <button class="language-btn active" data-language="English">Essay </button>
+      <span class="language-separator"> | </span>
+      <button class="language-btn" data-language="Korean">Korean</button>
     </div>
     <table class="posts-table">
       <thead>
@@ -28,7 +30,7 @@ description:
       <tbody>
         {%- assign sorted_papers = site.essay | where_exp: "item", "item.date != nil" | sort: "date" | reverse -%}
         {%- for paper in sorted_papers -%}
-        <tr class="post-row" data-language="{%- if paper.language -%}{{ paper.language }}{%- else -%}English{%- endif -%}">
+        <tr class="post-row" data-language="{%- if paper.language -%}{{ paper.language }}{%- else -%}Interpretability{%- endif -%}">
           <td class="col-date">{{ paper.date | date: "%Y.%m.%d" }}</td>
           <td class="col-title">
             <a href="{%- if paper.redirect -%}{{ paper.redirect }}{%- elsif paper.url -%}{{ paper.url | relative_url }}{%- else -%}#{%- endif -%}">
@@ -325,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const postRows = document.querySelectorAll('.post-row');
   
   // Always start with English as default
-  const savedLanguage = 'English';
+  const savedLanguage = 'Interpretability';
   setActiveButton(savedLanguage);
   filterByLanguage(savedLanguage);
   

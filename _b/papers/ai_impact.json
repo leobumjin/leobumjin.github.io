@@ -1,5 +1,29 @@
 [
     {
+        "title": "LoRA Fine-tuning Efficiently Undoes Safety Training in Llama 2-Chat 70B",
+        "authors": "",
+        "year": 2023,
+        "venue": "NA",
+        "save_date": "2026-02-12",
+        "hover_memo": ""
+    },
+    {
+        "title": "Fine-tuning Aligned Language Models Compromises Safety, Even When Users Do Not Intend To!",
+        "authors": "",
+        "year": 2023,
+        "venue": "NA",
+        "save_date": "2026-02-12",
+        "hover_memo": ""
+    },
+    {
+        "title": "GRP-Obliteration: Unaligning LLMs With a Single Unlabeled Prompt",
+        "authors": "",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-02-12",
+        "hover_memo": ""
+    },
+    {
         "title": "Synthesizing scientific literature with retrieval-augmented language models",
         "authors": "",
         "year": 2026,

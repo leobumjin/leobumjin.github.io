@@ -1,5 +1,37 @@
 [
     {
+        "title": "Is This Just Fantasy? Language Model Representations Reflect Human Judgments of Event Plausibility",
+        "authors": "",
+        "year": 2026,
+        "venue": "ICLR",
+        "save_date": "2026-02-26",
+        "hover_memo": ""
+    },
+    {
+        "title": "Unlearning-Aware Minimization",
+        "authors": "",
+        "year": 2025,
+        "venue": "NeurIPS",
+        "save_date": "2026-02-26",
+        "hover_memo": ""
+    },
+    {
+        "title": "A neural network for modeling human concept formation, understanding and communication",
+        "authors": "",
+        "year": 2026,
+        "venue": "Nature Comm.",
+        "save_date": "2026-02-25",
+        "hover_memo": ""
+    },
+    {
+        "title": "AI GAMESTORE: Scalable, Open-Ended Evaluation ofMachine General Intelligence with Human Games",
+        "authors": "",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-02-24",
+        "hover_memo": ""
+    },
+    {
         "title": "Bypassing AI Control Protocols via Agent-as-a-Proxy Attacks",
         "authors": "",
         "year": 2026,
