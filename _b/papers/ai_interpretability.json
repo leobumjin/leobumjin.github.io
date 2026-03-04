@@ -1,5 +1,21 @@
 [
     {
+        "title": "Adversarial attacks and defenses in explainable artificial intelligence: A survey",
+        "authors": "",
+        "year": 2023,
+        "venue": "Information Fusion",
+        "save_date": "2026-03-04",
+        "hover_memo": "Red-herring attack: 실제 모델의 잘못된 예측이나 공격을 가리기 위해 설명을 다른 특징으로 유도하는 공격. 즉, 모델의 오류를 숨기도록 explanation을 의도적으로 오도하는 것. <br> Fairwashing: 실제로는 편향된 모델을 유지하면서도 설명이나 surrogate 모델을 통해 공정해 보이게 만드는 조작. 즉, 불공정한 모델을 설명으로 ‘공정해 보이게’ 포장하는 것 "
+    },
+    {
+        "title": "Bloom: Automated Behavioral Evaluations for LLMs",
+        "authors": "",
+        "year": 2026,
+        "venue": "NA",
+        "save_date": "2026-03-01",
+        "hover_memo": ""
+    },
+    {
         "title": "The Mechanistic Emergence of Symbol Grounding in Language Models",
         "authors": "",
         "year": 2025,
