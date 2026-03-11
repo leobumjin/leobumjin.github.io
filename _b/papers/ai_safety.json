@@ -8,5 +8,8 @@
     "System-level defense against indirect prompt injection attacks: An information flow control perspective",
     "Fath: Authentication-based test-time defense against indirect prompt injection attacks",
     "Ipiguard: A novel tool dependency graph-based defense against indirect prompt injection in llm agents",
-    "The Dangers of Indirect Prompt Injection Attacks on LLM-based Autonomous Web Navigation Agents: A Demonstration"
+    "The Dangers of Indirect Prompt Injection Attacks on LLM-based Autonomous Web Navigation Agents: A Demonstration",
+
+    "Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting", 
+    "Faithfulness vs. Plausibility: On the (Un)Reliability of Explanations from Large Language Models"
 ]
