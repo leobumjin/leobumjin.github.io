@@ -1,0 +1,18 @@
+[
+    {
+        "title": "Nonmonotonic Reasoning and Multiple Belief Revision ",
+        "authors": "Dongmo ZHang",
+        "year": 2016,
+        "venue": "IJCAI",
+        "save_date": "2026-03-10",
+        "hover_memo": "NMR과 Belief Revision의 구조가 수학적으로 같은지 연구하였다."
+    },
+    {
+        "title": "Gardenfors, Knowledge in Flux: Modeling the Dynamics of Epistemic States",
+        "authors": "Peter Gardenfors",
+        "year": 1988,
+        "venue": "The MIT Press",
+        "save_date": "2026-03-10",
+        "hover_memo": ""
+    }
+]
