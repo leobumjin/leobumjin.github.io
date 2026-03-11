@@ -2,6 +2,12 @@
     {
         "question": "왜 NMR에서 무한한 신념을 다뤄야 하는가? ",
         "answer": "무한히 많은 문장들은 하나의 명제로 묶을 수 없으므로 기존 연산을 그대로 적용할 수 없었습니다.",
+        "date": "2026-03-11",
+        "additional_info": "https://www.sciencedirect.com/science/article/pii/S0022400X97000062"
+    },
+    {
+        "question": "Rational Nonmonotonic Frame (RN)이란 무엇인가?",
+        "answer": "NMR의 기본 원리는 무한한 신념을 다뤄야 하는 이유는 신념이 무한하기 때문이다. 신념은 무한하기 때문에 우리는 무한한 신념을 다뤄야 한다.",
         "date": "2026-03-11"
     }
 ]
