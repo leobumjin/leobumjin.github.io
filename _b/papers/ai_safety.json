@@ -1,0 +1,15 @@
+[
+    "Not what you’ve signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection",
+    "Can indirect prompt injection attacks be detected and removed?",
+    "Benchmarking and defending against indirect prompt injection attacks on large language models",
+    "Injecagent: Benchmarking indirect prompt injections in tool-integrated large language model agents",
+    "Topicattack: An indirect prompt injection attack via topic transition",
+    "The task shield: Enforcing task alignment to defend against indirect prompt injection in llm agents",
+    "System-level defense against indirect prompt injection attacks: An information flow control perspective",
+    "Fath: Authentication-based test-time defense against indirect prompt injection attacks",
+    "Ipiguard: A novel tool dependency graph-based defense against indirect prompt injection in llm agents",
+    "The Dangers of Indirect Prompt Injection Attacks on LLM-based Autonomous Web Navigation Agents: A Demonstration",
+
+    "Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting", 
+    "Faithfulness vs. Plausibility: On the (Un)Reliability of Explanations from Large Language Models"
+]
