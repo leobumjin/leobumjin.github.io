@@ -14,5 +14,21 @@
         "venue": "The MIT Press",
         "save_date": "2026-03-10",
         "hover_memo": ""
+    },
+    {
+        "title": "Argumentation Frameworks with Necessities",
+        "authors": "",
+        "year": 2011,
+        "venue": "",
+        "save_date": "2026-03-18",
+        "hover_memo": ""
+    },
+    {
+        "title": "Abstract dialectical frameworks",
+        "authors": "G Brewka",
+        "year": 2011,
+        "venue": "",
+        "save_date": "2026-03-18",
+        "hover_memo": ""
     }
 ]
