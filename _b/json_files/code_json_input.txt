@@ -8,25 +8,6 @@ def format_chat(
     add_generation_prompt: bool = False,
     system_instruction: Optional[str] = None,
 ) -> str:
-    """
-    Format a chat conversation using the tokenizer's chat template.
-
-    Args:
-        tokenizer:
-            A tokenizer object that provides `apply_chat_template`.
-        prompt:
-            The user message.
-        response:
-            Optional assistant response to include in the conversation.
-        add_generation_prompt:
-            Whether to append the assistant generation prompt.
-            Usually True when preparing model input for inference.
-        system_instruction:
-            Optional system message that defines global behavior.
-
-    Returns:
-        A formatted chat string.
-    """
 
     if not isinstance(prompt, str) or not prompt.strip():
         raise ValueError("`prompt` must be a non-empty string.")
