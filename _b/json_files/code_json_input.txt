@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import Optional
 
 def format_chat(
@@ -34,13 +33,16 @@ def format_chat(
         add_generation_prompt=add_generation_prompt,
     )
 
-def make_incomplete_chat_prompt(tokenizer, user_request, response):
+def make_incomplete_chat_response_prompt(tokenizer, user_request, response, system_instruction=None):
     temporal = "XXXXXX"
-    temp = format_chat(tokenizer, user_request, temporal)
+    temp = format_chat(tokenizer, user_request, temporal, system_instruction=system_instruction)
     before_response = temp[:temp.find(temporal)]
     output = before_response + response
     return output
 
-# user_request = "How can I make a chat incomplete?"
-# incomplete_response = "Well,,"
-# make_incomplete_chat_prompt(tokenizer, user_request, incomplete_response)
+def make_incomplete_chat_user_prompt(tokenizer, user_request, system_instruction=None):
+    temporal = "XXXXXX"
+    temp = format_chat(tokenizer, temporal, None, system_instruction=system_instruction)
+    return temp[:temp.find(temporal)] + user_request
+
+
