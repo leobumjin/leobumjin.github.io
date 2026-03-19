@@ -33,6 +33,24 @@
       margin-bottom: 24px;
     }
 
+    .study-mobile-controls {
+      display: none;
+      margin-bottom: 16px;
+    }
+
+    .study-mobile-toggle {
+      width: 100%;
+      border: 1px solid var(--study-line);
+      background: rgba(255, 253, 248, 0.92);
+      box-shadow: var(--study-shadow);
+      color: var(--study-text);
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     .study-eyebrow {
       display: inline-block;
       margin-bottom: 10px;
@@ -434,23 +452,112 @@
         padding: 20px 14px;
       }
 
+      .study-title {
+        font-size: 1.35rem;
+      }
+
+      .study-mobile-toggle {
+        padding: 12px 14px;
+        font-size: 0.88rem;
+      }
+
+      .study-mobile-controls {
+        display: block;
+      }
+
       .study-workspace {
         grid-template-columns: 1fr;
       }
 
       .study-sidebar {
+        display: none;
         position: static;
         max-height: none;
+      }
+
+      .study-sidebar.mobile-open {
+        display: flex;
+        margin-bottom: 16px;
       }
 
       .study-viewer {
         min-height: auto;
       }
 
+      .study-viewer-header {
+        padding: 18px 16px 14px;
+      }
+
+      .study-viewer-topic {
+        font-size: 0.72rem;
+      }
+
+      .study-viewer-title {
+        font-size: 1.25rem;
+      }
+
+      .study-viewer-date {
+        font-size: 0.8rem;
+      }
+
+      .study-viewer-body {
+        padding: 20px 16px 24px;
+        font-size: 0.92rem;
+        line-height: 1.75;
+      }
+
+      .study-viewer-body h1 {
+        font-size: 1.45rem;
+      }
+
+      .study-viewer-body h2 {
+        font-size: 1.15rem;
+      }
+
+      .study-viewer-body h3 {
+        font-size: 1.02rem;
+      }
+
+      .study-entry-button {
+        padding: 12px;
+        gap: 12px;
+      }
+
+      .study-entry-topic {
+        font-size: 0.68rem;
+      }
+
+      .study-entry-date {
+        font-size: 0.7rem;
+      }
+
+      .study-entry-question {
+        font-size: 0.88rem;
+      }
+
+      .study-completeness {
+        width: 34px;
+        height: 34px;
+      }
+
+      .study-completeness-value {
+        font-size: 0.56rem;
+      }
+
       .study-toc {
         border: 1px solid var(--study-line);
         position: static;
         max-height: none;
+        padding: 16px 14px;
+      }
+
+      .study-toc-title {
+        font-size: 0.7rem;
+      }
+
+      .study-toc-link {
+        font-size: 0.8rem;
+        padding: 5px 6px;
       }
     }
   </style>
@@ -463,8 +570,12 @@
       <h2 class="study-title">{{ page.title | default: "Study" }}</h2>
     </header>
 
+    <div class="study-mobile-controls">
+      <button id="study-mobile-toggle" type="button" class="study-mobile-toggle" aria-expanded="false">Search</button>
+    </div>
+
     <main class="study-workspace"> 
-      <aside class="study-panel study-sidebar">
+      <aside id="study-sidebar" class="study-panel study-sidebar">
         <div class="study-sidebar-top">
           <div class="study-search-box">
             <input id="study-search-input" type="search" placeholder="키워드, 질문, 답변으로 검색">
@@ -527,6 +638,8 @@
     const viewerDate = document.getElementById('study-viewer-date');
     const viewerBody = document.getElementById('study-viewer-body');
     const tocList = document.getElementById('study-toc-list');
+    const sidebar = document.getElementById('study-sidebar');
+    const mobileToggle = document.getElementById('study-mobile-toggle');
 
     function topicFromFilename(filename) {
       const name = filename.split('/').pop() || filename;
@@ -599,6 +712,7 @@
       const headings = prepareHeadings();
       renderToc(headings);
       rerenderMath();
+      closeMobileSidebar();
     }
 
     function slugify(text) {
@@ -652,6 +766,32 @@
       Array.from(tocList.querySelectorAll('.study-toc-link')).forEach(function(link) {
         link.classList.toggle('active', link.dataset.targetId === id);
       });
+    }
+
+    function isMobileLayout() {
+      return window.matchMedia('(max-width: 980px)').matches;
+    }
+
+    function openMobileSidebar() {
+      if (!isMobileLayout()) return;
+      sidebar.classList.add('mobile-open');
+      mobileToggle.setAttribute('aria-expanded', 'true');
+      mobileToggle.textContent = 'Close Search';
+    }
+
+    function closeMobileSidebar() {
+      if (!isMobileLayout()) return;
+      sidebar.classList.remove('mobile-open');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      mobileToggle.textContent = 'Search';
+    }
+
+    function syncMobileSidebar() {
+      if (isMobileLayout()) {
+        closeMobileSidebar();
+      } else {
+        sidebar.classList.remove('mobile-open');
+      }
     }
 
     function rerenderMath() {
@@ -890,6 +1030,16 @@
       applyFilters();
     });
 
+    mobileToggle.addEventListener('click', function() {
+      if (sidebar.classList.contains('mobile-open')) {
+        closeMobileSidebar();
+      } else {
+        openMobileSidebar();
+      }
+    });
+
+    window.addEventListener('resize', syncMobileSidebar);
+
     loadEntries().catch(function(error) {
       console.error(error);
       topicChips.innerHTML = '';
@@ -900,6 +1050,8 @@
       viewerDate.textContent = '';
       viewerBody.innerHTML = '<div class="study-empty-state">`/b/study_files/ml.json`, `/b/study_files/nmr.json` 경로를 확인해주세요.</div>';
     });
+
+    syncMobileSidebar();
   </script>
 </body>
 </html>
