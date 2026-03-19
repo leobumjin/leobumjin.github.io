@@ -349,6 +349,35 @@
       font-size: 0.92rem;
     }
 
+    .study-viewer-source-title {
+      margin-bottom: 10px;
+      color: var(--study-accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .study-reference-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .study-reference-item {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      line-height: 1.6;
+    }
+
+    .study-reference-index {
+      color: var(--study-muted);
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
     .study-toc {
       border: 1px solid var(--study-line);
       background: rgba(255, 253, 248, 0.9);
@@ -711,7 +740,6 @@
 
     function answerToHtml(entry) {
       const answer = String(entry.answer || '').trim();
-      const source = String(entry.additional_info || '').trim();
       const paragraphs = answer
         .split(/\n{2,}/)
         .map(function(block) {
@@ -725,11 +753,66 @@
         .filter(Boolean)
         .join('');
 
-      const sourceHtml = source
-        ? '<div class="study-viewer-source">Reference: <a href="' + escapeHtml(source) + '" target="_blank" rel="noreferrer">' + escapeHtml(source) + '</a></div>'
-        : '';
+      const sourceHtml = buildSourceHtml(entry.references || entry.additional_info);
 
       return (paragraphs || '<p>답변이 비어 있습니다.</p>') + sourceHtml;
+    }
+
+    function buildSourceHtml(additionalInfo) {
+      if (!additionalInfo) {
+        return '';
+      }
+
+      if (typeof additionalInfo === 'string') {
+        const source = additionalInfo.trim();
+        if (!source) {
+          return '';
+        }
+        return [
+          '<div class="study-viewer-source">',
+          '<div class="study-viewer-source-title">References</div>',
+          '<div class="study-reference-list">',
+          '<div class="study-reference-item">',
+          '<span class="study-reference-index">[1]</span>',
+          '<a href="' + escapeHtml(source) + '" target="_blank" rel="noreferrer">Link</a>',
+          '</div>',
+          '</div>',
+          '</div>'
+        ].join('');
+      }
+
+      if (typeof additionalInfo === 'object') {
+        const entries = Object.entries(additionalInfo).filter(function(item) {
+          return typeof item[1] === 'string' && item[1].trim();
+        });
+
+        if (!entries.length) {
+          return '';
+        }
+
+        const links = entries.map(function(item, index) {
+          const label = String(item[0] || 'Link')
+            .replace(/[_-]+/g, ' ')
+            .replace(/\b\w/g, function(char) { return char.toUpperCase(); });
+          return [
+            '<div class="study-reference-item">',
+            '<span class="study-reference-index">[' + (index + 1) + ']</span>',
+            '<a href="' + escapeHtml(item[1].trim()) + '" target="_blank" rel="noreferrer">' + escapeHtml(label) + '</a>',
+            '</div>'
+          ].join('');
+        }).join('');
+
+        return [
+          '<div class="study-viewer-source">',
+          '<div class="study-viewer-source-title">References</div>',
+          '<div class="study-reference-list">',
+          links,
+          '</div>',
+          '</div>'
+        ].join('');
+      }
+
+      return '';
     }
 
     function applyFilters() {
@@ -744,6 +827,7 @@
           entry.topic,
           entry.question,
           entry.answer,
+          JSON.stringify(entry.references || ''),
           entry.additional_info,
           entry.date
         ].join(' ').toLowerCase();
@@ -783,6 +867,7 @@
               question: item.question || 'Untitled',
               answer: item.answer || '',
               date: item.date || '',
+              references: item.references || null,
               additional_info: item.additional_info || '',
               completeness: item.completeness
             };
