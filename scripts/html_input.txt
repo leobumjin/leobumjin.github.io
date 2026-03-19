@@ -1,0 +1,163 @@
+<h1>PAC Learning Summary</h1>
+
+<h2>1. Core Perspective</h2>
+
+<p>
+PAC Learning views learning from a <strong>data-centric perspective</strong>.
+Instead of focusing on whether a model can fit training data, it asks:
+</p>
+
+<blockquote>
+<strong>How many samples are required to achieve a target level of performance?</strong>
+</blockquote>
+
+<p>
+In other words, learning is formulated as a problem of determining 
+<strong>sample complexity</strong>.
+</p>
+
+<hr>
+
+<h2>2. Problem Setup</h2>
+
+<ul>
+  <li><strong>$H$</strong>: hypothesis class</li>
+  <li><strong>$D$</strong>: unknown data distribution over input space $\mathcal{X}$</li>
+  <li><strong>$f$</strong>: true target function</li>
+  <li><strong>$S = \{(x_1, y_1), \dots, (x_m, y_m)\}$</strong>: i.i.d. samples from $D$</li>
+</ul>
+
+<p>
+The generalization error of a hypothesis $h \in H$ is:
+</p>
+
+<p>
+$$
+\mathrm{err}_D(h) = \mathbb{P}_{x \sim D}[h(x) \neq f(x)]
+$$
+</p>
+
+<hr>
+
+<h2>3. PAC Learning Definition</h2>
+
+<p>
+A hypothesis class $H$ is <strong>PAC-learnable</strong> if there exists a learning algorithm $A$
+and a sample size $m(\varepsilon, \delta)$ such that for all $\varepsilon > 0$, $\delta > 0$:
+</p>
+
+<p>
+$$
+\mathbb{P}_{S \sim D^m} \left( \mathrm{err}_D(A(S)) \le \varepsilon \right) \ge 1 - \delta
+$$
+</p>
+
+<h3>Parameters</h3>
+
+<ul>
+  <li><strong>$\varepsilon$ (epsilon)</strong>: accuracy (maximum allowed error)</li>
+  <li><strong>$\delta$ (delta)</strong>: failure probability</li>
+</ul>
+
+<hr>
+
+<h2>4. Central Question</h2>
+
+<p>
+PAC Learning answers the following:
+</p>
+
+<blockquote>
+Given $\varepsilon$ and $\delta$,  
+<strong>what is the minimum sample size $m$ required?</strong>
+</blockquote>
+
+<p>
+This function $m(\varepsilon, \delta)$ is called the <strong>sample complexity</strong>.
+</p>
+
+<hr>
+
+<h2>5. Sample Complexity (Finite Hypothesis Class)</h2>
+
+<p>
+If $H$ is finite, the required number of samples satisfies:
+</p>
+
+<p>
+$$
+m \ge \frac{1}{\varepsilon} \left( \ln |H| + \ln \frac{1}{\delta} \right)
+$$
+</p>
+
+<h3>Implications</h3>
+
+<ul>
+  <li>$|H| \uparrow$ → more samples required (model complexity effect)</li>
+  <li>$\varepsilon \downarrow$ → more samples required (higher accuracy)</li>
+  <li>$\delta \downarrow$ → more samples required (higher confidence)</li>
+</ul>
+
+<hr>
+
+<h2>6. Interpretation</h2>
+
+<p>
+PAC Learning reframes learning as a trade-off between:
+</p>
+
+<ul>
+  <li>Model complexity ($|H|$)</li>
+  <li>Accuracy ($\varepsilon$)</li>
+  <li>Confidence ($1 - \delta$)</li>
+  <li>Data size ($m$)</li>
+</ul>
+
+<p>
+Thus, learning is not just about fitting data, but about ensuring:
+</p>
+
+<blockquote>
+<strong>Generalization with high probability using sufficient data.</strong>
+</blockquote>
+
+<hr>
+
+<h2>7. Practical Example</h2>
+
+<ul>
+  <li>$\varepsilon = 0.05$ (error ≤ 5%)</li>
+  <li>$\delta = 0.01$ (confidence ≥ 99%)</li>
+</ul>
+
+<p>
+PAC Learning allows us to estimate:
+</p>
+
+<blockquote>
+The minimum number of samples required to achieve this performance target.
+</blockquote>
+
+<hr>
+
+<h2>8. Key Insight</h2>
+
+<p>
+PAC Learning provides a <strong>quantitative theory of generalization</strong>:
+</p>
+
+<blockquote>
+To achieve reliable performance, sufficient data is required —  
+and the required amount can be explicitly bounded.
+</blockquote>
+
+<hr>
+
+<h2>9. One-line Summary</h2>
+
+<p>
+<strong>
+PAC Learning characterizes learning as determining the sample complexity 
+required to achieve a target accuracy ($\varepsilon$) and confidence ($1 - \delta$).
+</strong>
+</p>
