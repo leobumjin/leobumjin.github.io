@@ -1,0 +1,10 @@
+[
+    {
+        "question": "What is Stationary time series?",
+        "answer": "<p><strong>Stationary (weakly stationary) time series</strong><br>\n<p>A time series $\\{X_t\\}$ is <strong>weakly stationary</strong> if its first and second moments do not change over time. Formally, $\\mathbb{E}[X_t] = \\mu$, $\\mathrm{Var}(X_t) = \\sigma^2 < \\infty$, and $\\mathrm{Cov}(X_t, X_{t+h}) = \\gamma(h)$, where the covariance depends only on the lag $h$, not on time $t$.</p></p>\n\n<p><strong>Strictly stationary time series</strong><br>\n<p>A time series $\\{X_t\\}$ is <strong>strictly stationary</strong> if for any $k \\ge 1$, any time points $t_1, \\dots, t_k$, and any shift $\\tau$, we have $(X_{t_1}, \\dots, X_{t_k}) \\overset{d}{=} (X_{t_1+\\tau}, \\dots, X_{t_k+\\tau})$, meaning the entire joint distribution is invariant to time shifts.</p></p>",
+        "date": "2026-03-19",
+        "references": {
+            
+        }
+    }
+]
