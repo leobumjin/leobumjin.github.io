@@ -11,26 +11,26 @@ description:
   </div>
   
   <div class="posts-content">
-    <div class="language-filter-container">
+    <!-- <div class="language-filter-container">
       <button class="language-btn" data-language="Interpretability">Interpretability</button>
       <span class="language-separator"> | </span>
       <button class="language-btn active" data-language="English">Essay </button>
       <span class="language-separator"> | </span>
       <button class="language-btn" data-language="Korean">Korean</button>
-    </div>
+    </div> -->
     <table class="posts-table">
       <thead>
         <tr>
           <th class="col-date">Date</th>
           <th class="col-title">Title</th>
           <th class="col-category">Category</th>
-          <th class="col-media">Media</th>
+          <!-- <th class="col-media">Media</th> -->
         </tr>
       </thead>
       <tbody>
         {%- assign sorted_papers = site.essay | where_exp: "item", "item.date != nil" | sort: "date" | reverse -%}
         {%- for paper in sorted_papers -%}
-        <tr class="post-row" data-language="{%- if paper.language -%}{{ paper.language }}{%- else -%}Interpretability{%- endif -%}">
+        <tr class="post-row" data-language="{%- if paper.language -%}{{ paper.language }}{%- else -%}Essay{%- endif -%}">
           <td class="col-date">{{ paper.date | date: "%Y.%m.%d" }}</td>
           <td class="col-title">
             <a href="{%- if paper.redirect -%}{{ paper.redirect }}{%- elsif paper.url -%}{{ paper.url | relative_url }}{%- else -%}#{%- endif -%}">
@@ -44,13 +44,13 @@ description:
               -
             {%- endif -%}
           </td>
-          <td class="col-media">
+          <!-- <td class="col-media">
             {%- if paper.media -%}
               {{ paper.media }}
             {%- else -%}
               Article
             {%- endif -%}
-          </td>
+          </td> -->
         </tr>
         {%- endfor -%}
       </tbody>
@@ -162,7 +162,7 @@ header {
 
 .posts-table {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   border-collapse: collapse;
   border-spacing: 0;
@@ -198,24 +198,24 @@ header {
 }
 
 .posts-table thead th.col-title {
-  width: 50%;
+  width: 60%;
   padding-left: 1.5em;
   padding-right: 1.5em;
 }
 
 .posts-table thead th.col-category {
-  width: 20%;
+  width: 28%;
   padding-left: 0;
   padding-right: 0;
-  text-align: right;
+  text-align: center;
 }
 
-.posts-table thead th.col-media {
+/* .posts-table thead th.col-media {
   width: 18%;
   padding-left: 0;
   padding-right: 1.5em;
   text-align: right;
-}
+} */
 
 .posts-table thead th:hover {
   background-color: transparent !important;
@@ -284,17 +284,17 @@ header {
 }
 
 .posts-table tbody td.col-category {
-  text-align: right;
+  text-align: center;
   white-space: nowrap;
   padding-left: 0;
   padding-right: 0;
 }
 
-.posts-table tbody td.col-media {
+/* .posts-table tbody td.col-media {
   text-align: right;
   padding-left: 0;
   padding-right: 1.5em;
-}
+} */
 
 .post-row {
   display: table-row;
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const postRows = document.querySelectorAll('.post-row');
   
   // Always start with English as default
-  const savedLanguage = 'Interpretability';
+  const savedLanguage = 'English';
   setActiveButton(savedLanguage);
   filterByLanguage(savedLanguage);
   
