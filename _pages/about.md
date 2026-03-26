@@ -119,6 +119,8 @@ _styles: >
 
 ## News
 
+- **March 19, 2026** — Contributed as a technical advisor to the national broadcast **시사기획 창 (KBS)**, exploring real-world capabilities and risks of LLM-based AI agents.
+
 - **October 1, 2025** — Started my three-month stay as a Visiting Scholar at **NYU**!  
   If you’re interested in discussing research ideas, feel free to reach out.
 
@@ -144,7 +146,7 @@ _styles: >
 
 --- 
 <a href="assets/cv.pdf">
-  🗂️ CV(October 16, 2025)
+  🗂️ CV(March 26, 2026)
 </a> |  📧 **Email:** [bumjin@kaist.ac.kr](mailto:bumjin@kaist.ac.kr) | [bumjini42@gmail.com](mailto:bumjini42@gmail.com)
 <br>
 
