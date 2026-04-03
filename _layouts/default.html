@@ -11,6 +11,19 @@
     <meta http-equiv="refresh" content="3; url={{ site.baseurl | prepend: site.url }}/" />
   {%- endif -%}
   {% include head.html %}
+  <script>
+    (function() {
+      try {
+        if (window.localStorage.getItem('navMenuOpen') === 'true') {
+          document.documentElement.setAttribute('data-nav-open', 'true');
+        } else {
+          document.documentElement.removeAttribute('data-nav-open');
+        }
+      } catch (e) {
+        document.documentElement.removeAttribute('data-nav-open');
+      }
+    })();
+  </script>
   <!-- Page/Post style -->
   {% if page._styles %}
   <!-- Page/Post style -->
@@ -76,6 +89,10 @@
       gap: 0;
       margin-left: 0;
       color: var(--global-text-color) !important;
+      transition: none;
+    }
+
+    .nav-shell.nav-animate .nav-brand {
       transition: opacity 0.22s ease, transform 0.22s ease;
     }
 
@@ -122,7 +139,7 @@
       background: transparent;
       color: var(--global-text-color);
       cursor: pointer;
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease;
+      transition: none;
       transform-origin: center center;
       transform: translateY(-50%) rotate(0deg);
       z-index: 2;
@@ -137,22 +154,28 @@
       background: transparent;
     }
 
-    .nav-menu-toggle.is-open {
+    .nav-menu-toggle.is-open,
+    html[data-nav-open='true'] .nav-menu-toggle {
       transform: translateY(-50%) rotate(90deg);
       background: var(--global-text-color);
       color: var(--global-bg-color);
       border-color: var(--global-text-color);
     }
 
-    .nav-menu-toggle.is-open .nav-menu-toggle-glyph {
+    .nav-menu-toggle.is-open .nav-menu-toggle-glyph,
+    html[data-nav-open='true'] .nav-menu-toggle .nav-menu-toggle-glyph {
       color: var(--global-bg-color);
     }
 
     .nav-menu-toggle-glyph {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
       font-size: 1rem;
       line-height: 1;
-      transform: translateY(-1px);
+      transform: none;
     }
 
     .nav-menu-panel {
@@ -166,14 +189,23 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      transition: none;
+      z-index: 1;
+    }
+
+    .nav-menu-shell.is-animating .nav-menu-toggle {
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease;
+    }
+
+    .nav-menu-shell.is-animating .nav-menu-panel {
       transition:
         opacity 0.2s ease,
         transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
         visibility 0s linear 0.3s;
-      z-index: 1;
     }
 
-    .nav-menu-shell.is-open .nav-menu-panel {
+    .nav-menu-shell.is-open .nav-menu-panel,
+    html[data-nav-open='true'] .nav-menu-panel {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
@@ -201,28 +233,33 @@
       color: color-mix(in srgb, var(--global-text-color) 72%, transparent) !important;
       font-size: var(--type-body);
       font-weight: 600;
+      transition: none;
+      opacity: 0;
+      transform: translateX(10px);
+    }
+
+    .nav-menu-shell.is-animating .nav-links .nav-link {
       transition:
         color 0.2s ease,
         opacity 0.2s ease,
         transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-      opacity: 0;
-      transform: translateX(10px);
     }
 
     html[data-theme='dark'] .nav-links .nav-link {
       color: color-mix(in srgb, var(--global-text-color) 78%, transparent) !important;
     }
 
-    .nav-menu-shell.is-open .nav-links .nav-link {
+    .nav-menu-shell.is-open .nav-links .nav-link,
+    html[data-nav-open='true'] .nav-links .nav-link {
       opacity: 1;
       transform: translateX(0);
     }
 
-    .nav-menu-shell.is-open .nav-item:nth-child(1) .nav-link {
+    .nav-menu-shell.is-animating.is-open .nav-item:nth-child(1) .nav-link {
       transition-delay: 0.08s;
     }
 
-    .nav-menu-shell.is-open .nav-item:nth-child(2) .nav-link {
+    .nav-menu-shell.is-animating.is-open .nav-item:nth-child(2) .nav-link {
       transition-delay: 0.16s;
     }
 

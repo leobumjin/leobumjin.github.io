@@ -88,13 +88,13 @@
 h1{
   margin-top: 1.0rem;
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 h2{
   margin-top: 1.0rem;
   font-size: 25px;
-  font-weight: 550;
+  font-weight: 400;
 
 }
 
@@ -117,15 +117,16 @@ h5{
 
 h1, h2, h3,  h4, h5, h6{
   margin-bottom: .9rem;
+  font-family: 'LoraLocal', 'AritaBuriKR', serif !important;
   // font-family: 'Open Sans', sans-serif; ;
   // font-weight: 400;
 
 }
 
 
-h1, h2, h3, h4, h5, h6, strong, div{
+h1, h2, h3, h4, h5, h6, div{
   color: var(--global-text-color);
-  font-family: 'Lora', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'LoraLocal', 'AritaBuriKR', serif;
   // font-family:'Open Sans', sans-serif; ;
   // font-weight: 400;
   // font-family: Didot,Didot LT STD,Hoefler Text,Garamond,Times New Roman,serif; 
@@ -134,7 +135,7 @@ h1, h2, h3, h4, h5, h6, strong, div{
  li, ul{
   color: var(--global-text-color);
   font-size: var(--global-text-size);
-  font-family: 'Lora', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'LoraLocal', 'AritaBuriKR', serif;
   line-height: 140%;
   margin-top:10px;
   margin-bottom:10px;
@@ -142,9 +143,10 @@ h1, h2, h3, h4, h5, h6, strong, div{
   // margin-bottom: 10px;
 }
 strong{
-  font-weight:720;
-  font-size: var(--global-text-size);
-  font-family: 'Lora-Bold', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
   // font-family: 'Open Sans', sans-serif; ;
   // font-family:  "Cambria, Georgia, serif"; //"Roboto", Helvetica, Arial, sans-serif;
 }
@@ -152,7 +154,7 @@ strong{
 secondary-strong{
   font-weight:600;
   font-size: var(--global-text-size);
-  font-family: 'Lora-SemiBold', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'LoraLocal', 'AritaBuriKR', serif;
   // font-family: 'Open Sans', sans-serif; ;
   // font-family:  "Cambria, Georgia, serif"; //"Roboto", Helvetica, Arial, sans-serif;
 }
@@ -165,7 +167,7 @@ span {
 
 }
 p {
-  font-family: 'Lora', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'LoraLocal', 'AritaBuriKR', serif;
   color: var(--global-text-color);
   line-height: 160%;
   font-weight: 300;

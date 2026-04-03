@@ -1,24 +1,8 @@
 {
   "items": [
     {
-      "title": "Agentic Vulnerability Analysis in AI Agents (Project Leader)",
-      "organization": "KBS Insight (Technical Advisor)",
-      "focus": "National broadcast collaboration on LLM agent vulnerability analysis.",
-      "date": "Mar 2026",
-      "highlights": [
-        "Led a 4-person team to analyze real-world vulnerabilities of LLM agents featured in a national broadcast.",
-        "Conducted indirect prompt injection evaluation, identifying up to 55% attack success rate in GPT-5.2.",
-        "Developed the PnP-XAI app for interpretable LLM behavior analysis and demonstration.",
-        "Built and analyzed OpenClaw and Moltbook, revealing failures in multi-agent environments."
-      ],
-      "links": [
-        { "label": "KAIST AI Part", "url": "https://www.youtube.com/watch?v=Iwut7D-MGvw" },
-        { "label": "Full Version", "url": "https://www.youtube.com/watch?v=qFwumv7__Ao&t=2311s" }
-      ]
-    },
-    {
       "title": "Visiting Research Scholar",
-      "organization": "NYU Global AI Frontier Lab",
+      "organization": "NYU Global AI Frontier Lab 🗽",
       "focus": "Mechanistic interpretability and bias in LLMs.",
       "date": "Aug 2024 - Oct 2024",
       "highlights": [

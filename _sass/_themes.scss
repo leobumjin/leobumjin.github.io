@@ -8,6 +8,7 @@
   --global-text-color: #111111;
   --global-text-size: 1.10rem;
   --global-text-color-light: #666b7a;
+  --global-text-color-very-light: #848eae;
   --global-theme-color: #2536b8;
   --global-hover-color: #6d3df2;
   --global-footer-bg-color: #111111;
@@ -35,6 +36,7 @@ html[data-theme='dark'] {
   --global-code-bg-color: #{$code-bg-color-dark};
   --global-text-color: #f5f7ff;
   --global-text-color-light: #b6bdd3;
+  --global-text-color-very-light: #d6dcef;
   --global-theme-color: #8ea2ff;
   --global-hover-color: #bb86ff;
   --global-footer-bg-color: #f5f7ff;
