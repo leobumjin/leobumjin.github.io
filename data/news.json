@@ -1,0 +1,28 @@
+[
+    {
+        "date": "2026 April",
+        "title": "I'm a new PhD student at KAIST",
+        "urls": [
+            {
+                "title": "KAIST",
+                "url": "https://www.kaist.ac.kr/"
+            },
+            {
+                "title": "GitHub",
+                "url": "https://github.com/bumjini"
+            }
+        ],
+        "color": "#0000ff"
+    },
+    {
+        "date": "2026 April",
+        "title": "Test My News",
+        "urls": [
+            {
+                "title": "GitHub",
+                "url": "https://github.com/bumjini"
+            }
+        ],
+        "color": "#00aa00"
+    }
+]

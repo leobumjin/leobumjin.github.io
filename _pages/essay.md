@@ -1,365 +1,213 @@
 ---
 layout: default
-title: Notes
+title: Posts
 permalink: /essay/
-description: 
+description:
 ---
 
-<div class="posts-container">
-  <div class="posts-header">
-    <!-- Header section with apricot background -->
+<div class="posts-archive">
+  <section class="posts-archive-hero">
+    <p class="home-section-label">Posts</p>
+    <h1 id="postsArchiveQuote">Loading quote...</h1>
+    <p class="posts-archive-intro" id="postsArchiveAuthor"></p>
+  </section>
+
+  <div class="posts-archive-filter-shell" id="postsArchiveFilterShell" hidden>
+    <div class="posts-archive-filter" id="postsArchiveFilter"></div>
   </div>
-  
-  <div class="posts-content">
-    <!-- <div class="language-filter-container">
-      <button class="language-btn" data-language="Interpretability">Interpretability</button>
-      <span class="language-separator"> | </span>
-      <button class="language-btn active" data-language="English">Essay </button>
-      <span class="language-separator"> | </span>
-      <button class="language-btn" data-language="Korean">Korean</button>
-    </div> -->
-    <table class="posts-table">
-      <thead>
-        <tr>
-          <th class="col-date">Date</th>
-          <th class="col-title">Title</th>
-          <th class="col-category">Category</th>
-          <!-- <th class="col-media">Media</th> -->
-        </tr>
-      </thead>
-      <tbody>
-        {%- assign sorted_papers = site.essay | where_exp: "item", "item.date != nil" | sort: "date" | reverse -%}
-        {%- for paper in sorted_papers -%}
-        <tr class="post-row" data-language="{%- if paper.language -%}{{ paper.language }}{%- else -%}Essay{%- endif -%}">
-          <td class="col-date">{{ paper.date | date: "%Y.%m.%d" }}</td>
-          <td class="col-title">
-            <a href="{%- if paper.redirect -%}{{ paper.redirect }}{%- elsif paper.url -%}{{ paper.url | relative_url }}{%- else -%}#{%- endif -%}">
-              {{ paper.title }}
-            </a>
-          </td>
-          <td class="col-category">
-            {%- if paper.category -%}
-              {{ paper.category }}
-            {%- else -%}
-              -
-            {%- endif -%}
-          </td>
-          <!-- <td class="col-media">
-            {%- if paper.media -%}
-              {{ paper.media }}
-            {%- else -%}
-              Article
-            {%- endif -%}
-          </td> -->
-        </tr>
-        {%- endfor -%}
-      </tbody>
-    </table>
-  </div>
+
+  <section class="posts-archive-groups" id="postsArchiveGroups">
+    <p class="posts-archive-summary">Loading posts...</p>
+  </section>
 </div>
 
-<style>
-/* Theme Color Variables */
-    :root {
-      --theme-bg-color:rgb(255, 233, 213); /* Change this color to update the entire theme */
-      --theme-hover-color:rgb(255, 227, 201); /* Darker shade for hover effects */
-
-}
-
-/* AritaBuriKR Font */
-@font-face {
-  font-family: 'AritaBuriKR';
-  src: url('/assets/fonts/AritaBuriKR-Medium.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'AritaBuriKR';
-  src: url('/assets/fonts/AritaBuriKR-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'AritaBuriKR';
-  src: url('/assets/fonts/AritaBuriKR-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
-
-/* Override body and container backgrounds to theme color */
-body {
-  font-family: 'AritaBuriKR', sans-serif !important;
-}
-
-.container {
-  font-family: 'AritaBuriKR', sans-serif !important;
-}
-
-/* Navbar background to theme color */
-.navbar {
-}
-
-header {
-}
-
-.posts-container {
-  font-family: 'AritaBuriKR', sans-serif !important;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  padding: 0;
-}
-
-.posts-header {
-  padding: 0em 0;
-  margin-bottom: 0;
-  text-align: center;
-}
-
-.posts-content {
-  padding: 0em 0;
-  min-height: 60vh;
-  position: relative;
-}
-
-.language-filter-container {
-  max-width: 1200px;
-  margin: 0 auto 0 auto;
-  text-align: center;
-  font-size:1.4rem;
-  padding: 0 0;
-}
-
-.language-btn {
-  font-family: 'AritaBuriKR', sans-serif !important;
-  font-size: 1em;
-  padding: 0.4em 0.8em;
-  background-color: transparent;
-  border: none;
-  color: #333;
-  cursor: pointer;
-  outline: none;
-  transition: color 0.2s ease;
-  text-decoration: none;
-}
-
-.language-btn:hover {
-  color: #000;
-}
-
-.language-btn.active {
-  font-weight: bold;
-  color: #000;
-}
-
-.language-separator {
-  color: #333;
-  margin: 0 0.3em;
-  font-size: 1em;
-}
-
-.posts-table {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: #333; /* Dark text color */
-  background-color: transparent !important;
-  border: none !important;
-  font-family: 'AritaBuriKR', sans-serif !important;
-  table-layout: fixed;
-}
-
-.posts-table thead {
-  border-bottom: 1px solid #000;
-  background-color: transparent !important;
-}
-
-.posts-table thead th {
-  padding: 1em 0;
-  text-align: left;
-  font-weight: normal;
-  font-size: 1em;
-  color: #333;
-  background-color: transparent !important;
-  border: none !important;
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-}
-
-.posts-table thead th.col-date {
-  width: 12%;
-  padding-left: 1.5em;
-  padding-right: 0;
-}
-
-.posts-table thead th.col-title {
-  width: 60%;
-  padding-left: 1.5em;
-  padding-right: 1.5em;
-}
-
-.posts-table thead th.col-category {
-  width: 28%;
-  padding-left: 0;
-  padding-right: 0;
-  text-align: center;
-}
-
-/* .posts-table thead th.col-media {
-  width: 18%;
-  padding-left: 0;
-  padding-right: 1.5em;
-  text-align: right;
-} */
-
-.posts-table thead th:hover {
-  background-color: transparent !important;
-}
-
-.posts-table thead tr:hover {
-  background-color: transparent !important;
-}
-
-
-
-.posts-table tbody tr {
-  border-bottom: 1px solid #000 !important;
-  border-top: none !important;
-  background-color: transparent !important;
-  transition: background-color 0.2s ease;
-}
-
-.posts-table tbody tr:hover {
-  background-color: var(--theme-hover-color) !important;
-}
-
-.posts-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.posts-table tbody tr:nth-child(even) {
-  background-color: transparent !important;
-}
-
-.posts-table tbody tr:nth-child(odd) {
-  background-color: transparent !important;
-}
-
-.posts-table tbody td {
-  padding: 1em 0;
-  font-size: 1em;
-  color: #333;
-  background-color: transparent !important;
-  border: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
-  border-left: none !important;
-  border-right: none !important;
-}
-
-.posts-table tbody td.col-date {
-  text-align: left;
-  padding-left: 1.5em;
-  padding-right: 0;
-}
-
-.posts-table tbody td.col-title {
-  text-align: left;
-  padding-left: 1.5em;
-  padding-right: 1.5em;
-}
-
-.posts-table tbody td.col-title a {
-  color: #333;
-  text-decoration: none;
-}
-
-.posts-table tbody td.col-title a:hover {
-  text-decoration: underline;
-}
-
-.posts-table tbody td.col-category {
-  text-align: center;
-  white-space: nowrap;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-/* .posts-table tbody td.col-media {
-  text-align: right;
-  padding-left: 0;
-  padding-right: 1.5em;
-} */
-
-.post-row {
-  display: table-row;
-}
-
-.post-row.hidden {
-  display: none;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .posts-table {
-    font-size: 0.9em;
-  }
-  
-  .posts-table thead th,
-  .posts-table tbody td {
-    padding: 0.8em 1em;
-  }
-  
-  .language-filter-container {
-    padding: 0 1em;
-  }
-}
-</style>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const languageButtons = document.querySelectorAll('.language-btn');
-  const postRows = document.querySelectorAll('.post-row');
-  
-  // Always start with English as default
-  const savedLanguage = 'English';
-  setActiveButton(savedLanguage);
-  filterByLanguage(savedLanguage);
-  
-  languageButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      const selectedLanguage = this.getAttribute('data-language');
-      setActiveButton(selectedLanguage);
-      localStorage.setItem('selectedLanguage', selectedLanguage);
-      filterByLanguage(selectedLanguage);
+  document.addEventListener('DOMContentLoaded', function () {
+    var groupsRoot = document.getElementById('postsArchiveGroups');
+    var filterShell = document.getElementById('postsArchiveFilterShell');
+    var filterBar = document.getElementById('postsArchiveFilter');
+    var quoteTitle = document.getElementById('postsArchiveQuote');
+    var quoteAuthor = document.getElementById('postsArchiveAuthor');
+    if (!groupsRoot) return;
+    var allItems = [];
+    var activeCategory = '';
+    var colorMapping = {};
+    var mediaOrder = [];
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function filenameToUrl(filename) {
+      if (!filename) return '#';
+      var match = String(filename).match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$/);
+      if (!match) return '#';
+      return '{{ "/blog/" | relative_url }}' + match[1] + '/' + match[4] + '/';
+    }
+
+    function formatDate(dateValue) {
+      if (!dateValue) return '';
+      var parsed = new Date(dateValue + 'T00:00:00');
+      if (Number.isNaN(parsed.getTime())) return dateValue;
+      return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+    }
+
+    function pickDailyQuote(quotes) {
+      if (!Array.isArray(quotes) || !quotes.length) return null;
+      var now = new Date();
+      var dayKey = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      var dayIndex = Math.floor(dayKey / 86400000) % quotes.length;
+      return quotes[dayIndex];
+    }
+
+    function renderFilterBar() {
+      if (!filterBar) return;
+      if (!activeCategory) {
+        filterBar.innerHTML = '';
+        if (filterShell) filterShell.hidden = true;
+        return;
+      }
+
+      if (filterShell) filterShell.hidden = false;
+      filterBar.innerHTML =
+        '<button class="posts-archive-filter-pill is-active" type="button" data-category-filter="' + escapeHtml(activeCategory) + '">' +
+          escapeHtml(activeCategory) +
+        '</button>';
+    }
+
+    function renderItems(items) {
+      return items.map(function (item) {
+        var postUrl = filenameToUrl(item.eng_url);
+        var media = item.media || '';
+        var dotColor = colorMapping[media] || item.color || '';
+        var color = dotColor ? ' style="background:' + escapeHtml(dotColor) + ';"' : '';
+        var title = escapeHtml(item.title || 'Untitled');
+        var category = escapeHtml(item.category || '');
+        var date = escapeHtml(formatDate(item.date));
+        return '' +
+          '<article class="posts-archive-item">' +
+            '<div class="posts-archive-rail">' +
+              '<div class="posts-archive-date-wrap">' +
+                '<p class="posts-archive-date">' + date + '</p>' +
+              '</div>' +
+              '<div class="posts-archive-marker" aria-hidden="true">' +
+                '<span class="posts-archive-dot"' + color + '></span>' +
+                '<span class="posts-archive-stem"></span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="posts-archive-main">' +
+              '<h2 class="posts-archive-title"><a href="' + postUrl + '">' + title + '</a></h2>' +
+            '</div>' +
+            '<div class="posts-archive-side">' +
+              (category ? '<button class="posts-archive-category" type="button" data-category-filter="' + category + '">' + category + '</button>' : '') +
+            '</div>' +
+          '</article>';
+      }).join('');
+    }
+
+    function renderPosts() {
+      var visibleItems = activeCategory
+        ? allItems.filter(function (item) { return (item.category || '') === activeCategory; })
+        : allItems;
+
+      if (!visibleItems.length) {
+        groupsRoot.innerHTML = '<p class="posts-archive-summary">No posts yet.</p>';
+        renderFilterBar();
+        return;
+      }
+
+      var groups = [];
+      var seen = {};
+
+      mediaOrder.forEach(function (mediaName) {
+        var groupItems = visibleItems.filter(function (item) { return (item.media || '') === mediaName; });
+        if (!groupItems.length) return;
+        seen[mediaName] = true;
+        groups.push({ name: mediaName, items: groupItems });
+      });
+
+      visibleItems.forEach(function (item) {
+        var mediaName = item.media || 'Other';
+        if (seen[mediaName]) return;
+        seen[mediaName] = true;
+        groups.push({
+          name: mediaName,
+          items: visibleItems.filter(function (entry) { return (entry.media || 'Other') === mediaName; })
+        });
+      });
+
+      groupsRoot.innerHTML = groups.map(function (group) {
+        return '' +
+          '<section class="posts-archive-group">' +
+            '<div class="posts-archive-section-heading">' +
+              '<p class="home-section-label">' + escapeHtml(group.name) + '</p>' +
+            '</div>' +
+            '<div class="posts-archive-list">' +
+              '<div class="posts-archive-items">' + renderItems(group.items) + '</div>' +
+            '</div>' +
+          '</section>';
+      }).join('');
+
+      renderFilterBar();
+    }
+
+    Promise.all([
+      fetch('{{ "/data/posts.json" | relative_url }}').then(function (response) {
+        if (!response.ok) throw new Error('Failed to load posts.');
+        return response.json();
+      }),
+      fetch('{{ "/data/quote.json" | relative_url }}').then(function (response) {
+        if (!response.ok) throw new Error('Failed to load quotes.');
+        return response.json();
+      }).catch(function () {
+        return [];
+      })
+    ])
+      .then(function (results) {
+        var postData = results[0];
+        var quotes = results[1];
+        var items = Array.isArray(postData) ? postData : (Array.isArray(postData.posts) ? postData.posts : []);
+        var meta = postData && typeof postData === 'object' && !Array.isArray(postData) ? postData['meta-data'] || {} : {};
+
+        colorMapping = meta['color-mapping'] || {};
+        mediaOrder = Object.keys(colorMapping);
+
+        var selectedQuote = pickDailyQuote(quotes);
+        if (quoteTitle) {
+          quoteTitle.textContent = selectedQuote && selectedQuote.quote ? '"' + selectedQuote.quote + '"' : 'Posts';
+        }
+        if (quoteAuthor) {
+          quoteAuthor.textContent = selectedQuote && selectedQuote.author ? selectedQuote.author : '';
+        }
+
+        if (!Array.isArray(items) || !items.length) {
+          groupsRoot.innerHTML = '<p class="posts-archive-summary">No posts yet.</p>';
+          return;
+        }
+
+        allItems = items.slice().sort(function (a, b) {
+          return new Date(b.date || 0) - new Date(a.date || 0);
+        });
+        renderPosts();
+      })
+      .catch(function () {
+        if (quoteTitle) quoteTitle.textContent = 'Posts';
+        if (quoteAuthor) quoteAuthor.textContent = '';
+        groupsRoot.innerHTML = '<p class="posts-archive-summary">Unable to load posts.</p>';
+      });
+
+    document.addEventListener('click', function (event) {
+      var trigger = event.target.closest('[data-category-filter]');
+      if (!trigger) return;
+
+      var selected = trigger.getAttribute('data-category-filter') || '';
+      activeCategory = activeCategory === selected ? '' : selected;
+      renderPosts();
     });
   });
-  
-  function setActiveButton(language) {
-    languageButtons.forEach(function(btn) {
-      if (btn.getAttribute('data-language') === language) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-  }
-  
-  function filterByLanguage(language) {
-    postRows.forEach(function(row) {
-      const rowLanguage = row.getAttribute('data-language');
-      
-      if (rowLanguage === language) {
-        row.classList.remove('hidden');
-      } else {
-        row.classList.add('hidden');
-      }
-    });
-  }
-});
 </script>

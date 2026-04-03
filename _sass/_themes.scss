@@ -4,19 +4,21 @@
  
 :root {
   --global-bg-color: #ffffff;
-  --global-code-bg-color: #dfdfdf5a;
-  --global-text-color: #2B2622;
+  --global-code-bg-color: rgba(82, 103, 255, 0.08);
+  --global-text-color: #111111;
   --global-text-size: 1.10rem;
-  --global-text-color-light: #{$grey-color};
-  --global-theme-color: #505090;;
-  --global-hover-color: #{$purple-color};
-  --global-footer-bg-color: #{$grey-color-dark};
-  --global-footer-text-color: #{$grey-color-light};
+  --global-text-color-light: #666b7a;
+  --global-theme-color: #2536b8;
+  --global-hover-color: #6d3df2;
+  --global-footer-bg-color: #111111;
+  --global-footer-text-color: #f5f7ff;
   --global-footer-link-color: #{$white-color};
-  --global-distill-app-color: #{$grey-color};
-  --global-divider-color: rgb(154, 118, 116);
-  --global-card-bg-color: #F6F1E8;
-  --global-bg-highlight-color: #f2e7df;
+  --global-distill-app-color: #7d86a3;
+  --global-divider-color: rgba(17, 17, 17, 0.12);
+  --global-card-bg-color: #fcfcff;
+  --global-bg-highlight-color: #eef2ff;
+  --page-bg-start: #f8f9fc;
+  --page-bg-end: #f4f6fb;
 
   .fa-sun {
     display : none;
@@ -29,18 +31,21 @@
 }
 
 html[data-theme='dark'] {
-  --global-bg-color: #{$grey-color-dark};
+  --global-bg-color: #08080c;
   --global-code-bg-color: #{$code-bg-color-dark};
-  --global-text-color: #{$grey-color-light};
-  --global-text-color-light: #{$grey-color-light};
-  --global-theme-color: #505090;
-  --global-hover-color: #505090;
-  --global-footer-bg-color: #{$grey-color-light};
-  --global-footer-text-color: #{$grey-color-dark};
+  --global-text-color: #f5f7ff;
+  --global-text-color-light: #b6bdd3;
+  --global-theme-color: #8ea2ff;
+  --global-hover-color: #bb86ff;
+  --global-footer-bg-color: #f5f7ff;
+  --global-footer-text-color: #08080c;
   --global-footer-link-color: #{$black-color};
-  --global-distill-app-color: #{$grey-color-light};
-  --global-divider-color: #424246;
-  --global-card-bg-color: #{$grey-900};
+  --global-distill-app-color: #dbe1ff;
+  --global-divider-color: rgba(245, 247, 255, 0.14);
+  --global-card-bg-color: #10111a;
+  --global-bg-highlight-color: rgba(142, 162, 255, 0.1);
+  --page-bg-start: #08080c;
+  --page-bg-end: #0a0b10;
 
   .fa-sun {
     padding-left: 10px;

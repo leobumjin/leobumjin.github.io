@@ -1,0 +1,37 @@
+{
+    "meta-data": {
+        "color-mapping": {
+            "Technical": "#0000ff",
+            "Essay": "#00aa00"
+        }
+    },
+"posts":[
+    {
+        "title": "I'm a new PhD student at KAIST",
+        "category": "KAIST",
+        "eng_url": "2026-04-01-quiet-archive.md",
+        "kor_url": "2026-04-01-quiet-archive-ko.md",
+        "date": "2026-04-03",
+        "tags": ["AI", "Machine Learning", "Computer Vision"],
+        "media": "Essay"
+    },
+    {
+        "title": "Test My Post",
+        "category": "GitHub",
+        "eng_url": "2026-04-01-quiet-archive.md",
+        "kor_url": "2026-04-01-quiet-archive-ko.md",
+        "date": "2026-04-03",
+        "tags": ["AI", "Machine Learning", "Computer Vision"],
+        "media": "Technical"
+    },
+    {
+        "title": "Test My Post 3",
+        "category": "GitHub",
+        "eng_url": "2026-04-01-quiet-archive.md",
+        "kor_url": "2026-04-01-quiet-archive-ko.md",
+        "date": "2026-04-03",
+        "tags": ["AI", "Machine Learning", "Computer Vision"],
+        "media": "Technical"
+    }
+]
+}

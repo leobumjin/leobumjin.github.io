@@ -2,6 +2,11 @@
  * Content
  ******************************************************************************/
 
+:root {
+  --page-width: 850px;
+  --page-gutter: 0.2rem;
+}
+
 html,
 body {
   width: 100%;
@@ -37,7 +42,7 @@ body.sticky-bottom-footer {
 }
 
 .container {
-  max-width: 850px;  // $max-content-width;
+  max-width: var(--page-width);
   width: 100%;
 }
 

@@ -13,6 +13,18 @@
     <!-- AritaBuriKR Font -->
     <style type="text/css">
       @font-face {
+        font-family: 'LoraLocal';
+        src: url('/assets/css/fonts/Lora-VariableFont_wght.ttf') format('truetype');
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'LoraLocal';
+        src: url('/assets/css/fonts/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+        font-weight: 100 900;
+        font-style: italic;
+      }
+      @font-face {
         font-family: 'AritaBuriKR';
         src: url('/assets/fonts/AritaBuriKR-Medium.ttf') format('truetype');
         font-weight: normal;
@@ -30,8 +42,8 @@
         font-weight: 300;
         font-style: normal;
       }
-      body, * {
-        font-family: 'AritaBuriKR', sans-serif !important;
+      body {
+        font-family: 'LoraLocal', 'AritaBuriKR', serif;
       }
     </style>
 
@@ -48,12 +60,10 @@
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
     
     <!-- Dark Mode -->
-    {% if site.enable_darkmode %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/{{ site.highlight_theme_dark | append: '.css' }}" media="none" id="highlight_theme_dark" />
 
     <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
     <script src="{{ '/assets/js/dark_mode.js' | relative_url }}"></script>
-    {% endif %}
 
     <!-- Social Badges Header Styles -->
     <style>
