@@ -43,11 +43,22 @@ description:
         .replace(/'/g, '&#39;');
     }
 
-    function filenameToUrl(filename) {
-      if (!filename) return '#';
-      var match = String(filename).match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$/);
-      if (!match) return '#';
-      return '{{ "/blog/" | relative_url }}' + match[1] + '/' + match[4] + '/';
+    function slugifyDate(dateValue) {
+      if (!dateValue) return '';
+      var match = String(dateValue).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      return match ? match[1] : '';
+    }
+
+    function buildPostSlug(item, language) {
+      if (!item || !item.id || !item.date) return '';
+      return String(item.id) + '-' + String(language || 'en');
+    }
+
+    function buildPostUrl(item, language) {
+      var year = slugifyDate(item && item.date);
+      var slug = buildPostSlug(item, language);
+      if (!year || !slug) return '#';
+      return '{{ "/blog/" | relative_url }}' + year + '/' + slug + '/';
     }
 
     function formatDate(dateValue) {
@@ -82,7 +93,7 @@ description:
 
     function renderItems(items) {
       return items.map(function (item) {
-        var postUrl = filenameToUrl(item.eng_url);
+        var postUrl = buildPostUrl(item, 'en');
         var media = item.media || '';
         var dotColor = colorMapping[media] || item.color || '';
         var color = dotColor ? ' style="background:' + escapeHtml(dotColor) + ';"' : '';

@@ -2,10 +2,10 @@
 layout: default
 ---
 <!-- _layouts/post.html -->
-{%- assign year = page.date | date: "%Y" -%}
-{%- assign tags = page.tags | join: "" -%}
-{%- assign categories = page.categories | join: "" -%}
-
+{%- assign is_korean_post = false -%}
+{%- if page.path contains '-kr.md' -%}
+  {%- assign is_korean_post = true -%}
+{%- endif -%}
 {% if page._styles %}
 <!-- Page/Post style -->
 <style type="text/css">
@@ -20,25 +20,14 @@ layout: default
       <div class="post-language-switch" id="postLanguageSwitch" hidden></div>
     </div>
     <h2 class="post-title">{{ page.title }}</h2>
-    <p class="post-meta">{{ page.date | date: "%B %-d, %Y" }}{%- if page.author -%} • {{ page.author }}{%- endif -%}{%- if page.meta -%} • {{ page.meta }}{%- endif -%}</p>
-    <p class="post-tags">
-      <a href="{{ year | prepend: '/blog/' | prepend: site.baseurl}}"> <i class="fas fa-calendar fa-sm"></i> {{ year }} </a>
-      {%- if tags != "" %}
-      &nbsp; &middot; &nbsp;
-        {% for tag in page.tags -%}
-        <!-- <a href="{{ tag | prepend: '/blog/tag/' | prepend: site.baseurl}}"> -->
-          <i class="fas fa-hashtag fa-sm"></i> {{ tag }} &nbsp;
-          {% endfor -%}
-      {% endif %}
-
-      {%- if categories != "" %}
-      &nbsp; &middot; &nbsp;
-        {% for category in page.categories -%}
-        <a href="{{ category | prepend: '/blog/category/' | prepend: site.baseurl}}">
-          <i class="fas fa-tag fa-sm"></i> {{ category }}</a> &nbsp;
-          {% endfor -%}
-      {% endif %}
-
+    <p class="post-meta">
+      {%- if is_korean_post -%}
+        {{ page.date | date: "%Y년 %-m월 %-d일" }}
+      {%- else -%}
+        {{ page.date | date: "%B %-d, %Y" }}
+      {%- endif -%}
+      {%- if page.author -%} • {{ page.author }}{%- endif -%}
+      {%- if page.meta -%} • {{ page.meta }}{%- endif -%}
     </p>
   </header>
 
@@ -68,17 +57,22 @@ layout: default
     var switchRoot = document.getElementById('postLanguageSwitch');
     if (!switchRoot) return;
 
-    function filenameToUrl(filename) {
-      if (!filename) return '';
-      var match = String(filename).match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$/);
-      if (!match) return '';
-      return '{{ "/blog/" | relative_url }}' + match[1] + '/' + match[4] + '/';
+    function yearFromDate(dateValue) {
+      var match = String(dateValue || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      return match ? match[1] : '';
     }
 
-    function slugFromFilename(filename) {
-      var match = String(filename || '').match(/^(\d{4})-(\d{2})-(\d{2})-(.+)\.md$/);
-      if (!match) return '';
-      return match[1] + '/' + match[4];
+    function postKeyFromItem(item, language) {
+      var year = yearFromDate(item && item.date);
+      var id = item && item.id ? String(item.id) : '';
+      var lang = String(language || 'en');
+      if (!year || !id) return '';
+      return year + '/' + id + '-' + lang;
+    }
+
+    function postUrlFromItem(item, language) {
+      var key = postKeyFromItem(item, language);
+      return key ? '{{ "/blog/" | relative_url }}' + key + '/' : '';
     }
 
     function currentPostKey(pathname) {
@@ -100,14 +94,14 @@ layout: default
         if (!items.length) return;
 
         var matched = items.find(function (item) {
-          return slugFromFilename(item.eng_url) === currentKey || slugFromFilename(item.kor_url) === currentKey;
+          return postKeyFromItem(item, 'en') === currentKey || postKeyFromItem(item, 'kr') === currentKey;
         });
 
-        if (!matched || !matched.kor_url) return;
+        if (!matched || !matched.has_kr) return;
 
-        var isKorean = slugFromFilename(matched.kor_url) === currentKey;
-        var engUrl = filenameToUrl(matched.eng_url);
-        var korUrl = filenameToUrl(matched.kor_url);
+        var isKorean = postKeyFromItem(matched, 'kr') === currentKey;
+        var engUrl = postUrlFromItem(matched, 'en');
+        var korUrl = postUrlFromItem(matched, 'kr');
 
         switchRoot.innerHTML =
           '<div class="post-language-toggle" role="group" aria-label="Language selection" style="--active-index:' + (isKorean ? '1' : '0') + ';">' +

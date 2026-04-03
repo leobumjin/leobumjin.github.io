@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "institution": "KAIST (Korea Advanced Institute of Science and Technology)",
+      "degree": "Ph.D. Student in Artificial Intelligence",
+      "date": "Sep 2023 - Present",
+      "highlights": [
+        "Advisor: Prof. Jaesik Choi",
+        "Topic: Integrating Cognitive Architectures into Large Language Models"
+      ]
+    },
+    {
+      "institution": "KAIST (Korea Advanced Institute of Science and Technology)",
+      "degree": "M.S. in Artificial Intelligence",
+      "date": "Aug 2023",
+      "highlights": [
+        "GPA: 4.17 / 4.3",
+        "Advisor: Prof. Jaesik Choi",
+        "Thesis: Partitioned Channel Gradient for Reliable Saliency Map in Image Classification"
+      ]
+    },
+    {
+      "institution": "Chung-Ang University",
+      "degree": "B.S. in Mathematics (Double Major in Software Engineering)",
+      "date": "Aug 2020",
+      "highlights": [
+        "GPA: 4.39 / 4.5"
+      ]
+    }
+  ]
+}

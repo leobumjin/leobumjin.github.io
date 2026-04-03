@@ -1,0 +1,74 @@
+{
+  "items": [
+    {
+      "title": "Agentic Vulnerability Analysis in AI Agents (Project Leader)",
+      "organization": "KBS Insight (Technical Advisor)",
+      "focus": "National broadcast collaboration on LLM agent vulnerability analysis.",
+      "date": "Mar 2026",
+      "highlights": [
+        "Led a 4-person team to analyze real-world vulnerabilities of LLM agents featured in a national broadcast.",
+        "Conducted indirect prompt injection evaluation, identifying up to 55% attack success rate in GPT-5.2.",
+        "Developed the PnP-XAI app for interpretable LLM behavior analysis and demonstration.",
+        "Built and analyzed OpenClaw and Moltbook, revealing failures in multi-agent environments."
+      ],
+      "links": [
+        { "label": "KAIST AI Part", "url": "https://www.youtube.com/watch?v=Iwut7D-MGvw" },
+        { "label": "Full Version", "url": "https://www.youtube.com/watch?v=qFwumv7__Ao&t=2311s" }
+      ]
+    },
+    {
+      "title": "Visiting Research Scholar",
+      "organization": "NYU Global AI Frontier Lab",
+      "focus": "Mechanistic interpretability and bias in LLMs.",
+      "date": "Aug 2024 - Oct 2024",
+      "highlights": [
+        "Conducted research at New York University's Global AI Frontier Lab.",
+        "Investigated bias representation in large language models through neuron- and circuit-level analysis.",
+        "Collaborated on interpretability frameworks for scalable model analysis."
+      ],
+      "links": [
+        { "label": "Lab", "url": "https://nyu.edu/global-ai-frontier-lab" }
+      ]
+    },
+    {
+      "title": "Teaching Assistant",
+      "organization": "KAIST AI",
+      "focus": "Time Series, Deep Learning, and AI Colloquium.",
+      "date": "Sep 2023 - Sep 2025",
+      "highlights": [
+        "Served as a teaching assistant for graduate-level courses in time series, deep learning, and colloquium."
+      ],
+      "links": [
+        { "label": "KAIST AI", "url": "https://gsai.kaist.ac.kr/" }
+      ]
+    },
+    {
+      "title": "Lab Representative",
+      "organization": "SAILAB, KAIST AI",
+      "focus": "Research organization and student coordination.",
+      "date": "Sep 2023 - Aug 2024",
+      "highlights": [
+        "Served as the Ph.D. student representative for the SAILAB research group.",
+        "Organized internal seminars and managed communication between students and faculty.",
+        "Coordinated collaboration initiatives and lab activities."
+      ],
+      "links": [
+        { "label": "SAILAB", "url": "https://sailab.kaist.ac.kr/" }
+      ]
+    },
+    {
+      "title": "GPU Server Management",
+      "organization": "SAILAB, KAIST AI",
+      "focus": "Linux, Docker, Git, Slurm, and research infrastructure management.",
+      "date": "Jan 2022 - Dec 2024",
+      "highlights": [
+        "Managed GPU servers and computing resources for SAILAB's research infrastructure.",
+        "Optimized resource allocation and maintained high-performance computing environments.",
+        "Automated server monitoring and scheduling with Slurm and Docker containers."
+      ],
+      "links": [
+        { "label": "SAILAB", "url": "https://sailab.kaist.ac.kr/" }
+      ]
+    }
+  ]
+}

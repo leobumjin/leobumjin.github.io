@@ -241,6 +241,14 @@
   transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
+.post-title {
+  color: var(--global-text-color);
+}
+
+.container .post-meta {
+  color: var(--global-text-color-light);
+}
+
 .page-language-transitioning .post {
   opacity: 0.78;
   transform: translateY(4px);
