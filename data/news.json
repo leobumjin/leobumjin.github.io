@@ -1,13 +1,28 @@
 [
     {
-        "date": "2026 April",
+        "year": "2026",
+        "date": "April 11",
         "title": "I'm a new PhD student at KAIST",
         "url": "https://github.com/bumjini",
-        "color": "#0000ff"
+        "color": "#0000ff",
+        "highlight": true,
+        "visible": true
     },
     {
-        "date": "2026 April",
+        "year": "2026",
+        "date": "March 25",
         "title": "Test My News",
-        "color": "#00aa00"
+        "color": "#00aa00",
+        "highlight": false,
+        "visible": true
+    },
+    {
+        "year": "2026",
+        "date": "April",
+        "title": "Test My News",
+        "color": "#00aa00",
+        "highlight": false,
+        "visible": false
     }
+    
 ]

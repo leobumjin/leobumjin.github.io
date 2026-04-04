@@ -23,11 +23,11 @@
       },
       "Conference": {
         "white": "#000000",
-        "dark": "#00ff00"
+        "dark": "#ffffff"
       },
       "Thesis": {
         "white": "#400070",
-        "dark": "#ffffff"
+        "dark": "#c000ff"
       },
       "preprint": {
         "white": "#000000",

@@ -22,15 +22,14 @@ permalink: /work/
         <div class="work-hero-copy">
           <h1>Work</h1>
           <p class="work-intro">
-            A structured overview of research output, applied projects, institutional roles,
-            and academic training.
+            Research History
           </p>
         </div>
       </section>
 
       <section class="work-section" id="work-publications">
         <div class="work-section-heading">
-          <p class="home-section-label">Publications</p>
+          <h2 class="home-section-label">Publications</h2>
         </div>
         <div class="work-list" id="work-publications-list">
           <p class="posts-archive-summary">Loading publications...</p>
@@ -39,7 +38,7 @@ permalink: /work/
 
       <section class="work-section" id="work-projects">
         <div class="work-section-heading">
-          <p class="home-section-label">Projects</p>
+          <h2 class="home-section-label">Projects</h2>
         </div>
         <div class="work-list" id="work-projects-list">
           <p class="posts-archive-summary">Loading projects...</p>
@@ -48,7 +47,7 @@ permalink: /work/
 
       <section class="work-section" id="work-experiences">
         <div class="work-section-heading">
-          <p class="home-section-label">Experience</p>
+          <h2 class="home-section-label">Experience</h2>
         </div>
         <div class="work-list" id="work-experiences-list">
           <p class="posts-archive-summary">Loading experience...</p>
@@ -57,7 +56,7 @@ permalink: /work/
 
       <section class="work-section" id="work-education">
         <div class="work-section-heading">
-          <p class="home-section-label">Education</p>
+          <h2 class="home-section-label">Education</h2>
         </div>
         <div class="work-list" id="work-education-list">
           <p class="posts-archive-summary">Loading education...</p>
@@ -256,6 +255,7 @@ permalink: /work/
       var metaHtml = '';
       var venueHtml = '';
       var compactMeta = '';
+      var headerDate = '';
       var summary = '';
       var notes = '';
       var actions = '';
@@ -305,45 +305,54 @@ permalink: /work/
 
         var pubMetaParts = [];
         if (item.chip) {
-          pubMetaParts.push('<span class="work-item-chip"' + chipStyle + '>' + renderChipLabel(item.chip) + '</span>');
+          pubMetaParts.push('<span class="work-item-pub-part"><span class="work-item-chip"' + chipStyle + '>' + renderChipLabel(item.chip) + '</span></span>');
         }
         if (venueHtml) {
-          pubMetaParts.push('<span class="work-item-venue-label">' + venueHtml + '</span>');
+          pubMetaParts.push('<span class="work-item-pub-part"><span class="work-item-venue-label">' + venueHtml + '</span></span>');
         }
         if (item.date) {
-          pubMetaParts.push('<span class="work-item-year-label">' + escapeHtml(item.date) + '</span>');
+          pubMetaParts.push('<span class="work-item-pub-part"><span class="work-item-year-label">' + escapeHtml(item.date) + '</span></span>');
         }
-        compactMeta = pubMetaParts.join('<span class="work-item-pub-sep"> | </span>');
+        compactMeta = pubMetaParts.join('');
       } else if (type === 'project') {
         title = item.title || '';
-        meta = item.organization || '';
+        headerDate = item.date || '';
+        meta = '';
         var projectMetaParts = [];
+        if (item.organization) {
+          projectMetaParts.push('<span class="work-item-meta-chip">' + escapeHtml(item.organization) + '</span>');
+        }
+        if (item.focus) {
+          projectMetaParts.push('<span class="work-item-venue-label">' + escapeHtml(item.focus) + '</span>');
+        }
         if (item.tools) {
           projectMetaParts.push('<span class="work-item-venue-label">' + escapeHtml(item.tools) + '</span>');
-        }
-        if (item.date) {
-          projectMetaParts.push('<span class="work-item-year-label">' + escapeHtml(item.date) + '</span>');
         }
         compactMeta = projectMetaParts.join('<span class="work-item-pub-sep"> | </span>');
         actions = renderLinks(item.links, metadata, type);
       } else if (type === 'experience') {
         title = item.title || '';
-        meta = item.organization || '';
+        headerDate = item.date || '';
+        meta = '';
         var expMetaParts = [];
+        if (item.organization) {
+          expMetaParts.push('<span class="work-item-meta-chip">' + escapeHtml(item.organization) + '</span>');
+        }
         if (item.focus) {
           expMetaParts.push('<span class="work-item-venue-label">' + escapeHtml(item.focus) + '</span>');
-        }
-        if (item.date) {
-          expMetaParts.push('<span class="work-item-year-label">' + escapeHtml(item.date) + '</span>');
         }
         compactMeta = expMetaParts.join('<span class="work-item-pub-sep"> | </span>');
         actions = renderLinks(item.links, metadata, type);
       } else if (type === 'education') {
         title = item.institution || '';
-        meta = item.degree || '';
+        headerDate = item.date || '';
+        meta = '';
         var eduMetaParts = [];
-        if (item.date) {
-          eduMetaParts.push('<span class="work-item-year-label">' + escapeHtml(item.date) + '</span>');
+        if (item.degree) {
+          eduMetaParts.push('<span class="work-item-meta-chip">' + escapeHtml(item.degree) + '</span>');
+        }
+        if (item.major || item.focus) {
+          eduMetaParts.push('<span class="work-item-venue-label">' + escapeHtml(item.major || item.focus) + '</span>');
         }
         compactMeta = eduMetaParts.join('<span class="work-item-pub-sep"> | </span>');
       }
@@ -358,6 +367,7 @@ permalink: /work/
             '<div class="work-item-header">' +
               '<h2 class="work-item-title">' + escapeHtml(title) + '</h2>' +
               (type !== 'publication' && kind ? '<span class="work-item-kind">' + escapeHtml(kind) + '</span>' : '') +
+              (type !== 'publication' && headerDate ? '<span class="work-item-header-date">' + escapeHtml(headerDate) + '</span>' : '') +
             '</div>' +
             (meta ? '<p class="work-item-meta">' + (type === 'publication' ? metaHtml : escapeHtml(meta)) + '</p>' : '') +
             (compactMeta ? '<p class="work-item-pub-meta">' + compactMeta + '</p>' : '') +

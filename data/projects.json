@@ -20,7 +20,7 @@
     {
       "title": "Interpretability Research",
       "organization": "NYU Global AI Frontier Lab",
-      "tools": "Python, PyTorch, Transformer Models (Llama, Gemma), Activation Patching, LoRA",
+      "tools": "Transformer Models, Activation Patching, LoRA",
       "summary": "Mechanistic interpretability of large language models to investigate bias representations.",
       "date": "Aug 2024 - Current",
       "highlights": [
@@ -48,9 +48,9 @@
       ]
     },
     {
-      "title": "AlchemyNet and Domain Knowledge (Phase 2)",
+      "title": "AI for Cosmetic Material Composition Design and Property Inference (Phase 2)",
       "organization": "Kolmar",
-      "tools": "Python, PyTorch, Transformer, Node.js",
+      "tools": "Transformer, Node.js",
       "summary": "A web-based AI service for cosmetic composition design and property inference.",
       "date": "Nov 2024 - May 2025",
       "highlights": [
@@ -74,7 +74,7 @@
     {
       "title": "X-Ray Object Detection and Saliency",
       "organization": "Independent Research Project",
-      "tools": "Python, PyTorch, Grad-CAM, Explainable AI (XAI)",
+      "tools": "Grad-CAM, Explainable AI (XAI)",
       "summary": "Attribution-based analysis of overlapping object detection decisions.",
       "date": "Aug 2024",
       "highlights": [

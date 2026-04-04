@@ -11,7 +11,19 @@
 }
 
 .posts-archive-section-heading {
-  padding-bottom: 0.55rem;
+  padding-bottom: 0.08rem;
+}
+
+.posts-archive-section-label {
+  color: var(--post-section-color-light, inherit);
+}
+
+.home-section-label.posts-archive-section-label {
+  margin-bottom: 0.04rem;
+}
+
+html[data-theme='dark'] .posts-archive-section-label {
+  color: var(--post-section-color-dark, var(--post-section-color-light, inherit));
 }
 
 .posts-archive-groups {
@@ -112,7 +124,7 @@
 .posts-archive-rail {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0;
 }
 
 .posts-archive-date-wrap {
@@ -129,43 +141,6 @@
   white-space: nowrap;
 }
 
-.posts-archive-marker {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  flex: 0 0 16px;
-  min-height: 1.2em;
-}
-
-.posts-archive-dot {
-  position: relative;
-  z-index: 1;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--global-theme-color) 80%, white 20%);
-}
-
-.posts-archive-stem {
-  position: absolute;
-  top: -1.2rem;
-  bottom: -1.2rem;
-  left: 50%;
-  width: 1px;
-  transform: translateX(-50%);
-  background: color-mix(in srgb, var(--global-divider-color) 88%, transparent);
-}
-
-.posts-archive-item:first-child .posts-archive-stem {
-  top: 50%;
-}
-
-.posts-archive-item:last-child .posts-archive-stem {
-  bottom: 50%;
-}
-
 .posts-archive-main {
   min-width: 0;
 }
@@ -175,6 +150,14 @@
   font-size: 1.15rem;
   line-height: 1.2;
   letter-spacing: -0.01em;
+}
+
+.posts-archive-title.is-highlight a {
+  color: var(--post-highlight-light, var(--global-theme-color));
+}
+
+html[data-theme='dark'] .posts-archive-title.is-highlight a {
+  color: var(--post-highlight-dark, var(--post-highlight-light, var(--global-theme-color)));
 }
 
 .posts-archive-title a {
@@ -212,18 +195,65 @@
 
 @media (max-width: 900px) {
   .posts-archive-item {
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-    align-items: start;
+    grid-template-columns: minmax(0, 1fr) 5.4rem;
+    grid-template-areas: "title date";
+    gap: 0.5rem;
+    align-items: stretch;
+    padding: 0.66rem 0;
+  }
+
+  .posts-archive-main {
+    grid-area: title;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .posts-archive-rail {
+    grid-area: date;
+    grid-row: 1;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding-left: 0.48rem;
+    border-left: 1px solid color-mix(in srgb, var(--global-divider-color) 84%, transparent);
+  }
+
+  .posts-archive-side {
+    display: none;
+  }
+
+  .posts-archive-side:empty {
+    display: none;
+  }
+
+  .posts-archive-title {
+    font-size: 0.84rem;
+    line-height: 1.24;
+  }
+
+  .posts-archive-title.is-highlight,
+  .posts-archive-title.is-highlight a {
+    font-size: 0.84rem !important;
+    line-height: 1.24;
+  }
+
+  .posts-archive-title a {
+    display: block;
+    font-size: inherit !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+  }
+
+  .container .posts-archive-date,
+  .container .posts-archive-category {
+    font-size: 0.82rem;
+    white-space: nowrap;
   }
 
   .posts-archive-filter-shell {
     grid-template-columns: 1fr;
-    padding-bottom: 0.75rem;
-  }
-
-  .posts-archive-side {
-    justify-content: flex-start;
+    padding-bottom: 0.55rem;
   }
 
   .posts-archive-filter {
@@ -233,8 +263,43 @@
 
 .post-header-top {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin-bottom: 0.5rem;
+}
+
+.post-back-link {
+  appearance: none;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--global-divider-color) 88%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--global-text-color-light);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+}
+
+.post-back-link:hover,
+.post-back-link:focus-visible {
+  background: var(--global-text-color);
+  border-color: var(--global-text-color);
+  color: var(--global-bg-color);
+}
+
+.post-back-link:focus-visible {
+  outline: none;
 }
 
 .post {
@@ -243,15 +308,56 @@
 
 .post-title {
   color: var(--global-text-color);
+  margin-top: 0.2rem;
+  margin-bottom: 0.95rem;
+  line-height: 1.3;
 }
 
 .container .post-meta {
   color: var(--global-text-color-light);
+  margin-top: 0;
+  margin-bottom: 2.2rem;
+  line-height: 1.45;
+}
+
+.post-header {
+  margin-bottom: 1.2rem;
+}
+
+.post-content {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .post-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .post-title {
+    margin-bottom: 0.9rem;
+    line-height: 1.28;
+  }
+
+  .post .post-meta,
+  .container .post-meta {
+    margin-top: 0;
+    margin-bottom: 1.6rem;
+    line-height: 1.46;
+  }
+
+  .post-content {
+    margin-top: 0.9rem;
+  }
+
+  .post-content p,
+  .post-content li {
+    font-size: 0.9rem;
+  }
 }
 
 .page-language-transitioning .post {
   opacity: 0.78;
-  transform: translateY(4px);
+  transform: none;
 }
 
 .post-language-switch {
@@ -267,9 +373,9 @@
   gap: 0.18rem;
   border: 1px solid color-mix(in srgb, var(--global-divider-color) 90%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--global-bg-color) 96%, var(--global-theme-color) 4%);
+  background: transparent;
   isolation: isolate;
-  transition: border-color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
+  transition: border-color 0.22s ease, background-color 0.22s ease;
 }
 
 .post-language-toggle::before {
@@ -281,8 +387,7 @@
   width: calc(50% - 0.18rem);
   border: 1px solid color-mix(in srgb, var(--global-divider-color) 82%, transparent);
   border-radius: 999px;
-  background: var(--global-bg-color);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background: color-mix(in srgb, var(--global-text-color) 9%, transparent);
   transform: translateX(calc(var(--active-index, 0) * 100%));
   transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, border-color 0.2s ease;
   z-index: 0;
@@ -320,5 +425,5 @@
 }
 
 .post-language-option:active {
-  transform: scale(0.98);
+  transform: none;
 }

@@ -3,6 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!mode_toggle) return;
 
     mode_toggle.addEventListener("click", function() {
-        toggleTheme(localStorage.getItem("theme"));
+        toggleTheme(document.documentElement.getAttribute("data-theme"));
     });
 });

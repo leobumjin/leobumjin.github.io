@@ -43,6 +43,22 @@ description:
         .replace(/'/g, '&#39;');
     }
 
+    function resolveThemeColors(value) {
+      if (!value) return { light: '', dark: '' };
+      if (typeof value === 'string') return { light: value, dark: value };
+      if (typeof value !== 'object') return { light: '', dark: '' };
+      var light = value.white || value.light || value.default || '';
+      var dark = value.dark || light || '';
+      return { light: light, dark: dark };
+    }
+
+    function toThemeStyleVars(colors, lightVarName, darkVarName) {
+      if (!colors || (!colors.light && !colors.dark)) return '';
+      return ' style="' +
+        lightVarName + ':' + escapeHtml(colors.light || colors.dark || '') + ';' +
+        darkVarName + ':' + escapeHtml(colors.dark || colors.light || '') + ';"';
+    }
+
     function slugifyDate(dateValue) {
       if (!dateValue) return '';
       var match = String(dateValue).match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -61,11 +77,21 @@ description:
       return '{{ "/blog/" | relative_url }}' + year + '/' + slug + '/';
     }
 
+    function isMobileListView() {
+      return window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
+    }
+
     function formatDate(dateValue) {
       if (!dateValue) return '';
       var parsed = new Date(dateValue + 'T00:00:00');
       if (Number.isNaN(parsed.getTime())) return dateValue;
-      return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+      if (isMobileListView()) {
+        var yy = String(parsed.getFullYear()).slice(-2);
+        var mm = String(parsed.getMonth() + 1).padStart(2, '0');
+        var dd = String(parsed.getDate()).padStart(2, '0');
+        return yy + '-' + mm + '-' + dd;
+      }
+      return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     }
 
     function pickDailyQuote(quotes) {
@@ -95,24 +121,25 @@ description:
       return items.map(function (item) {
         var postUrl = buildPostUrl(item, 'en');
         var media = item.media || '';
-        var dotColor = colorMapping[media] || item.color || '';
-        var color = dotColor ? ' style="background:' + escapeHtml(dotColor) + ';"' : '';
         var title = escapeHtml(item.title || 'Untitled');
         var category = escapeHtml(item.category || '');
         var date = escapeHtml(formatDate(item.date));
+        var isHighlight = !!item.highlight;
+        var itemClass = isHighlight ? 'posts-archive-item is-highlight' : 'posts-archive-item';
+        var titleClass = isHighlight ? 'posts-archive-title is-highlight' : 'posts-archive-title';
+        var highlightColors = resolveThemeColors(colorMapping[media] || item.color || '');
+        var titleStyle = (isHighlight && (highlightColors.light || highlightColors.dark))
+          ? toThemeStyleVars(highlightColors, '--post-highlight-light', '--post-highlight-dark')
+          : '';
         return '' +
-          '<article class="posts-archive-item">' +
+          '<article class="' + itemClass + '">' +
             '<div class="posts-archive-rail">' +
               '<div class="posts-archive-date-wrap">' +
                 '<p class="posts-archive-date">' + date + '</p>' +
               '</div>' +
-              '<div class="posts-archive-marker" aria-hidden="true">' +
-                '<span class="posts-archive-dot"' + color + '></span>' +
-                '<span class="posts-archive-stem"></span>' +
-              '</div>' +
             '</div>' +
             '<div class="posts-archive-main">' +
-              '<h2 class="posts-archive-title"><a href="' + postUrl + '">' + title + '</a></h2>' +
+              '<h2 class="' + titleClass + '"' + titleStyle + '><a href="' + postUrl + '">' + title + '</a></h2>' +
             '</div>' +
             '<div class="posts-archive-side">' +
               (category ? '<button class="posts-archive-category" type="button" data-category-filter="' + category + '">' + category + '</button>' : '') +
@@ -153,10 +180,12 @@ description:
       });
 
       groupsRoot.innerHTML = groups.map(function (group) {
+        var sectionColors = resolveThemeColors(colorMapping[group.name] || '');
+        var sectionStyle = toThemeStyleVars(sectionColors, '--post-section-color-light', '--post-section-color-dark');
         return '' +
           '<section class="posts-archive-group">' +
             '<div class="posts-archive-section-heading">' +
-              '<p class="home-section-label">' + escapeHtml(group.name) + '</p>' +
+              '<p class="home-section-label posts-archive-section-label"' + sectionStyle + '>' + escapeHtml(group.name) + '</p>' +
             '</div>' +
             '<div class="posts-archive-list">' +
               '<div class="posts-archive-items">' + renderItems(group.items) + '</div>' +
@@ -201,7 +230,9 @@ description:
           return;
         }
 
-        allItems = items.slice().sort(function (a, b) {
+        allItems = items.filter(function (item) {
+          return item && item.visible !== false;
+        }).sort(function (a, b) {
           return new Date(b.date || 0) - new Date(a.date || 0);
         });
         renderPosts();

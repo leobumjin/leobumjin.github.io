@@ -1,6 +1,9 @@
 // Has to be in the head tag, otherwise a flicker effect will occur.
 
 let toggleTheme = (theme) => {
+  if (!theme) {
+    theme = document.documentElement.getAttribute("data-theme") || getSystemTheme();
+  }
   if (theme == "dark") {
     setTheme("light");
   } else {
@@ -9,25 +12,35 @@ let toggleTheme = (theme) => {
 }
 
 
-let setTheme = (theme) =>  {
-  transTheme();
-  setHighlight(theme);
+let setTheme = (theme, options = {}) =>  {
+  const useTransition = options.useTransition !== false;
+  const persist = options.persist !== false;
+  const applyTheme = () => {
+    setHighlight(theme);
 
-  if (theme) {
-    document.documentElement.setAttribute("data-theme", theme);
+    if (theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+    else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+    if (persist) {
+      localStorage.setItem("theme", theme);
+    }
+    
+    // Updates the background of medium-zoom overlay.
+    if (typeof medium_zoom !== 'undefined') {
+      medium_zoom.update({
+        background: getComputedStyle(document.documentElement)
+            .getPropertyValue('--global-bg-color') + 'ee',  // + 'ee' for trasparency.
+      })
+    }
+  };
+
+  if (useTransition) {
+    transTheme();
   }
-  else {
-    document.documentElement.removeAttribute("data-theme");
-  }
-  localStorage.setItem("theme", theme);
-  
-  // Updates the background of medium-zoom overlay.
-  if (typeof medium_zoom !== 'undefined') {
-    medium_zoom.update({
-      background: getComputedStyle(document.documentElement)
-          .getPropertyValue('--global-bg-color') + 'ee',  // + 'ee' for trasparency.
-    })
-  }
+  applyTheme();
 };
 
 let setHighlight = (theme) => {
@@ -45,19 +58,42 @@ let transTheme = () => {
   document.documentElement.classList.add("transition");
   window.setTimeout(() => {
     document.documentElement.classList.remove("transition");
-  }, 500)
+  }, 760)
 }
 
 
-let initTheme = (theme) => {
-  if (theme == null) {
-    const userPref = window.matchMedia;
-    if (userPref && userPref('(prefers-color-scheme: dark)').matches) {
-        theme = 'dark';
-    }
+let getSystemTheme = () => {
+  const userPref = window.matchMedia;
+  if (userPref && userPref('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
   }
-  setTheme(theme);
+  return 'light';
 }
 
+let initTheme = () => {
+  let savedTheme = null;
+  try {
+    savedTheme = localStorage.getItem("theme");
+  } catch (e) {
+    savedTheme = null;
+  }
+  const hasSavedTheme = savedTheme === "light" || savedTheme === "dark";
+  const initialTheme = hasSavedTheme ? savedTheme : getSystemTheme();
+  setTheme(initialTheme, { useTransition: false, persist: hasSavedTheme });
 
-initTheme(localStorage.getItem("theme"));
+  // Follow system changes only when user has no explicit saved preference.
+  if (hasSavedTheme) return;
+
+  const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+  if (media && typeof media.addEventListener === 'function') {
+    media.addEventListener('change', function (event) {
+      setTheme(event.matches ? 'dark' : 'light', { useTransition: false, persist: true });
+    });
+  } else if (media && typeof media.addListener === 'function') {
+    media.addListener(function (event) {
+      setTheme(event.matches ? 'dark' : 'light', { useTransition: false, persist: true });
+    });
+  }
+}
+
+initTheme();
