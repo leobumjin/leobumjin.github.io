@@ -121,6 +121,12 @@ html[data-theme='dark'] .posts-archive-section-label {
   border-bottom: none;
 }
 
+@media (min-width: 901px) {
+  .posts-archive-item.is-highlight {
+    padding: 0.98rem 0;
+  }
+}
+
 .posts-archive-rail {
   display: flex;
   align-items: center;

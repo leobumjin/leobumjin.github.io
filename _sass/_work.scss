@@ -24,6 +24,21 @@
   grid-row: 1;
 }
 
+@media (max-width: 1320px) {
+  .work-nav {
+    display: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 1320px) and (min-width: 769px) {
+  .work-page {
+    padding-left: 0.95rem;
+    padding-right: 0.95rem;
+  }
+}
+
 .work-nav-box {
   display: grid;
   gap: 0.55rem;
