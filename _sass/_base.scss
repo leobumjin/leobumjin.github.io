@@ -100,14 +100,14 @@ h2{
 
 h3{
   margin-top: 1.0rem;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
 }
 
 
 h4{
   margin-top: 1.0rem;
-  font-size: 20px;
+  font-size: 18px;
 }
 h5{
   margin-top: 1.0rem;
@@ -278,12 +278,11 @@ figure, img {
 }
 
 blockquote {
-  background: var(--global-bg-color);
-  border-left: 3px solid var(--global-theme-color);
-  // margin: 1.5em 10px;
-  padding-top: 4px;
-  color: #5e5e5e;
-  background-color:#f0f0f053;
+  margin: 1.5rem 0;
+  padding: 0.2rem 0.4rem;
+  border-left: 5px solid color-mix(in srgb, var(--global-theme-color) 70%, transparent);
+  background: color-mix(in srgb, var(--global-divider-color) 14%, transparent);
+  color: var(--global-text-color);
 }
 
 // Math
@@ -990,12 +989,7 @@ html.theme-vt .theme-switch-thumb {
       }
     }
   }
-  .post-content{
-        blockquote {
-          border-left: 5px solid var(--global-theme-color);
-          padding: 5px;
-      }
-}
+  .post-content{}
 }
 
 .post-tags {

@@ -7,36 +7,15 @@
     },
 "posts":[
     {
-        "title": "Quiet Archive",
-        "id": "kaist-new-phd-student-1",
-        "category": "KAIST",
-        "date": "2026-04-01",
-        "tags": ["AI", "Machine Learning", "Computer Vision"],
-        "media": "Essay",
-        "has_kr": true,
-        "highlight": true,
-        "visible": true
-    },
-    {
-        "title": "Reading Log on Model Behavior",
-        "category": "GitHub",
-        "id": "kaist-new-phd-student-2",
-        "date": "2026-04-02",
-        "tags": ["AI", "Machine Learning", "Computer Vision"],
+        "title": "Emotional Representation in LLMs",
+        "id": "anthropic-emotion",
+        "category": "Technical Review",
+        "date": "2026-04-05",
+        "tags": ["LLM", "Emotion", "Anthropic"],
         "media": "Technical",
-        "has_kr": false,
-        "highlight": true,
-        "visible": true
-    },
-    {
-        "title": "First Working Note",
-        "category": "GitHub",
-        "id": "kaist-new-phd-student-3",
-        "date": "2026-04-03",
-        "tags": ["AI", "Machine Learning", "Computer Vision"],
-        "media": "Technical",
-        "has_kr": false,
-        "highlight": true,
+        "en_link": "technical_en/2026-04-04-anthropic-emotion.md",
+        "kr_link": "technical_kr/2026-04-04-anthropic-emotion.md",
+        "highlight": false,
         "visible": true
     }
 ]

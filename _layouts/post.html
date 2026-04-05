@@ -3,7 +3,7 @@ layout: default
 ---
 <!-- _layouts/post.html -->
 {%- assign is_korean_post = false -%}
-{%- if page.path contains '-kr.md' -%}
+{%- if page.path contains '-kr.md' or page.path contains '/technical_kr/' -%}
   {%- assign is_korean_post = true -%}
 {%- endif -%}
 {% if page._styles %}
@@ -13,7 +13,8 @@ layout: default
 </style>
 {% endif %}
 
-<div class="post">
+<div class="post-layout{% if is_korean_post %} is-korean-post{% endif %}">
+<div class="post{% if is_korean_post %} is-korean-post{% endif %}">
 
   <header class="post-header">
     <div class="post-header-top">
@@ -52,11 +53,143 @@ layout: default
   {%- endif %}
 
 </div>
+<aside class="post-nav" id="postSectionNav" hidden>
+  <div class="post-nav-box" id="postSectionNavBox"></div>
+</aside>
+</div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var backButton = document.getElementById('postBackButton');
     var switchRoot = document.getElementById('postLanguageSwitch');
+    var postNav = document.getElementById('postSectionNav');
+    var postNavBox = document.getElementById('postSectionNavBox');
+    var postContent = document.querySelector('.post-content');
+    var navEntries = [];
+
+    function slugifyHeading(text) {
+      return String(text || '')
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-가-힣]/g, '')
+        .replace(/\-+/g, '-');
+    }
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function ensureHeadingId(heading, usedIds) {
+      if (!heading) return '';
+      var existing = String(heading.id || '').trim();
+      if (existing) {
+        usedIds[existing] = true;
+        return existing;
+      }
+      var base = slugifyHeading(heading.textContent || heading.innerText || 'section') || 'section';
+      var candidate = base;
+      var index = 2;
+      while (usedIds[candidate]) {
+        candidate = base + '-' + index;
+        index += 1;
+      }
+      heading.id = candidate;
+      usedIds[candidate] = true;
+      return candidate;
+    }
+
+    function buildPostSectionNav() {
+      if (!postNav || !postNavBox || !postContent) return;
+
+      var headings = Array.prototype.slice.call(postContent.querySelectorAll('h2, h3'));
+      if (!headings.length) {
+        postNav.hidden = true;
+        postNavBox.innerHTML = '';
+        navEntries = [];
+        return;
+      }
+
+      var usedIds = {};
+      var currentH2Id = '';
+      var hasSub = headings.some(function (heading) {
+        return heading && heading.tagName && heading.tagName.toLowerCase() === 'h3';
+      });
+
+      var rendered = headings.map(function (heading) {
+        var id = ensureHeadingId(heading, usedIds);
+        if (!id) return '';
+        var text = String(heading.textContent || heading.innerText || '').trim();
+        if (!text) return '';
+        var level = heading.tagName.toLowerCase();
+        if (level === 'h2') {
+          currentH2Id = id;
+        }
+        var parentH2Id = level === 'h3' ? currentH2Id : id;
+        navEntries.push({ id: id, level: level, parentH2Id: parentH2Id });
+        var klass = level === 'h3' ? 'post-nav-link is-sub' : 'post-nav-link';
+        var safeText = escapeHtml(text);
+        return '<a class="' + klass + '" href="#' + id + '" data-post-nav-target="' + id + '" data-post-nav-level="' + level + '" data-post-nav-parent="' + parentH2Id + '" title="' + safeText + '">' + safeText + '</a>';
+      }).filter(Boolean);
+
+      var linksHtml = rendered.join('');
+
+      var toggleHtml = hasSub
+        ? '<button class="post-nav-toggle" type="button" data-post-nav-toggle="true" aria-expanded="false" aria-label="Show all sections">↓</button>'
+        : '';
+
+      postNavBox.innerHTML = linksHtml + toggleHtml;
+
+      postNav.hidden = !postNavBox.innerHTML;
+      postNav.classList.toggle('is-collapsed', hasSub);
+      postNav.classList.toggle('is-expanded', !hasSub);
+      updateCurrentNavTarget();
+    }
+
+    function currentHeadingIdByScroll() {
+      if (!navEntries.length) return '';
+      var offset = 110;
+      var currentId = navEntries[0].id;
+      navEntries.forEach(function (entry) {
+        var el = document.getElementById(entry.id);
+        if (!el) return;
+        var top = el.getBoundingClientRect().top;
+        if (top <= offset) {
+          currentId = entry.id;
+        }
+      });
+      return currentId;
+    }
+
+    function updateCurrentNavTarget() {
+      if (!postNav || !postNavBox || !navEntries.length) return;
+      var activeId = currentHeadingIdByScroll();
+      if (!activeId) return;
+
+      var activeEntry = navEntries.find(function (entry) { return entry.id === activeId; });
+      if (!activeEntry) return;
+
+      var targetId = postNav.classList.contains('is-collapsed')
+        ? (activeEntry.parentH2Id || activeEntry.id)
+        : activeEntry.id;
+
+      var links = postNavBox.querySelectorAll('[data-post-nav-target]');
+      links.forEach(function (link) {
+        var isCurrent = link.getAttribute('data-post-nav-target') === targetId;
+        link.classList.toggle('is-current', isCurrent);
+        if (isCurrent) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
     if (backButton) {
       backButton.addEventListener('click', function () {
         if (window.history.length > 1) {
@@ -66,52 +199,90 @@ layout: default
         window.location.href = '{{ "/essay/" | relative_url }}';
       });
     }
-    if (!switchRoot) return;
 
-    function yearFromDate(dateValue) {
-      var match = String(dateValue || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-      return match ? match[1] : '';
-    }
+    buildPostSectionNav();
 
-    function postKeyFromItem(item, language) {
-      var year = yearFromDate(item && item.date);
-      var id = item && item.id ? String(item.id) : '';
-      var lang = String(language || 'en');
-      if (!year || !id) return '';
-      return year + '/' + id + '-' + lang;
-    }
-
-    function postUrlFromItem(item, language) {
-      var key = postKeyFromItem(item, language);
-      return key ? '{{ "/blog/" | relative_url }}' + key + '/' : '';
-    }
-
-    function currentPostKey(pathname) {
-      var parts = String(pathname || '').split('/').filter(Boolean);
-      if (parts.length < 3 || parts[0] !== 'blog') return '';
-      return parts[1] + '/' + parts[2];
-    }
-
-    function parseKeyParts(key) {
-      var raw = String(key || '');
-      var split = raw.split('/');
-      if (split.length !== 2) return null;
-      var year = split[0];
-      var slug = split[1];
-      var lang = '';
-      var baseId = slug;
-
-      if (/-kr$/.test(slug)) {
-        lang = 'kr';
-        baseId = slug.replace(/-kr$/, '');
-      } else if (/-en$/.test(slug)) {
-        lang = 'en';
-        baseId = slug.replace(/-en$/, '');
-      } else {
-        return null;
+    document.addEventListener('click', function (event) {
+      var toggle = event.target.closest('[data-post-nav-toggle]');
+      if (toggle) {
+        event.preventDefault();
+        var isCollapsed = postNav.classList.contains('is-collapsed');
+        if (isCollapsed) {
+          postNav.classList.remove('is-collapsed');
+          postNav.classList.add('is-expanded');
+          toggle.setAttribute('aria-expanded', 'true');
+          toggle.setAttribute('aria-label', 'Show only main sections');
+          toggle.textContent = '↑';
+        } else {
+          postNav.classList.add('is-collapsed');
+          postNav.classList.remove('is-expanded');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Show all sections');
+          toggle.textContent = '↓';
+        }
+        updateCurrentNavTarget();
+        return;
       }
 
-      return { year: year, slug: slug, lang: lang, baseId: baseId };
+      var trigger = event.target.closest('[data-post-nav-target]');
+      if (!trigger) return;
+      event.preventDefault();
+      var targetId = trigger.getAttribute('data-post-nav-target') || '';
+      var target = targetId ? document.getElementById(targetId) : null;
+      if (!target) return;
+      var top = window.scrollY + target.getBoundingClientRect().top - 86;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        updateCurrentNavTarget();
+        ticking = false;
+      });
+    }, { passive: true });
+
+    if (!switchRoot) return;
+
+    function normalizePath(pathname) {
+      var raw = String(pathname || '');
+      if (!raw) return '/';
+      return raw.endsWith('/') ? raw : raw + '/';
+    }
+
+    function postUrlFromLink(linkValue) {
+      var raw = String(linkValue || '').trim();
+      if (!raw) return '';
+
+      var normalized = raw.replace(/^\.?\/*/, '');
+      normalized = normalized.replace(/^_posts\//, '');
+
+      var fileName = normalized.split('/').pop() || '';
+      if (!fileName) return '';
+
+      var stem = fileName.replace(/\.md$/i, '');
+      var match = stem.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?-(.+)$/);
+      if (!match) return '';
+
+      var year = match[1];
+      var slug = match[4];
+      var lowerPath = normalized.toLowerCase();
+      var lang = '';
+
+      if (/(^|\/)[^/]*_kr\//.test(lowerPath) || /-kr\.md$/i.test(raw)) {
+        lang = 'kr';
+      } else if (/(^|\/)[^/]*_en\//.test(lowerPath) || /-en\.md$/i.test(raw)) {
+        lang = 'en';
+      }
+
+      if (lang && !new RegExp('-' + lang + '$', 'i').test(slug)) {
+        slug = slug + '-' + lang;
+      }
+      if (!year || !slug) return '';
+
+      return normalizePath('{{ "/blog/" | relative_url }}' + year + '/' + encodeURIComponent(slug).replace(/%2F/gi, '/'));
     }
 
     function renderLanguageSwitch(isKorean, engUrl, korUrl) {
@@ -142,28 +313,7 @@ layout: default
       });
     }
 
-    function probeAndRenderFallback() {
-      if (!keyParts) return;
-      if (keyParts.lang === 'kr') {
-        renderLanguageSwitch(true, fallbackEngUrl, fallbackKorUrl);
-        return;
-      }
-      if (keyParts.lang === 'en' && fallbackKorUrl) {
-        fetch(fallbackKorUrl, { method: 'GET', cache: 'no-store' })
-          .then(function (res) {
-            if (res && res.ok) {
-              renderLanguageSwitch(false, fallbackEngUrl, fallbackKorUrl);
-            }
-          })
-          .catch(function () {});
-      }
-    }
-
-    var currentKey = currentPostKey(window.location.pathname);
-    if (!currentKey) return;
-    var keyParts = parseKeyParts(currentKey);
-    var fallbackEngUrl = keyParts ? ('{{ "/blog/" | relative_url }}' + keyParts.year + '/' + keyParts.baseId + '-en/') : '';
-    var fallbackKorUrl = keyParts ? ('{{ "/blog/" | relative_url }}' + keyParts.year + '/' + keyParts.baseId + '-kr/') : '';
+    var currentPath = normalizePath(window.location.pathname);
 
     fetch('{{ "/data/posts.json" | relative_url }}')
       .then(function (response) {
@@ -175,22 +325,20 @@ layout: default
         if (!items.length) return;
 
         var matched = items.find(function (item) {
-          return postKeyFromItem(item, 'en') === currentKey || postKeyFromItem(item, 'kr') === currentKey;
+          var enUrl = postUrlFromLink(item && item.en_link);
+          var krUrl = postUrlFromLink(item && item.kr_link);
+          return enUrl === currentPath || krUrl === currentPath;
         });
 
-        if (!matched || !matched.has_kr) {
-          probeAndRenderFallback();
-          return;
-        }
+        if (!matched) return;
 
-        var isKorean = postKeyFromItem(matched, 'kr') === currentKey;
-        var engUrl = postUrlFromItem(matched, 'en');
-        var korUrl = postUrlFromItem(matched, 'kr');
+        var engUrl = postUrlFromLink(matched.en_link);
+        var korUrl = postUrlFromLink(matched.kr_link);
+        if (!engUrl || !korUrl) return;
+
+        var isKorean = currentPath === korUrl;
         renderLanguageSwitch(isKorean, engUrl, korUrl);
       })
-      .catch(function () {
-        // Fallback when posts.json is unavailable.
-        probeAndRenderFallback();
-      });
+      .catch(function () {});
   });
 </script>

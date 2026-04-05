@@ -5,20 +5,26 @@ permalink: /essay/
 description:
 ---
 
-<div class="posts-archive">
-  <section class="posts-archive-hero">
-    <p class="home-section-label">Posts</p>
-    <h1 id="postsArchiveQuote">Loading quote...</h1>
-    <p class="posts-archive-intro" id="postsArchiveAuthor"></p>
-  </section>
+<div class="posts-archive-layout">
+  <div class="posts-archive">
+    <section class="posts-archive-hero">
+      <p class="home-section-label">Posts</p>
+      <h1 id="postsArchiveQuote">Loading quote...</h1>
+      <p class="posts-archive-intro" id="postsArchiveAuthor"></p>
+    </section>
 
-  <div class="posts-archive-filter-shell" id="postsArchiveFilterShell" hidden>
-    <div class="posts-archive-filter" id="postsArchiveFilter"></div>
+    <div class="posts-archive-filter-shell" id="postsArchiveFilterShell" hidden>
+      <div class="posts-archive-filter" id="postsArchiveFilter"></div>
+    </div>
+
+    <section class="posts-archive-groups" id="postsArchiveGroups">
+      <p class="posts-archive-summary">Loading posts...</p>
+    </section>
   </div>
 
-  <section class="posts-archive-groups" id="postsArchiveGroups">
-    <p class="posts-archive-summary">Loading posts...</p>
-  </section>
+  <aside class="posts-archive-nav" id="postsArchiveNav" hidden>
+    <div class="posts-archive-nav-box" id="postsArchiveNavBox"></div>
+  </aside>
 </div>
 
 <script>
@@ -26,6 +32,8 @@ description:
     var groupsRoot = document.getElementById('postsArchiveGroups');
     var filterShell = document.getElementById('postsArchiveFilterShell');
     var filterBar = document.getElementById('postsArchiveFilter');
+    var navRoot = document.getElementById('postsArchiveNav');
+    var navBox = document.getElementById('postsArchiveNavBox');
     var quoteTitle = document.getElementById('postsArchiveQuote');
     var quoteAuthor = document.getElementById('postsArchiveAuthor');
     if (!groupsRoot) return;
@@ -59,22 +67,37 @@ description:
         darkVarName + ':' + escapeHtml(colors.dark || colors.light || '') + ';"';
     }
 
-    function slugifyDate(dateValue) {
-      if (!dateValue) return '';
-      var match = String(dateValue).match(/^(\d{4})-(\d{2})-(\d{2})$/);
-      return match ? match[1] : '';
-    }
+    function buildPostUrlFromLink(linkValue) {
+      var raw = String(linkValue || '').trim();
+      if (!raw) return '';
 
-    function buildPostSlug(item, language) {
-      if (!item || !item.id || !item.date) return '';
-      return String(item.id) + '-' + String(language || 'en');
-    }
+      var normalized = raw.replace(/^\.?\/*/, '');
+      normalized = normalized.replace(/^_posts\//, '');
 
-    function buildPostUrl(item, language) {
-      var year = slugifyDate(item && item.date);
-      var slug = buildPostSlug(item, language);
-      if (!year || !slug) return '#';
-      return '{{ "/blog/" | relative_url }}' + year + '/' + slug + '/';
+      var fileName = normalized.split('/').pop() || '';
+      if (!fileName) return '';
+
+      var stem = fileName.replace(/\.md$/i, '');
+      var match = stem.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?-(.+)$/);
+      if (!match) return '';
+
+      var year = match[1];
+      var slug = match[4];
+      var lowerPath = normalized.toLowerCase();
+      var lang = '';
+
+      if (/(^|\/)[^/]*_kr\//.test(lowerPath) || /-kr\.md$/i.test(raw)) {
+        lang = 'kr';
+      } else if (/(^|\/)[^/]*_en\//.test(lowerPath) || /-en\.md$/i.test(raw)) {
+        lang = 'en';
+      }
+
+      if (lang && !new RegExp('-' + lang + '$', 'i').test(slug)) {
+        slug = slug + '-' + lang;
+      }
+      if (!year || !slug) return '';
+
+      return '{{ "/blog/" | relative_url }}' + year + '/' + encodeURIComponent(slug).replace(/%2F/gi, '/') + '/';
     }
 
     function isMobileListView() {
@@ -117,9 +140,16 @@ description:
         '</button>';
     }
 
+    function sectionIdFromName(name) {
+      var normalized = String(name || '').toLowerCase().trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9\-]/g, '');
+      return normalized ? 'posts-section-' + normalized : 'posts-section';
+    }
+
     function renderItems(items) {
       return items.map(function (item) {
-        var postUrl = buildPostUrl(item, 'en');
+        var postUrl = buildPostUrlFromLink(item && item.en_link);
         var media = item.media || '';
         var title = escapeHtml(item.title || 'Untitled');
         var category = escapeHtml(item.category || '');
@@ -139,7 +169,11 @@ description:
               '</div>' +
             '</div>' +
             '<div class="posts-archive-main">' +
-              '<h2 class="' + titleClass + '"' + titleStyle + '><a href="' + postUrl + '">' + title + '</a></h2>' +
+              '<h2 class="' + titleClass + '"' + titleStyle + '>' +
+                (postUrl
+                  ? '<a href="' + postUrl + '">' + title + '</a>'
+                  : '<span aria-disabled="true">' + title + '</span>') +
+              '</h2>' +
             '</div>' +
             '<div class="posts-archive-side">' +
               (category ? '<button class="posts-archive-category" type="button" data-category-filter="' + category + '">' + category + '</button>' : '') +
@@ -180,10 +214,11 @@ description:
       });
 
       groupsRoot.innerHTML = groups.map(function (group) {
+        var sectionId = sectionIdFromName(group.name);
         var sectionColors = resolveThemeColors(colorMapping[group.name] || '');
         var sectionStyle = toThemeStyleVars(sectionColors, '--post-section-color-light', '--post-section-color-dark');
         return '' +
-          '<section class="posts-archive-group">' +
+          '<section class="posts-archive-group" id="' + sectionId + '">' +
             '<div class="posts-archive-section-heading">' +
               '<p class="home-section-label posts-archive-section-label"' + sectionStyle + '>' + escapeHtml(group.name) + '</p>' +
             '</div>' +
@@ -192,6 +227,16 @@ description:
             '</div>' +
           '</section>';
       }).join('');
+
+      if (navRoot && navBox) {
+        navBox.innerHTML = groups.map(function (group) {
+          var sectionId = sectionIdFromName(group.name);
+          return '<a class="posts-archive-nav-link" href="#' + sectionId + '" data-posts-nav-target="' + sectionId + '">' +
+            escapeHtml(group.name) +
+          '</a>';
+        }).join('');
+        navRoot.hidden = groups.length === 0;
+      }
 
       renderFilterBar();
     }
@@ -244,6 +289,17 @@ description:
       });
 
     document.addEventListener('click', function (event) {
+      var navTrigger = event.target.closest('[data-posts-nav-target]');
+      if (navTrigger) {
+        event.preventDefault();
+        var targetId = navTrigger.getAttribute('data-posts-nav-target') || '';
+        var target = targetId ? document.getElementById(targetId) : null;
+        if (!target) return;
+        var top = window.scrollY + target.getBoundingClientRect().top - 86;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+        return;
+      }
+
       var trigger = event.target.closest('[data-category-filter]');
       if (!trigger) return;
 
