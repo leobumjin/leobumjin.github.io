@@ -7,7 +7,7 @@
         inlineMath: [['$','$'], ['\\(','\\)']]
       },
       svg: {
-        scale: 1.2
+        scale: 1.0
       },
       chtml: {
           scale: 1.0,
@@ -28,6 +28,10 @@
     }
     mjx-math[mathvariant="italic"] {
       font-style: italic !important;
+    }
+    /* 본문 대비 수식 크기 정규화 */
+    mjx-container {
+      font-size: 1em !important;
     }
   </style>
   <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@{{ site.mathjax.version }}/es5/tex-mml-svg.js"></script>

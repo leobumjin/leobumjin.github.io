@@ -1,0 +1,161 @@
+<section class="post-common-footer" id="postCommonFooter">
+  <div class="post-common-footer-grid">
+    <section class="post-common-block" aria-labelledby="postCommonLatestTitle">
+      <p class="post-common-title" id="postCommonLatestTitle">Latest Posts</p>
+      <ul class="post-common-list" id="postCommonLatestList">
+        <li class="post-common-empty">Loading posts...</li>
+      </ul>
+    </section>
+    <section class="post-common-block" aria-labelledby="postCommonNewsTitle">
+      <p class="post-common-title" id="postCommonNewsTitle">News</p>
+      <ul class="post-common-list" id="postCommonNewsList">
+        <li class="post-common-empty">Loading news...</li>
+      </ul>
+    </section>
+  </div>
+  <p class="post-common-copyright">
+    &copy; Copyright {{ site.time | date: '%Y' }} Leo Bumjin Park. {{ site.footer_text }}
+  </p>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var latestRoot = document.getElementById('postCommonLatestList');
+    var newsRoot = document.getElementById('postCommonNewsList');
+    if (!latestRoot || !newsRoot) return;
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function normalizePath(pathname) {
+      var raw = String(pathname || '');
+      if (!raw) return '/';
+      return raw.endsWith('/') ? raw : raw + '/';
+    }
+
+    function postUrlFromLink(linkValue) {
+      var raw = String(linkValue || '').trim();
+      if (!raw) return '';
+
+      var normalized = raw.replace(/^\.?\/*/, '');
+      normalized = normalized.replace(/^_posts\//, '');
+
+      var fileName = normalized.split('/').pop() || '';
+      if (!fileName) return '';
+
+      var stem = fileName.replace(/\.md$/i, '');
+      var match = stem.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?-(.+)$/);
+      if (!match) return '';
+
+      var year = match[1];
+      var slug = match[4];
+      var lowerPath = normalized.toLowerCase();
+      var lang = '';
+
+      if (/(^|\/)[^/]*_kr\//.test(lowerPath) || /-kr\.md$/i.test(raw)) {
+        lang = 'kr';
+      } else if (/(^|\/)[^/]*_en\//.test(lowerPath) || /-en\.md$/i.test(raw)) {
+        lang = 'en';
+      }
+
+      if (lang && !new RegExp('-' + lang + '$', 'i').test(slug)) {
+        slug = slug + '-' + lang;
+      }
+
+      return normalizePath('{{ "/blog/" | relative_url }}' + year + '/' + encodeURIComponent(slug).replace(/%2F/gi, '/'));
+    }
+
+    function formatShortDate(value) {
+      var text = String(value || '').trim();
+      if (!text) return '';
+      var d = new Date(text);
+      if (isNaN(d.getTime())) return text;
+      var yy = String(d.getFullYear()).slice(-2);
+      var mm = String(d.getMonth() + 1).padStart(2, '0');
+      var dd = String(d.getDate()).padStart(2, '0');
+      return yy + '-' + mm + '-' + dd;
+    }
+
+    function renderLatest(postsData) {
+      var items = Array.isArray(postsData) ? postsData : (postsData && Array.isArray(postsData.posts) ? postsData.posts : []);
+      var visible = items.filter(function (item) {
+        return item && item.visible !== false;
+      });
+
+      visible.sort(function (a, b) {
+        var da = new Date(a && a.date || '').getTime();
+        var db = new Date(b && b.date || '').getTime();
+        if (isNaN(da) && isNaN(db)) return 0;
+        if (isNaN(da)) return 1;
+        if (isNaN(db)) return -1;
+        return db - da;
+      });
+
+      var top = visible.slice(0, 3);
+      if (!top.length) {
+        latestRoot.innerHTML = '<li class="post-common-empty">No recent posts.</li>';
+        return;
+      }
+
+      latestRoot.innerHTML = top.map(function (item) {
+        var title = escapeHtml(item.title || 'Untitled');
+        var url = postUrlFromLink(item.en_link);
+        var date = formatShortDate(item.date);
+        var dateHtml = date ? '<span class="post-common-date">' + escapeHtml(date) + '</span>' : '';
+        var titleHtml = url
+          ? '<a class="post-common-link" href="' + url + '">' + title + '</a>'
+          : '<span class="post-common-link is-disabled">' + title + '</span>';
+        return '<li class="post-common-item">' + titleHtml + dateHtml + '</li>';
+      }).join('');
+    }
+
+    function renderNews(newsData) {
+      var items = Array.isArray(newsData) ? newsData : [];
+      var visible = items.filter(function (item) {
+        return item && item.visible !== false;
+      }).slice(0, 3);
+
+      if (!visible.length) {
+        newsRoot.innerHTML = '<li class="post-common-empty">No recent news.</li>';
+        return;
+      }
+
+      newsRoot.innerHTML = visible.map(function (item) {
+        var title = escapeHtml(item.title || 'Untitled');
+        var dateText = [item.year, item.date].filter(Boolean).join(' ');
+        var dateHtml = dateText ? '<span class="post-common-date">' + escapeHtml(dateText) + '</span>' : '';
+        var url = String(item.url || '').trim();
+        var titleHtml = url
+          ? '<a class="post-common-link" href="' + escapeHtml(url) + '" target="_blank" rel="noreferrer">' + title + '</a>'
+          : '<span class="post-common-link is-disabled">' + title + '</span>';
+        return '<li class="post-common-item">' + titleHtml + dateHtml + '</li>';
+      }).join('');
+    }
+
+    fetch('{{ "/data/posts.json" | relative_url }}', { cache: 'no-store' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Failed to load posts.');
+        return response.json();
+      })
+      .then(renderLatest)
+      .catch(function () {
+        latestRoot.innerHTML = '<li class="post-common-empty">Unable to load posts.</li>';
+      });
+
+    fetch('{{ "/data/news.json" | relative_url }}', { cache: 'no-store' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Failed to load news.');
+        return response.json();
+      })
+      .then(renderNews)
+      .catch(function () {
+        newsRoot.innerHTML = '<li class="post-common-empty">Unable to load news.</li>';
+      });
+  });
+</script>

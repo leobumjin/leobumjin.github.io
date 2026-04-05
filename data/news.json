@@ -1,28 +1,20 @@
 [
     {
         "year": "2026",
-        "date": "April 11",
-        "title": "I'm a new PhD student at KAIST",
-        "url": "https://github.com/bumjini",
-        "color": "#0000ff",
+        "date": "March",
+        "title": "Agentic Vulnerability Analysis in AI Agents (KBS Insight)",
+        "url": "https://www.youtube.com/watch?v=Iwut7D-MGvw",
+        "color": "#00aa00",
         "highlight": true,
         "visible": true
     },
     {
-        "year": "2026",
-        "date": "March 25",
-        "title": "Test My News",
-        "color": "#00aa00",
-        "highlight": false,
+        "year": "2025",
+        "date": "October",
+        "title": "Visiting Research Scholar at NYU Global AI Frontier Lab",
+        "url": "https://nyu.edu/global-ai-frontier-lab",
+        "color": "#0000ff",
+        "highlight": true,
         "visible": true
-    },
-    {
-        "year": "2026",
-        "date": "April",
-        "title": "Test My News",
-        "color": "#00aa00",
-        "highlight": false,
-        "visible": false
     }
-    
 ]

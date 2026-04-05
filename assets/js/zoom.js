@@ -17,5 +17,30 @@ $(document).ready(function() {
   medium_zoom = mediumZoom('[data-zoomable]', {
     margin: 100,
     background: bgColor,
-  })
+  });
+
+  var zoomCaptionEl = null;
+
+  function ensureZoomCaptionElement() {
+    if (zoomCaptionEl) return zoomCaptionEl;
+    zoomCaptionEl = document.createElement('div');
+    zoomCaptionEl.className = 'medium-zoom-caption';
+    document.body.appendChild(zoomCaptionEl);
+    return zoomCaptionEl;
+  }
+
+  medium_zoom.on('open', function (event) {
+    var target = event && event.target;
+    if (!target || !target.getAttribute) return;
+    var caption = (target.getAttribute('data-zoom-caption') || '').trim();
+    if (!caption) return;
+    var el = ensureZoomCaptionElement();
+    el.textContent = caption;
+    el.classList.add('is-visible');
+  });
+
+  medium_zoom.on('closed', function () {
+    if (!zoomCaptionEl) return;
+    zoomCaptionEl.classList.remove('is-visible');
+  });
 });

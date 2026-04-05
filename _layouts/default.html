@@ -67,7 +67,7 @@
     }
 
     body::before {
-      background: linear-gradient(180deg, #f8f9fc, #f4f6fb);
+      background: #ffffff;
       opacity: 1;
     }
 
@@ -571,11 +571,14 @@
     }
 
     .container h4 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-top: 1.8rem;
+      display: inline-block;
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-top: 1.3rem;
       margin-bottom: 0.8rem;
-      color: #222;
+      padding-bottom: 0.12rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--global-divider-color) 78%, transparent);
+      color: var(--global-text-color);
     }
 
     .container header p {

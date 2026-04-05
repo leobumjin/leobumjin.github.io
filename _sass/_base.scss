@@ -108,6 +108,7 @@ h3{
 h4{
   margin-top: 1.0rem;
   font-size: 18px;
+  font-weight: 400;
 }
 h5{
   margin-top: 1.0rem;
@@ -141,6 +142,12 @@ h1, h2, h3, h4, h5, h6, div{
   margin-bottom:10px;
   font-weight: 300;
   // margin-bottom: 10px;
+}
+
+ol li::marker,
+ul li::marker {
+  font-size: 0.9em;
+  font-weight: 400;
 }
 strong{
   font-weight: 700;
@@ -182,6 +189,12 @@ p {
 
 hr {
   border-top: 1px solid var(--global-divider-color);
+}
+
+hr.h2-separation {
+  border: 0;
+  border-top: 2px solid color-mix(in srgb, var(--global-divider-color) 92%, transparent);
+  margin: 1.35rem 0 1.05rem;
 }
 
 table {

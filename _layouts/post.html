@@ -6,6 +6,7 @@ layout: default
 {%- if page.path contains '-kr.md' or page.path contains '/technical_kr/' -%}
   {%- assign is_korean_post = true -%}
 {%- endif -%}
+{%- assign post_nav_title = page['mini-title'] | default: page.title | default: 'Content' -%}
 {% if page._styles %}
 <!-- Page/Post style -->
 <style type="text/css">
@@ -34,8 +35,10 @@ layout: default
   </header>
 
   <article class="post-content">
-    {{ content }}
+    {{ content | rewrite_relative_img_src: site.img_path }}
   </article>
+
+  {%- include post-common-footer.html -%}
 
   {%- if site.disqus_shortname and page.comments -%}
     <div id="disqus_thread"></div>
@@ -66,6 +69,169 @@ layout: default
     var postNavBox = document.getElementById('postSectionNavBox');
     var postContent = document.querySelector('.post-content');
     var navEntries = [];
+    var imageBasePath = '{{ site.img_path | default: "" }}';
+    var isKoreanPost = {{ is_korean_post | jsonify }};
+    var figureCaptionPrefix = isKoreanPost ? '그림' : 'Fig';
+    var postNavHeadingText = {{ post_nav_title | jsonify }};
+
+    function isAbsoluteAssetUrl(url) {
+      return /^(?:[a-z]+:)?\/\//i.test(url) || /^data:/i.test(url) || /^\/|^\.\.?\/|^#/i.test(url);
+    }
+
+    function normalizeImageBase(base) {
+      var raw = String(base || '').trim();
+      return raw.replace(/\/+$/, '');
+    }
+
+    function rewritePostImageSources() {
+      if (!postContent) return;
+      var base = normalizeImageBase(imageBasePath);
+      if (!base) return;
+      var images = postContent.querySelectorAll('img[src]');
+      images.forEach(function (img) {
+        var src = String(img.getAttribute('src') || '').trim();
+        if (!src || isAbsoluteAssetUrl(src)) return;
+        img.setAttribute('src', base + '/' + src.replace(/^\/+/, ''));
+      });
+    }
+
+    function enablePostImageZoom() {
+      if (!postContent) return;
+      var images = postContent.querySelectorAll('img[src]');
+      images.forEach(function (img) {
+        img.setAttribute('data-zoomable', '');
+      });
+
+      // If medium_zoom is already initialized, attach newly marked images immediately.
+      if (typeof medium_zoom !== 'undefined' && medium_zoom && typeof medium_zoom.attach === 'function') {
+        medium_zoom.attach(postContent.querySelectorAll('img[data-zoomable]'));
+      }
+    }
+
+    function normalizePostCaptions() {
+      if (!postContent) return;
+
+      var captions = Array.prototype.slice.call(postContent.querySelectorAll('caption'));
+      captions.forEach(function (captionNode) {
+        if (!captionNode || captionNode.closest('table')) return;
+
+        var parent = captionNode.parentNode;
+        if (!parent) return;
+
+        var prev = captionNode.previousElementSibling;
+        var isImagePair = prev && prev.tagName && prev.tagName.toLowerCase() === 'img';
+
+        var figcaption = document.createElement('figcaption');
+        figcaption.className = 'post-image-caption';
+        figcaption.innerHTML = captionNode.innerHTML;
+
+        if (isImagePair) {
+          var figure = document.createElement('figure');
+          figure.className = 'post-image-figure';
+          var widthAttr = String(prev.getAttribute('width') || '').trim();
+          if (widthAttr) {
+            figure.style.width = widthAttr;
+          }
+          parent.insertBefore(figure, prev);
+          figure.appendChild(prev);
+          figure.appendChild(figcaption);
+          captionNode.remove();
+        } else {
+          parent.insertBefore(figcaption, captionNode);
+          captionNode.remove();
+        }
+      });
+    }
+
+    function enhanceFigureCaptions() {
+      if (!postContent) return;
+      var figures = postContent.querySelectorAll('figure');
+      var figureIndex = 0;
+      figures.forEach(function (figure) {
+        var figcaption = figure.querySelector('figcaption');
+        if (!figcaption) return;
+        figureIndex += 1;
+        var label = figureCaptionPrefix + ' ' + figureIndex + '.';
+
+        figcaption.classList.add('post-image-caption');
+
+        var titleNode = figcaption.querySelector('figtitle');
+        var detailNode = figcaption.querySelector('figdetail');
+
+        if (!titleNode && !detailNode) {
+          var plainText = String(figcaption.textContent || '').trim();
+          var labeledPlain = plainText ? (label + ' ' + plainText) : label;
+          if (labeledPlain) {
+            figcaption.setAttribute('data-zoom-caption', labeledPlain);
+          }
+          figcaption.textContent = labeledPlain;
+          return;
+        }
+
+        var titleText = String((titleNode && titleNode.textContent) || '').trim();
+        var labeledTitle = titleText ? (label + ' ' + titleText) : label;
+        var detailHtml = detailNode ? detailNode.innerHTML : '';
+        var zoomCaption = labeledTitle;
+        if (zoomCaption) {
+          figcaption.setAttribute('data-zoom-caption', zoomCaption);
+        }
+
+        figcaption.innerHTML = '';
+
+        var titleWrap = document.createElement('div');
+        titleWrap.className = 'post-figcaption-title-only';
+        titleWrap.textContent = labeledTitle;
+
+        if (!detailNode) {
+          figcaption.appendChild(titleWrap);
+          return;
+        }
+
+        figcaption.classList.add('is-interactive');
+
+        var toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'post-figcaption-toggle';
+        toggle.setAttribute('aria-expanded', 'false');
+
+        var titleSpan = document.createElement('span');
+        titleSpan.className = 'post-figcaption-title';
+        titleSpan.textContent = labeledTitle;
+
+        var chevron = document.createElement('span');
+        chevron.className = 'post-figcaption-chevron';
+        chevron.textContent = '+';
+
+        toggle.appendChild(titleSpan);
+        toggle.appendChild(chevron);
+
+        var detail = document.createElement('div');
+        detail.className = 'post-figcaption-detail';
+        detail.innerHTML = detailHtml;
+
+        toggle.addEventListener('click', function () {
+          var open = figcaption.classList.toggle('is-open');
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          chevron.textContent = open ? '−' : '+';
+        });
+
+        figcaption.appendChild(toggle);
+        figcaption.appendChild(detail);
+      });
+    }
+
+    function bindFigureCaptionsToZoom() {
+      if (!postContent) return;
+      var figures = postContent.querySelectorAll('figure');
+      figures.forEach(function (figure) {
+        var img = figure.querySelector('img[src]');
+        var caption = figure.querySelector('figcaption');
+        if (!img || !caption) return;
+        var text = String(caption.getAttribute('data-zoom-caption') || caption.textContent || '').trim();
+        if (!text) return;
+        img.setAttribute('data-zoom-caption', text);
+      });
+    }
 
     function slugifyHeading(text) {
       return String(text || '')
@@ -138,17 +304,20 @@ layout: default
       }).filter(Boolean);
 
       var linksHtml = rendered.join('');
+      var headerLabel = escapeHtml(postNavHeadingText || 'Content');
+      var headerHtml = '<div class="post-nav-heading">' + headerLabel + '</div><div class="post-nav-divider" aria-hidden="true"></div>';
 
       var toggleHtml = hasSub
         ? '<button class="post-nav-toggle" type="button" data-post-nav-toggle="true" aria-expanded="false" aria-label="Show all sections">↓</button>'
         : '';
 
-      postNavBox.innerHTML = linksHtml + toggleHtml;
+      postNavBox.innerHTML = headerHtml + linksHtml + toggleHtml;
 
       postNav.hidden = !postNavBox.innerHTML;
       postNav.classList.toggle('is-collapsed', hasSub);
       postNav.classList.toggle('is-expanded', !hasSub);
       updateCurrentNavTarget();
+      updatePostNavOverflowMode();
     }
 
     function currentHeadingIdByScroll() {
@@ -164,6 +333,18 @@ layout: default
         }
       });
       return currentId;
+    }
+
+    function updatePostNavOverflowMode() {
+      if (!postNav || postNav.hidden) return;
+      postNav.classList.remove('is-compact');
+      var rect = postNav.getBoundingClientRect();
+      var viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+      var isClippedByRightPane = rect.right > (viewportWidth - 6);
+      var hasHorizontalOverflow = document.documentElement.scrollWidth > viewportWidth + 2;
+      if (isClippedByRightPane || hasHorizontalOverflow) {
+        postNav.classList.add('is-compact');
+      }
     }
 
     function updateCurrentNavTarget() {
@@ -201,6 +382,11 @@ layout: default
     }
 
     buildPostSectionNav();
+    rewritePostImageSources();
+    normalizePostCaptions();
+    enhanceFigureCaptions();
+    bindFigureCaptionsToZoom();
+    enablePostImageZoom();
 
     document.addEventListener('click', function (event) {
       var toggle = event.target.closest('[data-post-nav-toggle]');
@@ -221,6 +407,7 @@ layout: default
           toggle.textContent = '↓';
         }
         updateCurrentNavTarget();
+        updatePostNavOverflowMode();
         return;
       }
 
@@ -243,6 +430,10 @@ layout: default
         ticking = false;
       });
     }, { passive: true });
+
+    window.addEventListener('resize', function () {
+      updatePostNavOverflowMode();
+    });
 
     if (!switchRoot) return;
 

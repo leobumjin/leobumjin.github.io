@@ -86,6 +86,8 @@ blog_name:  Rudiment  # your blog must have a name for it to show up in the nav 
 blog_description: small steps for progressive research
 permalink: /blog/:year/:title/
 
+img_path: https://d2acbkrrljl37x.cloudfront.net/leo-bjpark
+
 # Pagination
 pagination:
   enabled: true
