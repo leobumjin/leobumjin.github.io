@@ -656,6 +656,28 @@ html[data-theme='dark'] .post-content .post-figcaption-detail {
   margin-top: 2.2rem;
 }
 
+.post-content a,
+.post-content a:visited {
+  color: var(--global-theme-color);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+
+.post-content a:hover {
+  color: color-mix(in srgb, var(--global-theme-color) 78%, var(--global-text-color));
+  text-decoration-thickness: 1.5px;
+}
+
+html[data-theme='dark'] .post-content a,
+html[data-theme='dark'] .post-content a:visited {
+  color: #a8c4ff;
+}
+
+html[data-theme='dark'] .post-content a:hover {
+  color: #c7d9ff;
+}
+
 .post-content h2 {
   margin-top: 1.6rem;
   padding-top: 0.95rem;

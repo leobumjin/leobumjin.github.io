@@ -5,7 +5,7 @@ permalink: /blog/2026/anthropic-emotion-en/
 mini-title: The Mind of LLMs
 ---
 
-On April 2, 2026, Anthropic released a study analyzing **emotion-related representations** within language models [[link](https://www.anthropic.com/research/emotion-concepts-function)]. What makes this work notable is that it does not stop at showing that “there exist emotion-like directions in the model,” but further traces **how these internal representations are connected to actual behavior**. As such, it is not merely an interpretability result, but a carefully designed pipeline that is worth examining in detail for future research.
+On April 2, 2026, Anthropic released a study analyzing **emotion-related representations** within language models [[Anthropic's Research](https://www.anthropic.com/research/emotion-concepts-function)]. What makes this work notable is that it does not stop at showing that “there exist emotion-like directions in the model,” but further traces **how these internal representations are connected to actual behavior**. As such, it is not merely an interpretability result, but a carefully designed pipeline that is worth examining in detail for future research.
 
 There has already been substantial research on emotion in AI. However, prior work has largely focused on emotion expression, classification, or stylistic modulation. This study goes one step further and asks whether **emotion representations can mediate the model’s choices and actions**. In other words, emotion is treated not as an output style, but as an **internal variable that organizes behavior**.
 
