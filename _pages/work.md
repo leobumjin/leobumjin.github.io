@@ -357,6 +357,10 @@ permalink: /work/
         compactMeta = eduMetaParts.join('<span class="work-item-pub-sep"> | </span>');
       }
 
+      var publicationInlineActions = (type === 'publication' && actions)
+        ? '<span class="work-item-inline-actions">' + actions + '</span>'
+        : '';
+
       return '' +
         '<article class="work-item is-compact' + (type === 'publication' ? ' is-publication' : '') + '">' +
           '<div class="work-item-date-column">' +
@@ -370,7 +374,7 @@ permalink: /work/
               (type !== 'publication' && headerDate ? '<span class="work-item-header-date">' + escapeHtml(headerDate) + '</span>' : '') +
             '</div>' +
             (meta ? '<p class="work-item-meta">' + (type === 'publication' ? metaHtml : escapeHtml(meta)) + '</p>' : '') +
-            (compactMeta ? '<p class="work-item-pub-meta">' + compactMeta + '</p>' : '') +
+            (compactMeta ? '<p class="work-item-pub-meta">' + compactMeta + publicationInlineActions + '</p>' : '') +
             (summary ? '<p class="work-item-summary">' + escapeHtml(summary) + '</p>' : '') +
             (type === 'publication' ? '' : notes) +
           '</div>' +
