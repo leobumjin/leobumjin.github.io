@@ -988,6 +988,28 @@ html[data-theme='dark'] .post-content blockquote::before {
   font-size: 0.88rem;
 }
 
+.post-common-subscribe {
+  margin-top: 0.38rem;
+}
+
+.post-common-rss-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.24rem 0.58rem;
+  border: 1px solid color-mix(in srgb, var(--global-text-color) 24%, transparent);
+  color: var(--global-text-color);
+  font-size: 0.82rem;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.post-common-rss-link:hover {
+  color: var(--global-bg-color);
+  background: var(--global-text-color);
+  border-color: var(--global-text-color);
+}
+
 .post-common-copyright {
   margin: 1rem 0 0;
   padding-top: 0.84rem;
