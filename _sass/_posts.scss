@@ -610,14 +610,14 @@ html[data-theme='dark'] .posts-archive-title.is-highlight a {
   padding: 0.16rem 0.62rem 0.6rem;
   border-top: 1px solid color-mix(in srgb, var(--global-divider-color) 72%, transparent);
   text-align: left;
-  font-size: var(--global-text-size) !important;
+  font-size: 0.86rem !important;
   line-height: 1.35;
   white-space: pre-wrap;
 }
 
 .post-content .post-figcaption-detail,
 .post-content .post-figcaption-detail * {
-  font-size: var(--global-text-size) !important;
+  font-size: 0.86rem !important;
 }
 
 .post-content .post-image-caption.is-open .post-figcaption-detail {
