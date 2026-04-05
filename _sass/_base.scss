@@ -266,6 +266,10 @@ table td {
 
 a, table.table a {
   color: #71009e;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
   &:hover {
     color: #9500d1;
     text-decoration: underline;
@@ -273,7 +277,6 @@ a, table.table a {
   &:hover:after :not(.nav-item.dropdown) {
     width: 100%;
   }
-  font-size: var(--global-text-size);
 }
 
 figure, img {

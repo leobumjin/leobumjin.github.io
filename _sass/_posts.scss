@@ -633,6 +633,18 @@ html[data-theme='dark'] .posts-archive-title.is-highlight a {
   background: #ffffff;
 }
 
+html[data-theme='dark'] .post-content figure > figcaption,
+html[data-theme='dark'] .post-content .post-image-caption {
+  border-color: color-mix(in srgb, #ffffff 26%, transparent);
+  background: #101217;
+  color: #e8ebf2;
+}
+
+html[data-theme='dark'] .post-content .post-figcaption-detail {
+  border-top-color: color-mix(in srgb, #ffffff 20%, transparent);
+  color: #d7dbe4;
+}
+
 .post-content figure.post-image-figure .post-image-caption {
   width: 100%;
   margin-top: 0.42rem;
