@@ -117,12 +117,10 @@ description:
       return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     }
 
-    function pickDailyQuote(quotes) {
+    function pickRandomQuote(quotes) {
       if (!Array.isArray(quotes) || !quotes.length) return null;
-      var now = new Date();
-      var dayKey = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-      var dayIndex = Math.floor(dayKey / 86400000) % quotes.length;
-      return quotes[dayIndex];
+      var randomIndex = Math.floor(Math.random() * quotes.length);
+      return quotes[randomIndex];
     }
 
     function renderFilterBar() {
@@ -262,7 +260,7 @@ description:
         colorMapping = meta['color-mapping'] || {};
         mediaOrder = Object.keys(colorMapping);
 
-        var selectedQuote = pickDailyQuote(quotes);
+        var selectedQuote = pickRandomQuote(quotes);
         if (quoteTitle) {
           quoteTitle.textContent = selectedQuote && selectedQuote.quote ? '"' + selectedQuote.quote + '"' : 'Posts';
         }
