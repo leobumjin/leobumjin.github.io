@@ -54,7 +54,9 @@
     "venue": "Annual Meeting of the Association for Computational Linguistics",
     "date": "2026",
     "chip": "ACL Findings",
-    "links": []
+    "links": [
+      {"label": "Project", "url": "https://incomplete-prompt-jailbreak.github.io/"}
+    ]
   },  
   {
       "title": "Deontological Keyword Bias: The Impact of Modal Expressions on Normative Judgments of Language Models",
