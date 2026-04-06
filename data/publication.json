@@ -13,6 +13,10 @@
         "white": "#000000",
         "dark": "#ffffff"
       },
+      "ACL Findings": {
+        "white": "#a0000f",
+        "dark": "#ff0000"
+      },
       "Journal": {
         "white": "#000000",
         "dark": "#ffffff"
@@ -43,7 +47,16 @@
     }
 },
 "items": [
-    {
+  {
+    "title": "Incomplete Prompt Jailbreaks in Large Language Models",
+    "authors": "Yeonjea Kim*, <strong>Bumjin Park</strong>*, Jaesik Choi",
+    "authors-note": "*Equal contribution",
+    "venue": "Annual Meeting of the Association for Computational Linguistics",
+    "date": "2026",
+    "chip": "ACL Findings",
+    "links": []
+  },  
+  {
       "title": "Deontological Keyword Bias: The Impact of Modal Expressions on Normative Judgments of Language Models",
       "authors": "<strong>Bumjin Park</strong>, Jinsil Lee, Jaesik Choi",
       "venue": "Annual Meeting of the Association for Computational Linguistics",
