@@ -318,6 +318,9 @@ permalink: /work/
         if (item.date) {
           pubMetaParts.push('<span class="work-item-pub-part"><span class="work-item-year-label">' + escapeHtml(item.date) + '</span></span>');
         }
+        if (actions) {
+          pubMetaParts.push('<span class="work-item-inline-actions">' + actions + '</span>');
+        }
         compactMeta = pubMetaParts.join('');
       } else if (type === 'project') {
         title = item.title || '';
