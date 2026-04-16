@@ -181,23 +181,39 @@
       overflow: hidden;
     }
 
+    .navbar.navbar-light .navbar-nav .nav-item .nav-link,
     .nav-links .nav-link {
       padding: 0.35rem 0.2rem !important;
       margin: 0 0 0 1.2rem;
-      color: color-mix(in srgb, var(--global-text-color) 72%, transparent) !important;
+      color: var(--global-text-color) !important;
       font-size: var(--type-body);
-      font-weight: 600;
+      font-weight: 500;
       transition: color 0.2s ease;
     }
 
+    html[data-theme='dark'] .navbar.navbar-light .navbar-nav .nav-item .nav-link,
     html[data-theme='dark'] .nav-links .nav-link {
-      color: color-mix(in srgb, var(--global-text-color) 78%, transparent) !important;
+      color: var(--global-text-color) !important;
     }
 
-    .nav-links .nav-item.active .nav-link,
+    .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link,
+    .nav-links .nav-item.active .nav-link {
+      color: var(--global-text-color) !important;
+      font-weight: 500;
+      text-decoration: underline !important;
+      text-underline-offset: 0.18em;
+      text-decoration-thickness: 1.5px;
+    }
+
+    .navbar.navbar-light .navbar-nav .nav-item .nav-link:hover,
     .nav-links .nav-link:hover {
       color: var(--global-text-color) !important;
       text-decoration: none !important;
+    }
+
+    .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link:hover,
+    .nav-links .nav-item.active .nav-link:hover {
+      text-decoration: underline !important;
     }
 
     .nav-tools {
