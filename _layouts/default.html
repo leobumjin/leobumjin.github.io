@@ -28,13 +28,15 @@
   <script>
     (function() {
       try {
-        if (window.localStorage.getItem('navMenuOpen') === 'true') {
+        var savedNavMenuState = window.localStorage.getItem('navMenuOpen');
+        if (savedNavMenuState === null || savedNavMenuState === 'true') {
           document.documentElement.setAttribute('data-nav-open', 'true');
         } else {
           document.documentElement.removeAttribute('data-nav-open');
         }
       } catch (e) {
-        document.documentElement.removeAttribute('data-nav-open');
+        // Keep the menu open by default when storage is unavailable.
+        document.documentElement.setAttribute('data-nav-open', 'true');
       }
     })();
   </script>

@@ -25,10 +25,11 @@ $(document).ready(function() {
 
         // Restore menu state across page navigations.
         try {
-            const persisted = window.localStorage.getItem(NAV_MENU_STATE_KEY) === 'true';
+            const persistedState = window.localStorage.getItem(NAV_MENU_STATE_KEY);
+            const persisted = persistedState === null ? true : persistedState === 'true';
             applyMenuState(persisted);
         } catch (e) {
-            applyMenuState(false);
+            applyMenuState(true);
         }
 
         menuToggle.addEventListener('click', function() {
