@@ -2,9 +2,18 @@
     {
         "year": "2026",
         "date": "March",
+        "title": "One paper is accepted to Findings of ACL 2026!",
+        "url": "",
+        "color": "#a0000f",
+        "highlight": true,
+        "visible": true
+    },
+    {
+        "year": "2026",
+        "date": "March",
         "title": "Agentic Vulnerability Analysis in AI Agents (KBS Insight)",
         "url": "https://news.kbs.co.kr/news/pc/view/view.do?ncd=8507890",
-        "color": "#00aa00",
+        "color": "#0000f0",
         "highlight": true,
         "visible": true
     },
@@ -13,7 +22,7 @@
         "date": "October",
         "title": "Visiting Research Scholar at NYU Global AI Frontier Lab",
         "url": "https://nyu.edu/global-ai-frontier-lab",
-        "color": "#0000ff",
+        "color": "#800080",
         "highlight": true,
         "visible": true
     }
