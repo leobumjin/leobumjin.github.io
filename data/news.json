@@ -1,6 +1,16 @@
 [
     {
         "year": "2026",
+        "date": "June",
+        "title": "Protein Language Modeling Project is started!",
+        "url": "",
+        "url_description": "",
+        "color": "#00f00f",
+        "highlight": true,
+        "visible": true
+    },
+    {
+        "year": "2026",
         "date": "March",
         "title": "One paper is accepted to Findings of ACL 2026!",
         "url": "",
