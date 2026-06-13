@@ -47,17 +47,17 @@
     }
 },
 "items": [
-  {
-    "title": "Incomplete Prompt Jailbreaks in Large Language Models",
-    "authors": "Yeonjea Kim, <strong>Bumjin Park</strong>, Jaesik Choi",
-    "authors-note": "",
-    "venue": "Annual Meeting of the Association for Computational Linguistics",
-    "date": "2026",
-    "chip": "ACL Findings",
-    "links": [
-      {"label": "Project", "url": "https://incomplete-prompt-jailbreak.github.io/"}
-    ]
-  },  
+{
+  "title": "Lifted Representation Hypothesis in Language Models",
+  "authors": "<strong>Bumjin Park</strong>, Jaesik Choi",
+  "authors-note": "",
+  "venue": "ICML 2026 Workshop: Philosophy Meets Machine Learning",
+  "date": "2026",
+  "chip": "PhilML@ICML",
+  "links": [
+    {"label": "Paper", "url": "https://openreview.net/forum?id=b6SquyZKd5"}
+  ]
+  },
   {
       "title": "Deontological Keyword Bias: The Impact of Modal Expressions on Normative Judgments of Language Models",
       "authors": "<strong>Bumjin Park</strong>, Jinsil Lee, Jaesik Choi",
