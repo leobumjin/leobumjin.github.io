@@ -1,6 +1,16 @@
 {
   "items": [
     {
+      "title": "Excellence Award",
+      "organization": "GARL Challenge 2026",
+      "focus": "Delegated authority dynamics in agentic AI.",
+      "date": "2026",
+      "highlights": [
+        "Selected as an Excellence Award recipient in the GARL Challenge 2026, hosted by the Ministry of Science and ICT, Korea.",
+        "Recognized for the research topic, “Framing Delegated Authority Dynamics in Agentic AI.”"      ],
+      "links": []
+    },
+    {
       "title": "Visiting Research Scholar",
       "organization": "NYU Global AI Frontier Lab 🗽",
       "focus": "Mechanistic interpretability and bias in LLMs.",
