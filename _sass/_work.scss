@@ -302,6 +302,12 @@ html[data-theme='dark'] .work-item-chip {
   color: var(--global-text-color);
 }
 
+.work-item.is-publication .work-item-author-note {
+  font-size: 0.82em;
+  color: var(--global-text-color-light);
+  white-space: nowrap;
+}
+
 .work-item.is-publication .work-item-venue-label {
   font-style: italic;
 }

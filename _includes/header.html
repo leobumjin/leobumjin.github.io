@@ -3,22 +3,18 @@
     <div class="container nav-shell">
       <a class="navbar-brand title font-weight-lighter nav-brand" href="{{ '/' | relative_url }}">
         <span class="nav-brand-copy">
-          <span class="nav-brand-name">Leo Bumjin Park</span>
+          <span class="nav-brand-name">Bumjin Park</span>
         </span>
       </a>
 
       <div class="nav-menu-shell" id="navMenuShell">
-        <button id="nav-menu-toggle" class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="navMenuPanel" aria-label="Open menu">
-          <span class="nav-menu-toggle-glyph">∞</span>
-        </button>
-
         <div class="nav-menu-panel" id="navMenuPanel">
           <ul class="navbar-nav ml-auto nav-links">
           <li class="nav-item {% if page.url contains '/work/' %}active{% endif %}">
             <a class="nav-link" href="{{ '/work/' | relative_url }}">Work</a>
           </li>
           <li class="nav-item {% if page.url contains '/essay/' %}active{% endif %}">
-            <a class="nav-link" href="{{ '/essay/' | relative_url }}">Posts</a>
+            <a class="nav-link" href="{{ '/essay/' | relative_url }}">Post</a>
           </li>
           </ul>
         </div>

@@ -212,12 +212,17 @@ permalink: /work/
         .replace(/&lt;\/strong&gt;/gi, '</strong>');
     }
 
-    function renderAuthors(authors) {
+    function renderAuthors(authors, authorsNote) {
       if (!authors) return '';
       var safe = allowBasicInlineHtml(escapeHtml(String(authors)));
+      var note = String(authorsNote || '').trim();
 
       if (!/<strong>\s*bumjin park\s*<\/strong>/i.test(safe)) {
         safe = safe.replace(/\bbumjin park\b/gi, '<strong>Bumjin Park</strong>');
+      }
+
+      if (note) {
+        safe += ' <span class="work-item-author-note">(' + escapeHtml(note) + ')</span>';
       }
 
       return safe;
@@ -293,7 +298,7 @@ permalink: /work/
       if (type === 'publication') {
         title = item.title || '';
         meta = item.authors || '';
-        metaHtml = renderAuthors(item.authors || '');
+        metaHtml = renderAuthors(item.authors || '', item['authors-note'] || '');
         summary = '';
         kind = formatPublicationVenue(item.venue || '', item.date || '');
         if (!kind) {
@@ -312,6 +317,9 @@ permalink: /work/
         }
         if (item.date) {
           pubMetaParts.push('<span class="work-item-pub-part"><span class="work-item-year-label">' + escapeHtml(item.date) + '</span></span>');
+        }
+        if (actions) {
+          pubMetaParts.push('<span class="work-item-inline-actions">' + actions + '</span>');
         }
         compactMeta = pubMetaParts.join('');
       } else if (type === 'project') {

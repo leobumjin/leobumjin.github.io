@@ -1,10 +1,31 @@
 [
     {
         "year": "2026",
+        "date": "June",
+        "title": "Protein Language Modeling Project is started!",
+        "url": "",
+        "url_description": "",
+        "color": "#00f00f",
+        "highlight": true,
+        "visible": true
+    },
+    {
+        "year": "2026",
+        "date": "March",
+        "title": "One paper is accepted to Findings of ACL 2026!",
+        "url": "",
+        "url_description": "",
+        "color": "#a0000f",
+        "highlight": true,
+        "visible": true
+    },
+    {
+        "year": "2026",
         "date": "March",
         "title": "Agentic Vulnerability Analysis in AI Agents (KBS Insight)",
         "url": "https://news.kbs.co.kr/news/pc/view/view.do?ncd=8507890",
-        "color": "#00aa00",
+        "color": "#0000f0",
+        "url_description": "KBS News",
         "highlight": true,
         "visible": true
     },
@@ -13,7 +34,8 @@
         "date": "October",
         "title": "Visiting Research Scholar at NYU Global AI Frontier Lab",
         "url": "https://nyu.edu/global-ai-frontier-lab",
-        "color": "#0000ff",
+        "url_description": "NYU Global AI Frontier Lab",
+        "color": "#800080",
         "highlight": true,
         "visible": true
     }

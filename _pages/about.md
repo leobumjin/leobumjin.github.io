@@ -184,6 +184,7 @@ _styles: >
         title: item.title || item.headline || 'Untitled',
         color: item.color || '',
         url: item.url || item.link || '',
+        urlDescription: item.url_description || item.url_desscription || '',
         highlight: Boolean(item.highlight),
         visible: item.visible !== false
       };
@@ -209,8 +210,14 @@ _styles: >
       const highlightClass = item.highlight ? ' is-highlighted' : '';
       const body = '<span class="home-news-text">' + escapeHtml(item.title || '') + '</span>';
       const safeUrl = sanitizeUrl(item.url || '');
+      const urlDescription = String(item.urlDescription || '').trim();
       const actions = safeUrl
-        ? '<a class="home-news-link" href="' + safeUrl + '" target="_blank" rel="noreferrer" aria-label="Open link"><img src="{{ "/assets/svg/link.svg" | relative_url }}" alt="" aria-hidden="true"></a>'
+        ? '<span class="home-news-link-wrap">' +
+            '<a class="home-news-link" href="' + safeUrl + '" target="_blank" rel="noreferrer" aria-label="Open link">' +
+              '<img src="{{ "/assets/svg/link.svg" | relative_url }}" alt="" aria-hidden="true">' +
+            '</a>' +
+            (urlDescription ? '<span class="home-news-link-tooltip" role="tooltip">' + escapeHtml(urlDescription) + '</span>' : '') +
+          '</span>'
         : '';
 
       return '' +
