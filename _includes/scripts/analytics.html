@@ -7,7 +7,7 @@
     gtag('js', new Date());
     gtag('config', '{{ site.google_analytics }}');
   </script>
-  {%- endif -%}
+{%- endif -%}
   {%- if site.enable_panelbear_analytics -%}
   <!-- Panelbear Analytics - We respect your privacy -->
   <script async src="https://cdn.panelbear.com/analytics.js?site={{site.panelbear_analytics}}"></script>
@@ -15,4 +15,17 @@
     window.panelbear = window.panelbear || function() { (window.panelbear.q = window.panelbear.q || []).push(arguments); };
     panelbear('config', { site: '{{site.panelbear_analytics}}' });
   </script>
+{%- endif -%}
+{%- if site.enable_goatcounter and site.goatcounter_code -%}
+  <script>
+    window.__PAGE_VIEWS_CONFIG__ = {
+      endpoint: 'https://{{ site.goatcounter_code }}.goatcounter.com',
+      enabled: true
+    };
+  </script>
+  <script
+    data-goatcounter="https://{{ site.goatcounter_code }}.goatcounter.com/count"
+    async
+    src="https://gc.zgo.at/count.js"></script>
+  <script defer src="{{ '/assets/js/page_views.js' | relative_url }}"></script>
 {%- endif -%}

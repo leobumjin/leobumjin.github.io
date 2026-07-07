@@ -31,6 +31,10 @@ layout: default
       {%- endif -%}
       {%- if page.author -%} • {{ page.author }}{%- endif -%}
       {%- if page.meta -%} • {{ page.meta }}{%- endif -%}
+      {%- if site.enable_goatcounter and site.goatcounter_code and site.show_post_views != false -%}
+        <span class="post-view-divider" aria-hidden="true" hidden> • </span>
+        <span class="post-view-count" data-page-views-current data-page-views-locale="{% if is_korean_post %}ko{% else %}en{% endif %}" hidden></span>
+      {%- endif -%}
     </p>
   </header>
 

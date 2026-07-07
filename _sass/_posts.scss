@@ -191,6 +191,10 @@ html[data-theme='dark'] .posts-archive-section-label {
   min-width: 0;
 }
 
+.posts-archive-inline-meta {
+  margin-top: 0.42rem;
+}
+
 .posts-archive-title {
   margin: 0;
   font-size: 1.15rem;
@@ -237,6 +241,14 @@ html[data-theme='dark'] .posts-archive-title.is-highlight a {
 
 .container .posts-archive-category:hover {
   color: var(--global-text-color);
+}
+
+.posts-archive-view-count,
+.post-view-count {
+  color: var(--global-text-color-light);
+  font-size: var(--type-meta);
+  line-height: 1;
+  white-space: nowrap;
 }
 
 @media (max-width: 900px) {
@@ -289,6 +301,10 @@ html[data-theme='dark'] .posts-archive-title.is-highlight a {
   .posts-archive-title.is-highlight a {
     font-size: 0.84rem !important;
     line-height: 1.24;
+  }
+
+  .posts-archive-inline-meta {
+    margin-top: 0.35rem;
   }
 
   .posts-archive-title a {
@@ -500,6 +516,10 @@ html[data-theme='dark'] .posts-archive-title.is-highlight a {
   margin-top: 0;
   margin-bottom: 2.2rem;
   line-height: 1.45;
+}
+
+.post-view-divider[hidden] {
+  display: none;
 }
 
 .post-header {

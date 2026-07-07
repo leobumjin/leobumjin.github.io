@@ -152,6 +152,10 @@ description:
         var title = escapeHtml(item.title || 'Untitled');
         var category = escapeHtml(item.category || '');
         var date = escapeHtml(formatDate(item.date));
+        var postPath = postUrl ? postUrl.replace(/^https?:\/\/[^/]+/i, '') : '';
+        var viewsHtml = postPath
+          ? '<span class="posts-archive-view-count" data-page-views-path="' + escapeHtml(postPath) + '" data-page-views-locale="en" hidden></span>'
+          : '';
         var isHighlight = !!item.highlight;
         var itemClass = isHighlight ? 'posts-archive-item is-highlight' : 'posts-archive-item';
         var titleClass = isHighlight ? 'posts-archive-title is-highlight' : 'posts-archive-title';
@@ -172,6 +176,7 @@ description:
                   ? '<a href="' + postUrl + '">' + title + '</a>'
                   : '<span aria-disabled="true">' + title + '</span>') +
               '</h2>' +
+              (viewsHtml ? '<div class="posts-archive-inline-meta">' + viewsHtml + '</div>' : '') +
             '</div>' +
             '<div class="posts-archive-side">' +
               (category ? '<button class="posts-archive-category" type="button" data-category-filter="' + category + '">' + category + '</button>' : '') +
