@@ -25,16 +25,6 @@ Recent protein AI work gives us the ingredients for this kind of workflow. Large
 
 In this blog-style report, we walk through that pipeline. We first introduce an ESM-based exploration strategy for building and selecting energy models. We then compare several generation methods built on top of ZymCTRL, including supervised baselines, activation guidance, and reward-driven learning. Finally, we summarize what worked, what failed, and what this tells us about controllable antibody generation under a fixed scaffold setting.
 
-<figure>
-    <img src="2026-antibody-generation_metrics_radar_256.webp" />
-    <figcaption>
-    <figtitle>Generation metrics across baseline, guidance, and RL variants.</figtitle>
-    <figdetail>
-The radar plot compares quality-oriented metrics, such as energy positive fraction and mean positive probability, together with diversity-oriented metrics. Results are shown for both CDR3-only and full-sequence contexts, making it easier to see where reward optimization improves binder-like scoring and where it begins to reduce diversity.
-    </figdetail>
-    </figcaption>
-</figure>
-
 <hr class="h2-separation">
 
 ## Problem Setup
@@ -144,6 +134,27 @@ Across the selected configurations, the strongest AUROC appears in the `esm2-650
 <hr class="h2-separation">
 
 ## Generation Comparison
+
+After selecting the ESM-based energy model, the next question is how different generation strategies behave under the same scoring lens. The radar plot below summarizes that comparison across 256 generated samples for each setting.
+
+<figure>
+    <img src="2026-antibody-generation_metrics_radar_256.webp" />
+    <figcaption>
+    <figtitle>Generation metrics across baseline, guidance, and RL variants.</figtitle>
+    <figdetail>
+The radar plot compares energy-facing quality metrics, such as positive fraction and mean positive probability, with diversity and distribution-distance metrics. Results are shown for both CDR3-only and full-sequence contexts, so the same method can be compared across a short local generation task and a scaffold-aware generation task.
+    </figdetail>
+    </figcaption>
+</figure>
+
+Several useful patterns stand out from the plot:
+
+- In the `CDR3 Only` setting, `RL-DPO` gives the strongest energy-facing signal, reaching the outer edge on both positive fraction and mean positive probability.
+- The supervised baseline and guidance runs preserve stronger distance-based diversity in the CDR3-only setting, especially on train/test distance mean and test distance standard deviation.
+- Entropy regularization changes the RL behavior substantially. For example, `RL-DPO + Entropy (0.5)` keeps high positive fraction while pulling the shape closer to the diversity axes than plain `RL-DPO`.
+- In the `Full Sequence` setting, most RL variants reach very high positive fraction and mean positive probability, but this comes with visibly different diversity profiles.
+- `RL-PPO` and `RL-GRPO` keep high uniqueness in the full-sequence panel, while their distance-to-training/test-distribution behavior differs from `RL-DPO`.
+- `RL-DPO` in full sequence has a wide footprint across quality and distance axes, but the qualitative samples later show why this has to be interpreted carefully: high metric coverage can still hide repeated or motif-collapsed outputs.
 
 The overall generation comparison shows three main patterns.
 

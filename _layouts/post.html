@@ -110,6 +110,12 @@ layout: default
 
     function enablePostImageZoom() {
       if (!postContent) return;
+      if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+        postContent.querySelectorAll('img[data-zoomable]').forEach(function (img) {
+          img.removeAttribute('data-zoomable');
+        });
+        return;
+      }
       var images = postContent.querySelectorAll('img[src]');
       images.forEach(function (img) {
         img.setAttribute('data-zoomable', '');
