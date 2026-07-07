@@ -36,11 +36,11 @@ _styles: >
     </p>
     <p class="home-profile-line"><strong>Research interests:</strong> AI Safety, non-monotonic reasoning, constraint conflict, factuality</p>
     <div class="home-contact-links">
-      <a class="home-contact-link" href="https://www.linkedin.com/in/leo-bjpark/" target="_blank" rel="noreferrer">
+      <a class="home-contact-link" href="https://www.linkedin.com/in/leobumjin/" target="_blank" rel="noreferrer">
         <img src="{{ '/assets/svg/linkedin.svg' | relative_url }}" alt="" aria-hidden="true">
         <span>LinkedIn</span>
       </a>
-      <a class="home-contact-link" href="https://www.instagram.com/leo_bjpark" target="_blank" rel="noreferrer">
+      <a class="home-contact-link" href="https://www.instagram.com/leobumjin" target="_blank" rel="noreferrer">
         <img src="{{ '/assets/svg/instagram.svg' | relative_url }}" alt="" aria-hidden="true">
         <span>Instagram</span>
       </a>
@@ -57,7 +57,7 @@ _styles: >
             </button>
           </div>
           <div class="home-contact-email-row">
-            <span class="home-contact-email-address">leo.bjpark@gmail.com</span>
+            <span class="home-contact-email-address">bumjini42@gmail.com</span>
             <button type="button" class="home-contact-copy-btn" data-copy="leo.bjpark@gmail.com" aria-label="Copy Gmail email">
               <img src="{{ '/assets/svg/copy.svg' | relative_url }}" alt="" aria-hidden="true">
             </button>
