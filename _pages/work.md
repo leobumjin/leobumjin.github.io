@@ -144,8 +144,9 @@ permalink: /work/
 
         var iconName = mappedIcon || inferIconFromUrl(url);
         var linkThemeClass = iconThemeClass(iconName);
+        var targetAttrs = link.sameTab ? '' : ' target="_blank" rel="noreferrer"';
         return '' +
-          '<a class="work-link work-link-with-icon' + linkThemeClass + '" href="' + escapeHtml(url) + '" target="_blank" rel="noreferrer">' +
+          '<a class="work-link work-link-with-icon' + linkThemeClass + '" href="' + escapeHtml(url) + '"' + targetAttrs + '>' +
             '<img class="work-link-inline-icon" src="' + escapeHtml(svgBasePath + iconName) + '" alt="" loading="lazy" aria-hidden="true">' +
             '<span>' + escapeHtml(label) + '</span>' +
           '</a>';
@@ -328,7 +329,7 @@ permalink: /work/
         meta = '';
         var projectMetaParts = [];
         if (item.organization) {
-          projectMetaParts.push('<span class="work-item-meta-chip">' + escapeHtml(item.organization) + '</span>');
+          projectMetaParts.push('<span class="work-item-inline-org">' + escapeHtml(item.organization) + '</span>');
         }
         if (item.focus) {
           projectMetaParts.push('<span class="work-item-venue-label">' + escapeHtml(item.focus) + '</span>');
@@ -336,28 +337,36 @@ permalink: /work/
         if (item.tools) {
           projectMetaParts.push('<span class="work-item-venue-label">' + escapeHtml(item.tools) + '</span>');
         }
+        var projectActions = renderLinks(item.links, metadata, type);
+        if (projectActions) {
+          projectMetaParts.push('<span class="work-item-inline-actions">' + projectActions + '</span>');
+        }
         compactMeta = projectMetaParts.join('<span class="work-item-pub-sep"> | </span>');
-        actions = renderLinks(item.links, metadata, type);
+        actions = '';
       } else if (type === 'experience') {
         title = item.title || '';
         headerDate = item.date || '';
         meta = '';
         var expMetaParts = [];
         if (item.organization) {
-          expMetaParts.push('<span class="work-item-meta-chip">' + escapeHtml(item.organization) + '</span>');
+          expMetaParts.push('<span class="work-item-inline-org">' + escapeHtml(item.organization) + '</span>');
         }
         if (item.focus) {
           expMetaParts.push('<span class="work-item-venue-label">' + escapeHtml(item.focus) + '</span>');
         }
+        var expActions = renderLinks(item.links, metadata, type);
+        if (expActions) {
+          expMetaParts.push('<span class="work-item-inline-actions">' + expActions + '</span>');
+        }
         compactMeta = expMetaParts.join('<span class="work-item-pub-sep"> | </span>');
-        actions = renderLinks(item.links, metadata, type);
+        actions = '';
       } else if (type === 'education') {
         title = item.institution || '';
         headerDate = item.date || '';
         meta = '';
         var eduMetaParts = [];
         if (item.degree) {
-          eduMetaParts.push('<span class="work-item-meta-chip">' + escapeHtml(item.degree) + '</span>');
+          eduMetaParts.push('<span class="work-item-inline-org">' + escapeHtml(item.degree) + '</span>');
         }
         if (item.major || item.focus) {
           eduMetaParts.push('<span class="work-item-venue-label">' + escapeHtml(item.major || item.focus) + '</span>');
@@ -366,7 +375,12 @@ permalink: /work/
       }
 
       return '' +
-        '<article class="work-item is-compact' + (type === 'publication' ? ' is-publication' : '') + '">' +
+        '<article class="work-item is-compact' +
+          (type === 'publication' ? ' is-publication' : '') +
+          (type === 'project' ? ' is-project' : '') +
+          (type === 'experience' ? ' is-experience' : '') +
+          (type === 'education' ? ' is-education' : '') +
+        '">' +
           '<div class="work-item-date-column">' +
             '<div class="work-item-date">' + escapeHtml(item.date || '') + '</div>' +
             (type === 'publication' && item.chip ? '<div class="work-item-chips"><span class="work-item-chip"' + chipStyle + '>' + renderChipLabel(item.chip) + '</span></div>' : '') +
@@ -382,7 +396,7 @@ permalink: /work/
             (summary ? '<p class="work-item-summary">' + escapeHtml(summary) + '</p>' : '') +
             (type === 'publication' ? '' : notes) +
           '</div>' +
-          '<div class="work-item-actions">' + actions + '</div>' +
+          (actions ? '<div class="work-item-actions">' + actions + '</div>' : '') +
         '</article>';
     }
 

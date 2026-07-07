@@ -1,6 +1,18 @@
 {
   "items": [
     {
+      "title": "POSCO Factory Agent Project",
+      "organization": "POSCO",
+      "tools": "Time-series Vector DB, LLM Agents, Process Signal Representation",
+      "summary": "Building an agent-readable representation layer for large-scale industrial process signals.",
+      "date": "Jun 2026 - Present",
+      "highlights": [
+        "Started a factory-agent project for large-scale process signal understanding.",
+        "Building a time-series vector database so agents can retrieve and reason over industrial process signals.",
+        "Designing representations that make high-dimensional factory signals accessible to LLM-based agents."
+      ]
+    },
+    {
       "title": "Agentic Vulnerability Analysis in AI Agents (Project Leader)",
       "organization": "KBS Insight (Technical Advisor)",
       "tools": "LLM Agents, Prompt Injection Evaluation, XAI, Multi-Agent Analysis",
@@ -18,7 +30,7 @@
       ]
     },
     {
-      "title": "Interpretability Research",
+      "title": "LLM Interpretability Research",
       "organization": "NYU Global AI Frontier Lab",
       "tools": "Transformer Models, Activation Patching, LoRA",
       "summary": "Mechanistic interpretability of large language models to investigate bias representations.",
@@ -48,7 +60,7 @@
       ]
     },
     {
-      "title": "AI for Cosmetic Material Composition Design and Property Inference (Phase 2)",
+      "title": "AI for Cosmetic Composition (Phase 2)",
       "organization": "Kolmar",
       "tools": "Transformer, Node.js",
       "summary": "A web-based AI service for cosmetic composition design and property inference.",

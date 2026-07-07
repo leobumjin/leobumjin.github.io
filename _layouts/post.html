@@ -7,6 +7,7 @@ layout: default
   {%- assign is_korean_post = true -%}
 {%- endif -%}
 {%- assign post_nav_title = page['mini-title'] | default: page.title | default: 'Content' -%}
+{%- assign back_fallback_url = page['back-fallback'] | default: '/essay/' -%}
 {% if page._styles %}
 <!-- Page/Post style -->
 <style type="text/css">
@@ -20,7 +21,15 @@ layout: default
   <header class="post-header">
     <div class="post-header-top">
       <button class="post-back-link" id="postBackButton" type="button" aria-label="Go back">←</button>
-      <div class="post-language-switch" id="postLanguageSwitch" hidden></div>
+      <div class="post-header-actions">
+        {%- if page['code-url'] -%}
+          <a class="post-source-link" href="{{ page['code-url'] }}" target="_blank" rel="noreferrer">
+            <img src="{{ '/assets/svg/github.svg' | relative_url }}" alt="" aria-hidden="true">
+            <span>{{ page['code-label'] | default: 'Code' }}</span>
+          </a>
+        {%- endif -%}
+        <div class="post-language-switch" id="postLanguageSwitch" hidden></div>
+      </div>
     </div>
     <h2 class="post-title">{{ page.title }}</h2>
     <p class="post-meta">
@@ -381,7 +390,7 @@ layout: default
           window.history.back();
           return;
         }
-        window.location.href = '{{ "/essay/" | relative_url }}';
+        window.location.href = '{{ back_fallback_url | relative_url }}';
       });
     }
 

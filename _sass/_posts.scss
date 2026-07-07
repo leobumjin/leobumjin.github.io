@@ -347,6 +347,12 @@ html[data-theme='dark'] .posts-archive-title.is-highlight a {
   margin-bottom: 2.5rem;
 }
 
+.post-header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
 .post-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 0;
@@ -498,6 +504,62 @@ html[data-theme='dark'] .posts-archive-title.is-highlight a {
 
 .post-back-link:focus-visible {
   outline: none;
+}
+
+.post-source-link,
+.post-source-link:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  min-height: 2rem;
+  padding: 0 0.68rem;
+  border: 1px solid color-mix(in srgb, var(--global-text-color) 26%, transparent);
+  border-radius: 999px;
+  color: var(--global-text-color);
+  background: transparent;
+  text-decoration: none;
+  font-size: 0.84rem;
+  line-height: 1;
+  font-weight: 600;
+  transition: background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+}
+
+.post-source-link:hover,
+.post-source-link:focus-visible,
+.post-source-link:visited:hover,
+.post-source-link:visited:focus-visible {
+  background: var(--global-text-color);
+  border-color: var(--global-text-color);
+  color: var(--global-bg-color);
+  text-decoration: none;
+  outline: none;
+}
+
+.post-source-link span {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.post-source-link img {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: block;
+  filter: brightness(0) saturate(100%);
+}
+
+.post-source-link:hover img,
+.post-source-link:focus-visible img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+html[data-theme='dark'] .post-source-link img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+html[data-theme='dark'] .post-source-link:hover img,
+html[data-theme='dark'] .post-source-link:focus-visible img {
+  filter: brightness(0) saturate(100%);
 }
 
 .post {
@@ -684,27 +746,28 @@ html[data-theme='dark'] .post-content .post-figcaption-detail {
 
 .post-content a,
 .post-content a:visited {
-  color: var(--global-theme-color);
+  color: var(--global-link-color);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.12em;
 }
 
 .post-content a:hover {
-  color: color-mix(in srgb, var(--global-theme-color) 78%, var(--global-text-color));
+  color: color-mix(in srgb, var(--global-link-color) 78%, var(--global-text-color));
   text-decoration-thickness: 1.5px;
 }
 
 html[data-theme='dark'] .post-content a,
 html[data-theme='dark'] .post-content a:visited {
-  color: #a8c4ff;
+  color: var(--global-link-color);
 }
 
 html[data-theme='dark'] .post-content a:hover {
-  color: #c7d9ff;
+  color: color-mix(in srgb, var(--global-link-color) 82%, #ffffff);
 }
 
 .post-content h2 {
+  font-size: 21px;
   margin-top: 1.6rem;
   padding-top: 0.95rem;
   border-top: 2px solid color-mix(in srgb, var(--global-text-color) 100%, transparent);

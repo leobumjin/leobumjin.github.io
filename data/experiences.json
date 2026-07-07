@@ -28,7 +28,7 @@
       "title": "Teaching Assistant",
       "organization": "KAIST AI",
       "focus": "Time Series, Deep Learning, and AI Colloquium.",
-      "date": "Sep 2023 - Sep 2025",
+      "date": "Sep 2023 - Jun 2026",
       "highlights": [
         "Served as a teaching assistant for graduate-level courses in time series, deep learning, and colloquium."
       ],
@@ -53,7 +53,7 @@
     {
       "title": "GPU Server Management",
       "organization": "SAILAB, KAIST AI",
-      "focus": "Linux, Docker, Git, Slurm, and research infrastructure management.",
+      "focus": "Linux, Docker, and research infrastructure management.",
       "date": "Jan 2022 - Dec 2024",
       "highlights": [
         "Managed GPU servers and computing resources for SAILAB's research infrastructure.",
@@ -62,6 +62,18 @@
       ],
       "links": [
         { "label": "SAILAB", "url": "https://sailab.kaist.ac.kr/" }
+      ]
+    },
+    {
+      "title": "Controllable HER2 Antibody Generation",
+      "organization": "AinB Bio Company",
+      "focus": "ESM energy modeling, and ZymCTRL-based conditional generation.",
+      "date": "Jul 2026",
+      "highlights": [
+        "Built a conditional antibody-generation pipeline combining ESM-based surrogate scoring with ZymCTRL."
+      ],
+      "links": [
+        { "label": "Report", "url": "/work/2026/antibody-generation/", "sameTab": true }
       ]
     }
   ]

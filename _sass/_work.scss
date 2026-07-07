@@ -193,6 +193,7 @@ html[data-theme='dark'] .work-item-chip {
   margin: 0;
   color: var(--global-text-color);
   font-size: 1.16rem;
+  font-weight: 500;
   line-height: 1.24;
   letter-spacing: -0.01em;
 }
@@ -317,6 +318,53 @@ html[data-theme='dark'] .work-item-chip {
   opacity: 0.72;
 }
 
+.work-item-inline-org {
+  color: var(--global-text-color);
+  font-style: italic;
+}
+
+.work-item.is-project .work-item-pub-meta,
+.work-item.is-experience .work-item-pub-meta,
+.work-item.is-education .work-item-pub-meta {
+  color: var(--global-text-color);
+}
+
+.work-item.is-project .work-item-inline-actions,
+.work-item.is-experience .work-item-inline-actions {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  vertical-align: baseline;
+}
+
+.work-item.is-project .work-link,
+.work-item.is-experience .work-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--global-link-color);
+  background: transparent;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: inherit;
+}
+
+.work-item.is-project .work-link:hover,
+.work-item.is-experience .work-link:hover {
+  color: var(--global-text-color);
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+.work-item.is-project .work-link-inline-icon,
+.work-item.is-experience .work-link-inline-icon {
+  width: 0.78rem;
+  height: 0.78rem;
+}
+
 .work-item-year-label {
   font-size: var(--type-meta);
   // font-weight: 500;
@@ -363,7 +411,7 @@ html[data-theme='dark'] .work-item-chip {
   padding: 0.34rem 0.74rem;
   border: 1px solid color-mix(in srgb, var(--global-divider-color) 88%, transparent);
   border-radius: 999px;
-  color: var(--global-theme-color);
+  color: var(--global-link-color);
   font-size: var(--type-link);
   font-weight: 600;
   text-decoration: none;
@@ -385,9 +433,11 @@ html[data-theme='dark'] .work-item-chip {
 }
 
 .work-link-with-icon span {
+  color: inherit;
   overflow-wrap: anywhere;
   line-height: 1.2;
   font-size: var(--type-meta);
+  font-weight: inherit;
 }
 
 .work-link.work-link-youtube .work-link-inline-icon {
