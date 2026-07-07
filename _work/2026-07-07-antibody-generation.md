@@ -19,7 +19,7 @@ This project was carried out in collaboration with AinB. The work was shaped tog
 
 At a high level, this study focuses on **HER2 antibody generation** with ZymCTRL-based sequence modeling. The practical question is simple but important: can we generate candidate antibody sequences that are not only syntactically valid, but also more likely to preserve binder-like properties under a learned energy model?
 
-This matters because antibody engineering is still expensive, iterative, and data-constrained. In many realistic settings, researchers do not want an unconstrained language model that simply writes plausible protein strings. They want a controllable generator that can <u>**search around known functional sequence space, bias generation toward promising regions, and still preserve diversity**</u>. That is exactly where conditional generation, learned scoring functions, and representation-based search become valuable.
+This matters because antibody engineering is still expensive, iterative, and data-constrained. In many realistic settings, researchers do not want an unconstrained language model that simply writes plausible protein strings. They want a controllable generator that can <strong><u>search around known functional sequence space, bias generation toward promising regions, and still preserve diversity</u></strong>. That is exactly where conditional generation, learned scoring functions, and representation-based search become valuable.
 
 Recent protein AI work gives us the ingredients for this kind of workflow. Large protein language models provide expressive sequence representations. Classifier-style models on top of ESM embeddings can be used as surrogate evaluators. Conditional language models can then use those signals either implicitly through supervised fine-tuning or explicitly through guidance and reinforcement learning. The interesting research question is not whether these ingredients exist independently, but **how they behave when combined in one practical antibody-generation pipeline**.
 
@@ -72,7 +72,7 @@ The search space includes:
 - multiple input formats: antibody only, antibody with CDRH3 pooling, antigen-aware variants, and full-sequence pooling variants
 - multiple classifier heads: linear and two-layer heads
 
-This stage is important because <u>**the generation model is only as useful as the signal it is optimized against**</u>. If the energy model is weak or unstable, stronger optimization in generation can actually make results worse by overfitting to noise. That is why we treat energy-model design as a real model-selection problem rather than as a fixed preprocessing step.
+This stage is important because <strong><u>the generation model is only as useful as the signal it is optimized against</u></strong>. If the energy model is weak or unstable, stronger optimization in generation can actually make results worse by overfitting to noise. That is why we treat energy-model design as a real model-selection problem rather than as a fixed preprocessing step.
 
 <figure>
     <img src="2026-antibody-energy_pooling_layer_scores.webp" />
@@ -108,7 +108,7 @@ This distinction turns out to matter. The same optimization strategy can behave 
 
 ## Energy Model Results
 
-Even in the 1,000-example subset, the energy model is not a trivial component. Performance varies meaningfully by ESM size, by input structure, and by pooling location. The main takeaway from this stage is that <u>**a well-chosen representation pipeline is already doing a large part of the work**</u> before any generation-time optimization begins.
+Even in the 1,000-example subset, the energy model is not a trivial component. Performance varies meaningfully by ESM size, by input structure, and by pooling location. The main takeaway from this stage is that <strong><u>a well-chosen representation pipeline is already doing a large part of the work</u></strong> before any generation-time optimization begins.
 
 Layer counts:
 
@@ -129,6 +129,7 @@ Best energy-model checkpoint per pooling/input mode in this subset experiment:
 | `esm2-650m` | Antibody / CDRH3 | 0.8060 (L7) | 0.8812 (L7) | mlp | linear |
 | `esm2-650m` | Antibody / Full | 0.7950 (L28) | 0.8601 (L28) | mlp | linear |
 | `esm2-650m` | CDRH3 / Full | 0.7960 (L7) | 0.8700 (L7) | mlp | linear |
+{: .compact-table}
 
 Across the selected configurations, the strongest AUROC appears in the `esm2-650m` antibody/CDRH3 setting, reaching `0.8812`. The strongest accuracy also comes from `esm2-650m`, with `0.8060` in the same setting. These numbers are best read as **subset-level model-selection signals**, not as final deployment metrics. Still, they support the use of the larger representation model as a useful binder proxy, while showing that layer and pooling choices remain essential.
 
@@ -161,7 +162,7 @@ The overall generation comparison shows three main patterns.
 
 First, reward-driven methods can substantially improve energy-model-facing metrics. In particular, RL-DPO and some RL variants push positive fraction and mean positive probability much higher than the supervised references. This suggests that the energy model is indeed informative enough to shape generation behavior.
 
-Second, <u>**those gains do not automatically mean better overall design behavior**</u>. Some RL settings show clear collapse in diversity or produce narrow sequence families. In other words, optimization against the reward works, but it can become too strong relative to the diversity objective.
+Second, <strong><u>those gains do not automatically mean better overall design behavior</u></strong>. Some RL settings show clear collapse in diversity or produce narrow sequence families. In other words, optimization against the reward works, but it can become too strong relative to the diversity objective.
 
 Third, the `CDR3 Only` and `Full Sequence` contexts behave differently. The same method can look stable in one regime and much less stable in the other. This is a useful reminder that scaffold-aware generation is not simply a longer version of the short-sequence task. The optimization landscape changes.
 
@@ -175,7 +176,7 @@ The supervised models show smooth decreases in total loss, which is expected fro
     </figcaption>
 </figure>
 
-This is one of the most practically important observations in the project. In protein generation, <u>**better reward is not enough**</u>. We need to ask what kind of sequences the model becomes confident about, whether uniqueness survives, and whether the model is still exploring meaningful neighborhoods of sequence space.
+This is one of the most practically important observations in the project. In protein generation, <strong><u>better reward is not enough</u></strong>. We need to ask what kind of sequences the model becomes confident about, whether uniqueness survives, and whether the model is still exploring meaningful neighborhoods of sequence space.
 
 <hr class="h2-separation">
 
@@ -278,7 +279,7 @@ This makes representation quality especially important. A weak energy model can 
 
 ## Takeaway
 
-The central takeaway from this project is that <u>**controllable antibody generation is not a single-model problem**</u>. It is a **pipeline problem**.
+The central takeaway from this project is that <strong><u>controllable antibody generation is not a single-model problem</u></strong>. It is a **pipeline problem**.
 
 You need:
 
