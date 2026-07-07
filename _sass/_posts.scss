@@ -563,6 +563,7 @@ html[data-theme='dark'] .post-source-link:focus-visible img {
 }
 
 .post {
+  min-width: 0;
   transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
@@ -589,7 +590,38 @@ html[data-theme='dark'] .post-source-link:focus-visible img {
 }
 
 .post-content {
+  min-width: 0;
   margin-top: 1.5rem;
+  overflow-wrap: break-word;
+}
+
+.post-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content pre code {
+  white-space: pre;
+}
+
+.post-content :not(pre) > code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content th,
+.post-content td {
+  white-space: nowrap;
 }
 
 .post-content img {
@@ -877,6 +909,14 @@ html[data-theme='dark'] .post-content blockquote::before {
 }
 
 @media (max-width: 768px) {
+  .post-header-top {
+    margin-bottom: 1.8rem;
+  }
+
+  .post-source-link {
+    padding: 0 0.58rem;
+  }
+
   .post-header {
     margin-bottom: 1.25rem;
   }
@@ -895,6 +935,34 @@ html[data-theme='dark'] .post-content blockquote::before {
 
   .post-content {
     margin-top: 0.9rem;
+  }
+
+  .post-content figure,
+  .post-content figure.post-image-figure,
+  .post-content img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .post-content figure {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .post-content figure > figcaption {
+    box-sizing: border-box;
+  }
+
+  .post-content table {
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 0.84rem;
+  }
+
+  .post-content th,
+  .post-content td {
+    padding: 0.58rem 0.72rem;
+    font-size: 0.84rem;
   }
 
   .post-content blockquote {
@@ -1070,28 +1138,6 @@ html[data-theme='dark'] .post-content blockquote::before {
 .post-common-empty {
   color: var(--global-text-color-light);
   font-size: 0.88rem;
-}
-
-.post-common-subscribe {
-  margin-top: 0.38rem;
-}
-
-.post-common-rss-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.24rem 0.58rem;
-  border: 1px solid color-mix(in srgb, var(--global-text-color) 24%, transparent);
-  color: var(--global-text-color);
-  font-size: 0.82rem;
-  line-height: 1;
-  text-decoration: none;
-}
-
-.post-common-rss-link:hover {
-  color: var(--global-bg-color);
-  background: var(--global-text-color);
-  border-color: var(--global-text-color);
 }
 
 .post-common-copyright {
