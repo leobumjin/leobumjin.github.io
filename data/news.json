@@ -1,11 +1,11 @@
 [
     {
         "year": "2026",
-        "date": "June",
-        "title": "Protein Language Modeling Project is started!",
-        "url": "",
-        "url_description": "",
-        "color": "#00f00f",
+        "date": "July, 9",
+        "title": "Outstanding Project Award, <br> KAIST Manufacturing AI Bootcamp (Antibody Generation)",
+        "url": "/work/2026/antibody-generation/",
+        "url_description": "Blog Post of Project!",
+        "color": "#007000",
         "highlight": true,
         "visible": true
     },
@@ -13,8 +13,8 @@
         "year": "2026",
         "date": "March",
         "title": "One paper is accepted to Findings of ACL 2026!",
-        "url": "",
-        "url_description": "",
+        "url": "https://incomplete-prompt-jailbreak.github.io/",
+        "url_description": "Project Page",
         "color": "#a0000f",
         "highlight": true,
         "visible": true

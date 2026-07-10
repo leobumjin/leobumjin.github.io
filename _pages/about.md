@@ -36,11 +36,11 @@ _styles: >
     </p>
     <p class="home-profile-line"><strong>Research interests:</strong> AI Safety, non-monotonic reasoning, constraint conflict, factuality</p>
     <div class="home-contact-links">
-      <a class="home-contact-link" href="https://www.linkedin.com/in/leo-bjpark/" target="_blank" rel="noreferrer">
+      <a class="home-contact-link" href="https://www.linkedin.com/in/leobumjin/" target="_blank" rel="noreferrer">
         <img src="{{ '/assets/svg/linkedin.svg' | relative_url }}" alt="" aria-hidden="true">
         <span>LinkedIn</span>
       </a>
-      <a class="home-contact-link" href="https://www.instagram.com/leo_bjpark" target="_blank" rel="noreferrer">
+      <a class="home-contact-link" href="https://www.instagram.com/leobumjin" target="_blank" rel="noreferrer">
         <img src="{{ '/assets/svg/instagram.svg' | relative_url }}" alt="" aria-hidden="true">
         <span>Instagram</span>
       </a>
@@ -152,6 +152,10 @@ _styles: >
         .replace(/'/g, '&#39;');
     };
 
+    const formatInlineBreaks = function(value) {
+      return escapeHtml(value).replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+    };
+
     const renderEmpty = function(message) {
       newsRoot.innerHTML = '<p class="home-news-empty">' + message + '</p>';
     };
@@ -208,28 +212,28 @@ _styles: >
       const date = dateText ? '<p class="home-news-date">' + escapeHtml(dateText) + '</p>' : '';
       const markerColor = item.color || '';
       const highlightClass = item.highlight ? ' is-highlighted' : '';
-      const body = '<span class="home-news-text">' + escapeHtml(item.title || '') + '</span>';
+      const body = '<span class="home-news-text">' + formatInlineBreaks(item.title || '') + '</span>';
       const safeUrl = sanitizeUrl(item.url || '');
       const urlDescription = String(item.urlDescription || '').trim();
-      const actions = safeUrl
+      const markerDot = safeUrl
         ? '<span class="home-news-link-wrap">' +
-            '<a class="home-news-link" href="' + safeUrl + '" target="_blank" rel="noreferrer" aria-label="Open link">' +
+            '<a class="home-news-dot home-news-dot-link" href="' + safeUrl + '" target="_blank" rel="noreferrer" aria-label="' + escapeHtml(urlDescription || 'Open link') + '">' +
               '<img src="{{ "/assets/svg/link.svg" | relative_url }}" alt="" aria-hidden="true">' +
             '</a>' +
             (urlDescription ? '<span class="home-news-link-tooltip" role="tooltip">' + escapeHtml(urlDescription) + '</span>' : '') +
           '</span>'
-        : '';
+        : '<span class="home-news-dot"></span>';
 
       return '' +
         '<article class="home-news-item">' +
           '<div class="home-news-rail">' +
             '<div class="home-news-date-wrap' + highlightClass + '">' + date + '</div>' +
-            '<div class="home-news-marker" aria-hidden="true"' + (markerColor ? ' style="--news-marker-color: ' + escapeHtml(markerColor) + ';"' : '') + '>' +
-              '<span class="home-news-dot"></span>' +
+            '<div class="home-news-marker"' + (markerColor ? ' style="--news-marker-color: ' + escapeHtml(markerColor) + ';"' : '') + '>' +
+              markerDot +
               '<span class="home-news-stem"></span>' +
             '</div>' +
           '</div>' +
-          '<div class="home-news-main">' + body + actions + '</div>' +
+          '<div class="home-news-main">' + body + '</div>' +
         '</article>';
     };
 

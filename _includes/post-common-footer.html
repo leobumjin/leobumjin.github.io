@@ -26,6 +26,10 @@
         .replace(/'/g, '&#39;');
     }
 
+    function formatInlineBreaks(value) {
+      return escapeHtml(value).replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+    }
+
     function renderNews(newsData) {
       var items = Array.isArray(newsData) ? newsData : [];
       var visible = items.filter(function (item) {
@@ -38,7 +42,7 @@
       }
 
       newsRoot.innerHTML = visible.map(function (item) {
-        var title = escapeHtml(item.title || 'Untitled');
+        var title = formatInlineBreaks(item.title || 'Untitled');
         var dateText = [item.year, item.date].filter(Boolean).join(' ');
         var dateHtml = dateText ? '<span class="post-common-date">' + escapeHtml(dateText) + '</span>' : '';
         var url = String(item.url || '').trim();

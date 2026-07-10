@@ -119,8 +119,12 @@ description:
 
     function pickRandomQuote(quotes) {
       if (!Array.isArray(quotes) || !quotes.length) return null;
-      var randomIndex = Math.floor(Math.random() * quotes.length);
-      return quotes[randomIndex];
+      var activeQuotes = quotes.filter(function (quote) {
+        return quote && quote.active === true;
+      });
+      if (!activeQuotes.length) return null;
+      var randomIndex = Math.floor(Math.random() * activeQuotes.length);
+      return activeQuotes[randomIndex];
     }
 
     function renderFilterBar() {

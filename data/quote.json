@@ -1,14 +1,22 @@
 [
     {
+        "quote": "Everything is similar if you're willing to look that far out of focus",
+        "author": "Marvin Minsky",
+        "active": true
+    },
+    {
         "quote": "The only way to do great work is to love what you do.",
-        "author": "Steve Jobs"
+        "author": "Steve Jobs",
+        "active": false
     },
     {
         "quote": "No statement is immune to revision",
-        "author": "Willard Van Orman Quine"
+        "author": "Willard Van Orman Quine",
+        "active": false
     },
     {
         "quote": "All knowledge is conjectural.",
-        "author": "Karl Popper"
+        "author": "Karl Popper",
+        "active": false
     }
 ]
