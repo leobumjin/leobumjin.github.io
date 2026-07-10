@@ -322,9 +322,14 @@ html[data-theme='dark'] .work-item-chip {
 
 .work-item-pub-part {
   display: inline;
+  vertical-align: baseline;
 }
 
-.work-item-pub-part + .work-item-pub-part::before {
+.work-item-pub-part .work-item-chip {
+  vertical-align: middle;
+}
+
+.work-item-pub-part:not(:last-child)::after {
   content: "\00a0|\00a0";
   color: var(--global-text-color-very-light);
   opacity: 0.72;
@@ -714,19 +719,59 @@ html[data-theme='dark'] .work-link-icon:focus-visible img {
   .container .work-item-venue,
   .container .work-item-summary,
   .work-item-year-label,
-  .work-item-chip,
+  .work-item-pub-part,
+  .work-item-venue-label,
+  .work-item-inline-actions,
   .work-item-meta-chip,
+  .work-item-inline-org,
   .work-item.is-publication .work-item-venue-label {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
+  }
+
+  .work-item-chip {
+    gap: 0.28rem;
+    padding: 0.02rem 0.38rem;
+    font-size: 0.76rem;
+    line-height: 1.18;
+  }
+
+  .work-item-chip-label {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .work-item-chip-actions {
+    gap: 0.18rem;
+    padding-left: 0.3rem;
+  }
+
+  .work-item-chip-actions .work-link-icon-svg {
+    width: 0.9rem;
+    height: 0.9rem;
   }
 
   .work-link {
-    padding: 0.3rem 0.62rem;
-    font-size: 0.8rem;
+    padding: 0.22rem 0.48rem;
+    font-size: 0.76rem;
+    line-height: 1.2;
+  }
+
+  .work-link.work-link-with-icon {
+    font-size: 0.76rem;
+  }
+
+  .work-link-with-icon span {
+    font-size: inherit;
+    line-height: inherit;
   }
 
   .work-link-with-icon {
-    gap: 0.34rem;
+    gap: 0.28rem;
+  }
+
+  .work-link-inline-icon {
+    width: 0.78rem;
+    height: 0.78rem;
   }
 }
 .work-item-inline-actions {
