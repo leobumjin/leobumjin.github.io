@@ -17,7 +17,7 @@ DiffusionGemma를 처음 보면 가장 헷갈리는 지점은 이름에 있다. 
 
 
 <figure>
-    <img src="2026-diffusion-gemma-structure" />
+    <img src="2026-diffusion-gemma-structure.webp" />
     <figcaption>  
     <figtitle> DiffusionGemma의 기본 구조. Prompt는 한 번 처리되고, canvas는 여러 step에 걸쳐 denoising된다.  </figtitle>
     <figdetail>

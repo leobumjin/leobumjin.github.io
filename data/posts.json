@@ -7,6 +7,30 @@
     },
 "posts":[
     {
+        "title": "A Computation-Oriented Interpretation of Neurons",
+        "id": "computation-oriented",
+        "category": "Essay Review",
+        "date": "2026-07-06",
+        "tags": ["Computation", "Brain", "AI"],
+        "media": "Technical",
+        "en_link": "technical_en/2026-07-06-computation-oriented.md",
+        "kr_link": "technical_kr/2026-07-06-computation-oriented.md",
+        "highlight": false,
+        "visible": true
+    },
+    {
+        "title": "What Makes DiffusionGemma Different?",
+        "id": "diffusion-gemma",
+        "category": "Technical Review",
+        "date": "2026-06-29",
+        "tags": ["LLM", "Diffusion", "Gemma"],
+        "media": "Technical",
+        "en_link": "technical_en/2026-06-29-diffusion-gemma.md",
+        "kr_link": "technical_kr/2026-06-29-diffusion-gemma.md",
+        "highlight": false,
+        "visible": true
+    },
+    {
         "title": "Emotional Representation in LLMs",
         "id": "anthropic-emotion",
         "category": "Technical Review",

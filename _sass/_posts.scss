@@ -149,8 +149,10 @@ html[data-theme='dark'] .posts-archive-section-label {
 }
 
 .posts-archive-item {
+  --posts-archive-date-column: 9.6rem;
+  --posts-archive-side-column: 8.8rem;
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr) auto;
+  grid-template-columns: var(--posts-archive-date-column) minmax(0, 1fr) var(--posts-archive-side-column);
   gap: 0.95rem;
   align-items: center;
   padding: 1.2rem 0;
@@ -176,6 +178,8 @@ html[data-theme='dark'] .posts-archive-section-label {
 .posts-archive-date-wrap {
   display: flex;
   align-items: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .container .posts-archive-date {
@@ -224,6 +228,7 @@ html[data-theme='dark'] .posts-archive-title.is-highlight a {
   align-items: center;
   justify-content: flex-end;
   min-width: 0;
+  width: 100%;
 }
 
 .container .posts-archive-category {
