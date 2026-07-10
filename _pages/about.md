@@ -57,7 +57,7 @@ _styles: >
             </button>
           </div>
           <div class="home-contact-email-row">
-            <span class="home-contact-email-address">leo.bjpark@gmail.com</span>
+            <span class="home-contact-email-address">bumjini42@gmail.com</span>
             <button type="button" class="home-contact-copy-btn" data-copy="leo.bjpark@gmail.com" aria-label="Copy Gmail email">
               <img src="{{ '/assets/svg/copy.svg' | relative_url }}" alt="" aria-hidden="true">
             </button>

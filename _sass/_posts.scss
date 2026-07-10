@@ -624,6 +624,25 @@ html[data-theme='dark'] .post-source-link:focus-visible img {
   white-space: nowrap;
 }
 
+.post-content table.compact-table {
+  display: table;
+  width: 100%;
+  table-layout: auto;
+  font-size: 0.82rem;
+}
+
+.post-content table.compact-table th,
+.post-content table.compact-table td {
+  padding: 0.4rem 0.48rem;
+  font-size: 0.82rem;
+  line-height: 1.22;
+  white-space: normal;
+}
+
+.post-content table.compact-table th {
+  overflow-wrap: anywhere;
+}
+
 .post-content img {
   display: block;
   width: 90%;
@@ -959,10 +978,21 @@ html[data-theme='dark'] .post-content blockquote::before {
     font-size: 0.84rem;
   }
 
+  .post-content table.compact-table {
+    display: block;
+    font-size: 0.78rem;
+  }
+
   .post-content th,
   .post-content td {
     padding: 0.58rem 0.72rem;
     font-size: 0.84rem;
+  }
+
+  .post-content table.compact-table th,
+  .post-content table.compact-table td {
+    padding: 0.34rem 0.4rem;
+    font-size: 0.78rem;
   }
 
   .post-content blockquote {
