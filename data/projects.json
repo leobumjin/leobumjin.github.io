@@ -46,7 +46,7 @@
     {
       "title": "Unmanned Swarm CPS Research",
       "organization": "ADD (Agency for Defense Development)",
-      "tools": "ROS, Gazebo, Webots, Python, UAV/UGV Simulation",
+      "tools": "ROS, Gazebo, Webotsg, Python, UAV/UGV Simulation",
       "summary": "Multi-agent reinforcement learning and sim-to-real systems for unmanned swarms.",
       "date": "Oct 2021 - Mar 2025",
       "highlights": [
