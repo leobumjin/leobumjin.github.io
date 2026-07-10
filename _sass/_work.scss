@@ -140,23 +140,65 @@
 }
 
 .work-item-chip {
+  --chip-accent-light: var(--global-text-color-light);
+  --chip-accent-dark: var(--chip-accent-light);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
   padding: 0.04rem 0.52rem;
   border: 1px solid color-mix(in srgb, var(--global-divider-color) 88%, transparent);
   border-radius: 0px;
-  color: var(--chip-fg-light, var(--global-text-color-light));
-  background-color: var(--chip-bg-light, transparent);
+  color: var(--chip-accent-light);
+  background-color: color-mix(in srgb, var(--chip-accent-light) 8%, transparent);
   font-size: var(--type-meta);
   line-height: 1.2;
   white-space: normal;
   text-align: center;
 }
 
+.work-item-chip-label {
+  color: inherit;
+}
+
+.work-item-chip-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.24rem;
+  margin-left: 0.02rem;
+  padding-left: 0.42rem;
+  border-left: 1px solid color-mix(in srgb, var(--global-divider-color) 88%, transparent);
+}
+
+.work-item-chip-actions .work-link-icon {
+  width: auto;
+  height: auto;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  color: var(--global-link-color);
+}
+
+.work-item-chip-actions .work-link-icon-svg {
+  width: 1.08rem;
+  height: 1.08rem;
+  opacity: 0.86;
+}
+
+.work-item-chip-actions .work-link-icon:hover,
+.work-item-chip-actions .work-link-icon:focus-visible {
+  background: transparent;
+  color: var(--global-hover-color);
+}
+
+.work-item-chip-actions .work-link-icon:hover .work-link-icon-svg,
+.work-item-chip-actions .work-link-icon:focus-visible .work-link-icon-svg {
+  opacity: 1;
+}
+
 html[data-theme='dark'] .work-item-chip {
-  color: var(--chip-fg-dark, var(--chip-fg-light, var(--global-text-color-light)));
-  background-color: var(--chip-bg-dark, var(--chip-bg-light, transparent));
+  color: var(--chip-accent-dark);
+  background-color: color-mix(in srgb, var(--chip-accent-dark) 13%, transparent);
 }
 
 .work-item-venue-label {
@@ -479,32 +521,45 @@ html[data-theme='dark'] .work-link-inline-icon {
 }
 
 .work-link-icon {
+  color: var(--global-link-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.9rem;
-  height: 1.9rem;
-  border: 1px solid color-mix(in srgb, var(--global-divider-color) 88%, transparent);
+  width: 1.62rem;
+  height: 1.62rem;
+  border: 1px solid var(--global-text-color);
   border-radius: 999px;
   text-decoration: none;
-  background: transparent;
+  background: var(--global-bg-color);
   transition: background-color 0.18s ease, border-color 0.18s ease;
 }
 
+.work-link-icon-svg {
+  width: 0.92rem;
+  height: 0.92rem;
+  display: block;
+  opacity: 0.9;
+  color: currentColor;
+}
+
 .work-link-icon img {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 0.92rem;
+  height: 0.92rem;
   display: block;
   opacity: 0.9;
   filter: brightness(0) saturate(100%);
 }
 
-.work-link-icon:hover {
+.work-link-icon:hover,
+.work-link-icon:focus-visible {
   background: var(--global-text-color);
   border-color: var(--global-text-color);
+  color: var(--global-bg-color);
+  outline: none;
 }
 
-.work-link-icon:hover img {
+.work-link-icon:hover img,
+.work-link-icon:focus-visible img {
   filter: brightness(0) saturate(100%) invert(1);
   opacity: 1;
 }
@@ -513,12 +568,14 @@ html[data-theme='dark'] .work-link-icon img {
   filter: brightness(0) saturate(100%) invert(1);
 }
 
-html[data-theme='dark'] .work-link-icon:hover {
+html[data-theme='dark'] .work-link-icon:hover,
+html[data-theme='dark'] .work-link-icon:focus-visible {
   background: var(--global-text-color);
   border-color: var(--global-text-color);
 }
 
-html[data-theme='dark'] .work-link-icon:hover img {
+html[data-theme='dark'] .work-link-icon:hover img,
+html[data-theme='dark'] .work-link-icon:focus-visible img {
   filter: brightness(0) saturate(100%);
 }
 

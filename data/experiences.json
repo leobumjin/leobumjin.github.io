@@ -11,6 +11,19 @@
       "links": []
     },
     {
+      "title": "Conditional HER2 Antibody Generation",
+      "organization": "AinB Bio Company",
+      "focus": "ESM energy modeling, and GPT-based generation (Guidance and RL)",
+      "date": "Jul 2026",
+      "highlights": [
+        "Built a conditional antibody-generation pipeline combining ESM-based surrogate scoring with ZymCTRL."
+      ],
+      "links": [
+        { "label": "Report", "url": "/work/2026/antibody-generation/", "sameTab": true },
+        { "label": "Best Project Award ", "url": "https://drive.google.com/file/d/1yvnWCHoN5Rzf9_ZLKELstGjGjzcTWUHJ/view?usp=drive_link", "sameTab": true }
+      ]
+    },
+    {
       "title": "Visiting Research Scholar",
       "organization": "NYU Global AI Frontier Lab 🗽",
       "focus": "Mechanistic interpretability and bias in LLMs.",
@@ -62,19 +75,6 @@
       ],
       "links": [
         { "label": "SAILAB", "url": "https://sailab.kaist.ac.kr/" }
-      ]
-    },
-    {
-      "title": "Conditional HER2 Antibody Generation",
-      "organization": "AinB Bio Company",
-      "focus": "ESM energy modeling, and GPT-based generation (Guidance and RL)",
-      "date": "Jul 2026",
-      "highlights": [
-        "Built a conditional antibody-generation pipeline combining ESM-based surrogate scoring with ZymCTRL."
-      ],
-      "links": [
-        { "label": "Report", "url": "/work/2026/antibody-generation/", "sameTab": true },
-        { "label": "Best Project Award ", "url": "https://drive.google.com/file/d/1yvnWCHoN5Rzf9_ZLKELstGjGjzcTWUHJ/view?usp=drive_link", "sameTab": true }
       ]
     }
   ]

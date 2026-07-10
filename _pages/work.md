@@ -122,6 +122,29 @@ permalink: /work/
       return '';
     }
 
+    function renderPublicationIcon(iconFileName, label) {
+      var name = String(iconFileName || '').toLowerCase();
+      var attrs = 'class="work-link-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"';
+
+      if (name === 'paper.svg') {
+        return '<svg ' + attrs + '><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>';
+      }
+
+      if (name === 'rocket.svg') {
+        return '<svg ' + attrs + '><path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3-5a9 9 0 0 0 6-8a3 3 0 0 0-3-3a9 9 0 0 0-8 6a6 6 0 0 0-5 3"/><path d="M7 14a6 6 0 0 0-3 6a6 6 0 0 0 6-3"/><path d="M14 9a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/></svg>';
+      }
+
+      if (name === 'github.svg') {
+        return '<svg ' + attrs + '><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2c2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2a4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0c-2.4-1.6-3.5-1.3-3.5-1.3a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6c-.6.6-.6 1.2-.5 2V21"/></svg>';
+      }
+
+      if (name === 'google-drive.svg') {
+        return '<svg ' + attrs + '><path d="M12 10l-6 10l-3-5l6-10l3 5"/><path d="M9 15h12l-3 5H6"/><path d="M15 15L9 5h6l6 10h-6"/></svg>';
+      }
+
+      return '<img src="' + escapeHtml(svgBasePath + iconFileName) + '" alt="' + escapeHtml(label) + '" loading="lazy">';
+    }
+
     function renderLinks(links, metadata, type) {
       if (!Array.isArray(links) || !links.length) return '';
       var linkMapping = metadata && metadata['link-mapping'] ? metadata['link-mapping'] : {};
@@ -138,7 +161,7 @@ permalink: /work/
           var publicationThemeClass = iconThemeClass(mappedIcon);
           return '' +
             '<a class="work-link-icon' + publicationThemeClass + '" href="' + escapeHtml(url) + '" target="_blank" rel="noreferrer" aria-label="' + escapeHtml(label) + '">' +
-              '<img src="' + escapeHtml(svgBasePath + mappedIcon) + '" alt="' + escapeHtml(label) + '" loading="lazy">' +
+              renderPublicationIcon(mappedIcon, label) +
             '</a>';
         }
 
@@ -285,14 +308,9 @@ permalink: /work/
           if (!lightColor) lightColor = darkColor;
           if (!darkColor) darkColor = lightColor;
 
-          var lightText = getReadableTextColor(lightColor);
-          var darkText = getReadableTextColor(darkColor);
           chipStyle = ' style="' +
-            '--chip-bg-light: ' + escapeHtml(lightColor) + '; ' +
-            '--chip-bg-dark: ' + escapeHtml(darkColor) + '; ' +
-            '--chip-fg-light: ' + escapeHtml(lightText) + '; ' +
-            '--chip-fg-dark: ' + escapeHtml(darkText) + '; ' +
-            'border-color: transparent;"';
+            '--chip-accent-light: ' + escapeHtml(lightColor) + '; ' +
+            '--chip-accent-dark: ' + escapeHtml(darkColor) + ';"';
         }
       }
 
@@ -308,10 +326,19 @@ permalink: /work/
         venueHtml = kind ? escapeHtml(kind) : '';
         notes = item.chip ? '<div class="work-item-chips"><span class="work-item-chip"' + chipStyle + '>' + renderChipLabel(item.chip) + '</span></div>' : '';
         actions = renderLinks(item.links, metadata, type);
+        var chipActions = item.chip && actions
+          ? '<span class="work-item-chip-actions">' + actions + '</span>'
+          : '';
+        var chipHtml = item.chip
+          ? '<span class="work-item-chip"' + chipStyle + '><span class="work-item-chip-label">' + renderChipLabel(item.chip) + '</span>' + chipActions + '</span>'
+          : '';
+        if (item.chip && actions) {
+          actions = '';
+        }
 
         var pubMetaParts = [];
-        if (item.chip) {
-          pubMetaParts.push('<span class="work-item-pub-part"><span class="work-item-chip"' + chipStyle + '>' + renderChipLabel(item.chip) + '</span></span>');
+        if (chipHtml) {
+          pubMetaParts.push('<span class="work-item-pub-part">' + chipHtml + '</span>');
         }
         if (venueHtml) {
           pubMetaParts.push('<span class="work-item-pub-part"><span class="work-item-venue-label">' + venueHtml + '</span></span>');
@@ -383,7 +410,7 @@ permalink: /work/
         '">' +
           '<div class="work-item-date-column">' +
             '<div class="work-item-date">' + escapeHtml(item.date || '') + '</div>' +
-            (type === 'publication' && item.chip ? '<div class="work-item-chips"><span class="work-item-chip"' + chipStyle + '>' + renderChipLabel(item.chip) + '</span></div>' : '') +
+            (type === 'publication' && item.chip ? '<div class="work-item-chips">' + chipHtml + '</div>' : '') +
           '</div>' +
           '<div class="work-item-main">' +
             '<div class="work-item-header">' +

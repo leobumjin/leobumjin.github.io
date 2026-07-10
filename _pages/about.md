@@ -179,7 +179,8 @@ _styles: >
           year: '',
           date: '',
           title: item,
-          color: ''
+          color: '',
+          darkColor: ''
         };
       }
       return {
@@ -187,6 +188,7 @@ _styles: >
         date: item.date || '',
         title: item.title || item.headline || 'Untitled',
         color: item.color || '',
+        darkColor: item.dark_color || item.color_dark || '',
         url: item.url || item.link || '',
         urlDescription: item.url_description || item.url_desscription || '',
         highlight: Boolean(item.highlight),
@@ -211,6 +213,11 @@ _styles: >
     const renderNewsCard = function(item, dateText) {
       const date = dateText ? '<p class="home-news-date">' + escapeHtml(dateText) + '</p>' : '';
       const markerColor = item.color || '';
+      const markerDarkColor = item.darkColor || '';
+      const markerStyle = [
+        markerColor ? '--news-marker-color-light: ' + escapeHtml(markerColor) + ';' : '',
+        markerDarkColor ? '--news-marker-color-dark: ' + escapeHtml(markerDarkColor) + ';' : ''
+      ].filter(Boolean).join(' ');
       const highlightClass = item.highlight ? ' is-highlighted' : '';
       const body = '<span class="home-news-text">' + formatInlineBreaks(item.title || '') + '</span>';
       const safeUrl = sanitizeUrl(item.url || '');
@@ -228,7 +235,7 @@ _styles: >
         '<article class="home-news-item">' +
           '<div class="home-news-rail">' +
             '<div class="home-news-date-wrap' + highlightClass + '">' + date + '</div>' +
-            '<div class="home-news-marker"' + (markerColor ? ' style="--news-marker-color: ' + escapeHtml(markerColor) + ';"' : '') + '>' +
+            '<div class="home-news-marker"' + (markerStyle ? ' style="' + markerStyle + '"' : '') + '>' +
               markerDot +
               '<span class="home-news-stem"></span>' +
             '</div>' +

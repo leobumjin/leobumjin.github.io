@@ -3,11 +3,15 @@
     "color-mapping": {
       "ACL-main": {
         "white": "#a0000f",
-        "dark": "#ff0000"
+        "dark": "#ff8a8a"
+      },
+      "PhilML@ICML": {
+        "white": "#000000",
+        "dark": "#ffffff"
       },
       "IJCAI": {
-        "white": "#0000af",
-        "dark": "#0000fa"
+        "white": "#00a0af",
+        "dark": "#0fa8ff"
       },
       "ICPRAI": {
         "white": "#000000",
@@ -15,7 +19,7 @@
       },
       "ACL Findings": {
         "white": "#a0000f",
-        "dark": "#ff0000"
+        "dark": "#ff8a8a"
       },
       "Journal": {
         "white": "#000000",
@@ -47,17 +51,29 @@
     }
 },
 "items": [
-{
-  "title": "Lifted Representation Hypothesis in Language Models",
-  "authors": "<strong>Bumjin Park</strong>, Jaesik Choi",
-  "authors-note": "",
-  "venue": "ICML 2026 Workshop: Philosophy Meets Machine Learning",
-  "date": "2026",
-  "chip": "PhilML@ICML",
-  "links": [
-    {"label": "Paper", "url": "https://openreview.net/forum?id=b6SquyZKd5"}
-  ]
-  },
+	{
+	  "title": "Lifted Representation Hypothesis in Language Models",
+	  "authors": "<strong>Bumjin Park</strong>, Jaesik Choi",
+	  "authors-note": "",
+	  "venue": "ICML 2026 Workshop: Philosophy Meets Machine Learning",
+	  "date": "2026",
+	  "chip": "PhilML@ICML",
+	  "links": [
+	    {"label": "Paper", "url": "https://openreview.net/forum?id=b6SquyZKd5"}
+	  ]
+	  },
+		{
+		  "title": "Incomplete Prompt Jailbreaks",
+	  "authors": "Yeonjea Kim, <strong>Bumjin Park</strong>, Jaesik Choi",
+	  "authors-note": "",
+	  "venue": "Findings of the Association for Computational Linguistics",
+	  "date": "2026",
+	  "chip": "ACL Findings",
+	  "links": [
+	    {"label": "Project", "url": "https://incomplete-prompt-jailbreak.github.io/"},
+	    {"label": "Paper", "url": "https://aclanthology.org/2026.findings-acl.1567/"}
+	  ]
+	  },
   {
       "title": "Deontological Keyword Bias: The Impact of Modal Expressions on Normative Judgments of Language Models",
       "authors": "<strong>Bumjin Park</strong>, Jinsil Lee, Jaesik Choi",
@@ -65,8 +81,7 @@
       "date": "2025",
       "chip": "ACL-main",
       "links": [
-        { "label": "Paper", "url": "https://aclanthology.org/2025.acl-long.360" },
-        { "label": "Project", "url": "https://leo-bpark.github.io/research/2025_acl_deontology/" }
+        { "label": "Paper", "url": "https://aclanthology.org/2025.acl-long.360" }
       ]
     },
     {
@@ -76,8 +91,7 @@
       "date": "2024",
       "chip": "IJCAI",
       "links": [
-        { "label": "Paper", "url": "https://www.ijcai.org/proceedings/2024/714" },
-        { "label": "Project", "url": "https://leo-bpark.github.io/research/2024_ijcai_document_memory/" }
+        { "label": "Paper", "url": "https://www.ijcai.org/proceedings/2024/714" }
       ]
     },
    
