@@ -729,3 +729,19 @@ html[data-theme='dark'] .home-news-highlight-broadcast {
 .home-news-item[class*='home-news-highlight-'] .home-news-title-link:hover {
   color: var(--global-text-color);
 }
+
+@media (max-width: 900px) {
+  .home-news-date-wrap {
+    flex: 0 0 7.3rem;
+    width: 7.3rem;
+    min-width: 7.3rem;
+    overflow: visible;
+  }
+
+  .container .home-news-date {
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+  }
+}

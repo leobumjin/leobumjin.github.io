@@ -251,33 +251,6 @@ _styles: >
         return;
       }
 
-      const isMobile = window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
-
-      if (isMobile) {
-        const groups = {};
-        const order = [];
-
-        items.forEach(function(item) {
-          const key = String(item.year || '').trim() || 'Updates';
-          if (!groups[key]) {
-            groups[key] = [];
-            order.push(key);
-          }
-          groups[key].push(item);
-        });
-
-        newsRoot.innerHTML = order.map(function(yearKey) {
-          const cards = groups[yearKey].map(function(item) {
-            return renderNewsCard(item, item.date || item.year || '');
-          }).join('');
-          return '' +
-            '<section class="home-news-year-group">' +
-              '<p class="home-news-year-title">' + escapeHtml(yearKey) + '</p>' +
-              cards +
-            '</section>';
-        }).join('');
-        return;
-      }
 
       newsRoot.innerHTML = items.map(function(item) {
         return renderNewsCard(item, item.fullDate);
