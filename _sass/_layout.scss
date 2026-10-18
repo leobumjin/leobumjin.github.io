@@ -7,6 +7,12 @@
   --page-gutter: 0.2rem;
 }
 
+@media (min-width: 1101px) {
+  html {
+    font-size: 15px;
+  }
+}
+
 html,
 body {
   width: 100%;
