@@ -745,3 +745,73 @@ html[data-theme='dark'] .home-news-highlight-broadcast {
     text-overflow: clip;
   }
 }
+
+// Contact links share the page's plain typographic style.
+.home-contact-links {
+  gap: 0.5rem 1.4rem;
+  margin-top: 1.25rem;
+}
+
+.home-contact-links .home-contact-link {
+  padding: 0.4rem 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--global-text-color-light);
+  line-height: 1.4;
+}
+
+.home-contact-links .home-contact-link span {
+  font: inherit;
+  color: inherit;
+}
+
+.home-contact-links .home-contact-link:hover,
+.home-contact-links .home-contact-email[open] > summary {
+  color: var(--global-theme-color);
+  background: transparent;
+  text-decoration: underline !important;
+  text-underline-offset: 0.3em;
+}
+
+.home-contact-links .home-contact-link img {
+  filter: brightness(0) saturate(100%);
+  opacity: 0.65;
+}
+
+html[data-theme='dark'] .home-contact-links .home-contact-link img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+.home-contact-links .home-contact-email-panel {
+  min-width: min(280px, calc(100vw - 3rem));
+  padding: 0.6rem 0.8rem;
+  border-radius: 0;
+  border-top: 2px solid var(--global-theme-color);
+  gap: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.home-contact-email-panel .home-contact-email-row {
+  padding: 0.65rem 0;
+  border-radius: 0;
+  gap: 0.75rem;
+  background: transparent;
+}
+
+.home-contact-email-row + .home-contact-email-row {
+  border-top: 1px solid var(--global-divider-color);
+}
+
+.home-contact-email-panel .home-contact-copy-btn {
+  border: none;
+  border-radius: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  opacity: 0.65;
+}
+
+.home-contact-copy-btn:hover,
+.home-contact-copy-btn:focus-visible {
+  opacity: 1;
+}

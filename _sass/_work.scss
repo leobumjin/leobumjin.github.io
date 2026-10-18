@@ -1,4 +1,6 @@
 .work-page {
+  --global-link-color: var(--global-text-color-light);
+  --global-hover-color: var(--global-theme-color);
   width: 100%;
   max-width: none;
   margin: 0 auto;
@@ -252,7 +254,7 @@ html[data-theme='dark'] .work-domestic-publications {
 
 .work-item-chip {
   --chip-accent-light: var(--global-text-color-light);
-  --chip-accent-dark: var(--chip-accent-light);
+  --chip-accent-dark: var(--global-text-color-light);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -261,11 +263,16 @@ html[data-theme='dark'] .work-domestic-publications {
   border: 1px solid color-mix(in srgb, var(--global-divider-color) 88%, transparent);
   border-radius: 0px;
   color: var(--chip-accent-light);
-  background-color: color-mix(in srgb, var(--chip-accent-light) 8%, transparent);
+  background-color: transparent;
   font-size: var(--type-meta);
   line-height: 1.2;
   white-space: normal;
   text-align: center;
+}
+
+.work-item-chip .work-item-chip-label {
+  color: var(--global-theme-color);
+  font-weight: 500;
 }
 
 .work-item-chip-label {
@@ -309,7 +316,7 @@ html[data-theme='dark'] .work-domestic-publications {
 
 html[data-theme='dark'] .work-item-chip {
   color: var(--chip-accent-dark);
-  background-color: color-mix(in srgb, var(--chip-accent-dark) 13%, transparent);
+  background-color: transparent;
 }
 
 .work-item-venue-label {
