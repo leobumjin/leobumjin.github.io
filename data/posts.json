@@ -1,131 +1,90 @@
 {
-    "meta-data": {
-        "color-mapping": {
-            "Technical": {"white": "#0000ff", "dark": "#a0c0ff"},
-            "Essay": {"white": "#006600", "dark": "#a0caa0"}
-        }
+  "posts": [
+    {
+        "title": "The Dark Web and AI: Information Access and Safety in Multi-Agent Systems",
+        "date": "2026-10-01",
+        "media": "Research",
+        "tags": ["Multi-Agent Systems", "AI Safety", "Privacy"],
+        "en_link": "technical_en/2026-10-01-darkweb-en.md",
+        "kr_link": "technical_kr/2026-10-01-darkweb-kr.md"
     },
-    
-"posts":[
     {
         "title": "Verified AI - Formalization, Theorem Proving, and Vericoding",
-        "id": "verified-ai-2026-09-05",
-        "category": "Formal Methods, Verification",
         "date": "2026-09-05",
-        "tags": ["AI", "Formal Methods", "Verification"],
         "media": "Literature",
+        "tags": ["AI", "Formal Methods", "Verification"],
         "en_link": "technical_en/2026-09-05-verified-ai-formalization-en.md",
-        "kr_link": "technical_kr/2026-09-05-verified-ai-formalization-kr.md",
-        "highlight": false,
-        "visible": true
+        "kr_link": "technical_kr/2026-09-05-verified-ai-formalization-kr.md"
     },
     {
         "title": "Knowledge Revision - Fable/Attribute Conflict",
-        "id": "nmr-2026-09-02",
-        "category": "Revision, Knowledge Conflict",
         "date": "2026-09-02",
-        "tags": ["Revision", "Knowledge Conflict"],
         "media": "Research",
-        "en_link": "technical_en/2026-09-02-knowledge-conflict-sep-en.md",
-        "kr_link": "",
-        "highlight": false,
-        "visible": true
-    },
-    {
-        "title": "Causal Abstraction as Intervention-Aligned Representation Search",
-        "id": "caus-ai",
-        "category": "Interpretability, Causality",
-        "date": "2025-12-20",
-        "tags": ["Interpretability", "Causality"],
-        "media": "Literature",
-        "en_link": "technical_en/2025-12-20-causality-interpretability-en.md",
-        "kr_link": "technical_kr/2025-12-20-causality-interpretability-kr.md",
-        "highlight": false,
-        "visible": true
-    },
-    {
-        "title": "Little Prince Paradox",
-        "id": "little-prince-paradox",
-        "category": "Literature, Philosophy",
-        "date": "2026-08-25",
-        "tags": ["The Little Prince", "Reading", "Philosophy"],
-        "media": "Essay",
-        "en_link": "blog_en/2026-08-25-little-prince-paradox.md",
-        "kr_link": "blog_kr/2026-08-25-little-prince-paradox.md",
-        "highlight": false,
-        "visible": true
+        "tags": ["Belief Revision", "Knowledge Conflict"],
+        "en_link": "technical_en/2026-09-02-knowledge-conflict-sep-en.md"
     },
     {
         "title": "Grassmannian and AI Interpretability",
-        "id": "grassmanian-ai",
-        "category": "Interpretability, Manifold",
         "date": "2026-08-29",
-        "tags": ["Interpretability", "Grassmannian"],
         "media": "Literature",
+        "tags": ["Interpretability", "Grassmannian"],
         "en_link": "technical_en/2026-08-29-grassman-and-ai-interpretability.md",
-        "kr_link": "technical_kr/2026-08-29-grassman-and-ai-interpretability.md",
-        "highlight": false,
-        "visible": true
+        "kr_link": "technical_kr/2026-08-29-grassman-and-ai-interpretability.md"
     },
     {
-        "title": "Self-Reference AI",
-        "id": "self-reference-ai",
-        "category": "Cognitive, Self-Reference",
-        "date": "2026-08-10",
-        "tags": ["Cognitive", "Self-Reference"],
-        "media": "Literature",
-        "en_link": "technical_en/2026-08-10-self-reference-ai.md",
-        "kr_link": "technical_kr/2026-08-10-self-reference-ai.md",
-        "highlight": false,
-        "visible": true
+        "title": "Little Prince Paradox",
+        "date": "2026-08-25",
+        "media": "Essay",
+        "tags": ["The Little Prince", "Reading", "Philosophy"],
+        "en_link": "blog_en/2026-08-25-little-prince-paradox.md",
+        "kr_link": "blog_kr/2026-08-25-little-prince-paradox.md"
     },
     {
         "title": "Conflict Classes",
-        "id": "conflict",
-        "category": "NMR, Visualization",
         "date": "2026-08-20",
-        "tags": ["Logic", "Reasoning", "Conflict"],
         "media": "Research",
-        "en_link": "technical_en/2026-08-20-conflict.md",
-        "kr_link": "",
-        "highlight": false,
-        "visible": true
+        "tags": ["Non-monotonic Reasoning", "Knowledge Conflict"],
+        "en_link": "technical_en/2026-08-20-conflict.md"
+    },
+    {
+        "title": "Self-Reference AI",
+        "date": "2026-08-10",
+        "media": "Literature",
+        "tags": ["Cognitive", "Self-Reference"],
+        "en_link": "technical_en/2026-08-10-self-reference-ai.md",
+        "kr_link": "technical_kr/2026-08-10-self-reference-ai.md"
     },
     {
         "title": "A Computation-Oriented Interpretation of Neurons",
-        "id": "computation-oriented",
-        "category": "Interpretability, Neurons",
         "date": "2026-07-06",
-        "tags": ["Computation", "Brain", "AI"],
         "media": "Essay",
+        "tags": ["Computation", "Brain", "AI"],
         "en_link": "technical_en/2026-07-06-computation-oriented.md",
-        "kr_link": "technical_kr/2026-07-06-computation-oriented.md",
-        "highlight": false,
-        "visible": true
+        "kr_link": "technical_kr/2026-07-06-computation-oriented.md"
     },
     {
         "title": "What Makes DiffusionGemma Different?",
-        "id": "diffusion-gemma",
-        "category": "Interpretability, Diffusion",
         "date": "2026-06-29",
-        "tags": ["LLM", "Diffusion", "Gemma"],
         "media": "Literature",
+        "tags": ["LLM", "Diffusion", "Gemma"],
         "en_link": "technical_en/2026-06-29-diffusion-gemma.md",
-        "kr_link": "technical_kr/2026-06-29-diffusion-gemma.md",
-        "highlight": false,
-        "visible": true
+        "kr_link": "technical_kr/2026-06-29-diffusion-gemma.md"
     },
     {
         "title": "Emotional Representation in LLMs",
-        "id": "anthropic-emotion",
-        "category": "Interpretability, LLM",
         "date": "2026-04-05",
-        "tags": ["LLM", "Emotion", "Anthropic"],
         "media": "Literature",
+        "tags": ["LLM", "Emotion", "Anthropic"],
         "en_link": "technical_en/2026-04-04-anthropic-emotion.md",
-        "kr_link": "technical_kr/2026-04-04-anthropic-emotion.md",
-        "highlight": false,
-        "visible": true
+        "kr_link": "technical_kr/2026-04-04-anthropic-emotion.md"
+    },
+    {
+        "title": "Causal Abstraction as Intervention-Aligned Representation Search",
+        "date": "2025-12-20",
+        "media": "Literature",
+        "tags": ["Interpretability", "Causality"],
+        "en_link": "technical_en/2025-12-20-causality-interpretability-en.md",
+        "kr_link": "technical_kr/2025-12-20-causality-interpretability-kr.md"
     }
-]
+  ]
 }

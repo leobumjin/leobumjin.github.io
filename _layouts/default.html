@@ -656,7 +656,7 @@
 
     {%- include header.html %}
 
-    <div class="container mt-5{% if page.url == '/' %} container-home{% endif %}">
+    <div class="container mt-5{% if page.url == '/' %} container-home{% endif %}{% if page.url == '/essay/' or page.url == '/work/' %} container-wide{% endif %}">
       {{ content }}
     </div>
 

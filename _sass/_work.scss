@@ -927,3 +927,40 @@ html[data-theme='dark'] .work-link-icon:focus-visible img {
     height: 1rem;
   }
 }
+
+// Match the Post page's main column and right sidebar.
+@media (min-width: 1101px) {
+  .work-page {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .work-layout {
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 3.5rem;
+  }
+
+  .work-nav {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding-left: 1.75rem;
+    box-sizing: border-box;
+    border-left: 1px solid var(--global-divider-color);
+  }
+
+  .work-nav-box {
+    border: none;
+    padding: 0;
+    gap: 1rem;
+  }
+
+  .work-nav-link {
+    font-size: 0.95rem;
+  }
+
+  .work-nav-top-link {
+    color: var(--global-theme-color);
+    font-weight: 600;
+  }
+}

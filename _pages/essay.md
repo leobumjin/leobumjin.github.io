@@ -20,6 +20,7 @@ description:
       </div>
     </section>
 
+    <div class="posts-archive-catalog">
     <nav class="posts-media-tabs" id="postsMediaTabs" aria-label="Post media" hidden></nav>
 
     <div class="posts-archive-filter-shell" id="postsArchiveFilterShell" hidden>
@@ -29,6 +30,7 @@ description:
     <section class="posts-archive-groups" id="postsArchiveGroups">
       <p class="posts-archive-summary">Loading posts...</p>
     </section>
+    </div>
   </div>
 
   <aside class="posts-archive-nav" id="postsArchiveNav" hidden>
@@ -51,7 +53,7 @@ description:
     var mediaTabs = document.getElementById('postsMediaTabs');
     if (!groupsRoot) return;
     var allItems = [];
-    var activeMedia = 'Research';
+    var activeMedia = '';
     var activeCategory = '';
     var colorMapping = {};
     var mediaOrder = [];
@@ -185,7 +187,7 @@ description:
       if (filterShell) filterShell.hidden = false;
       filterBar.innerHTML =
         '<button class="posts-archive-filter-pill is-active" type="button" data-category-filter="' + escapeHtml(activeCategory) + '">' +
-          escapeHtml(activeCategory) +
+          '#' + escapeHtml(activeCategory) + ' ×' +
         '</button>';
     }
 
@@ -194,6 +196,12 @@ description:
       var mediaNames = Array.from(new Set(allItems.map(function (item) {
         return String(item.media || 'Other').trim() || 'Other';
       }))).sort(function (a, b) {
+        var preferredOrder = ['Research', 'Literature', 'Essay'];
+        var aIndex = preferredOrder.indexOf(a);
+        var bIndex = preferredOrder.indexOf(b);
+        var rankDifference = (aIndex === -1 ? preferredOrder.length : aIndex) -
+          (bIndex === -1 ? preferredOrder.length : bIndex);
+        if (rankDifference) return rankDifference;
         return a.localeCompare(b, 'en', { sensitivity: 'base' });
       });
 
@@ -203,17 +211,16 @@ description:
         return;
       }
 
-      if (mediaNames.indexOf(activeMedia) === -1) {
-        activeMedia = mediaNames.indexOf('Research') !== -1 ? 'Research' : mediaNames[0];
+      if (activeMedia && mediaNames.indexOf(activeMedia) === -1) {
+        activeMedia = '';
       }
 
-      mediaTabs.innerHTML = mediaNames.map(function (mediaName) {
+      mediaTabs.innerHTML = [''].concat(mediaNames).map(function (mediaName) {
         var isActive = activeMedia === mediaName;
-        var label = mediaName;
-        var count = allItems.filter(function (item) { return (item.media || 'Other') === mediaName; }).length;
+        var label = mediaName || 'All';
         return '<button class="posts-media-tab' + (isActive ? ' is-active' : '') + '" type="button"' +
           ' data-media-filter="' + escapeHtml(mediaName) + '" aria-pressed="' + (isActive ? 'true' : 'false') + '">' +
-          '<span>' + escapeHtml(label) + '</span><small>' + count + '</small></button>';
+          '<span>' + escapeHtml(label) + '</span></button>';
       }).join('');
       mediaTabs.hidden = false;
     }
@@ -225,12 +232,22 @@ description:
       return normalized ? 'posts-section-' + normalized : 'posts-section';
     }
 
+    function itemTags(item) {
+      var values = Array.isArray(item.tags) ? item.tags : [];
+      return Array.from(new Set(values.map(function (tag) {
+        return String(tag || '').trim();
+      }).filter(Boolean)));
+    }
+
     function renderItems(items) {
       return items.map(function (item) {
         var postUrl = buildPostUrlFromLink(item && item.en_link);
         var media = item.media || '';
         var title = escapeHtml(item.title || 'Untitled');
-        var category = escapeHtml(item.category || '');
+        var tagsHtml = itemTags(item).map(function (tag) {
+          return '<button class="posts-archive-tag" type="button" data-category-filter="' + escapeHtml(tag) +
+            '" aria-pressed="' + (activeCategory === tag ? 'true' : 'false') + '">#' + escapeHtml(tag) + '</button>';
+        }).join('');
         var date = escapeHtml(formatDate(item.date));
         var postPath = postUrl ? postUrl.replace(/^https?:\/\/[^/]+/i, '') : '';
         var viewsHtml = postPath
@@ -259,7 +276,7 @@ description:
               (viewsHtml ? '<div class="posts-archive-inline-meta">' + viewsHtml + '</div>' : '') +
             '</div>' +
             '<div class="posts-archive-side">' +
-              (category ? '<button class="posts-archive-category" type="button" data-category-filter="' + category + '">' + category + '</button>' : '') +
+              tagsHtml +
             '</div>' +
           '</article>';
       }).join('');
@@ -268,7 +285,7 @@ description:
     function renderPosts() {
       var visibleItems = allItems.filter(function (item) {
         var matchesMedia = !activeMedia || (item.media || 'Other') === activeMedia;
-        var matchesCategory = !activeCategory || (item.category || '') === activeCategory;
+        var matchesCategory = !activeCategory || itemTags(item).indexOf(activeCategory) !== -1;
         return matchesMedia && matchesCategory;
       });
 
@@ -281,6 +298,9 @@ description:
       var groups = [];
       var seen = {};
 
+      if (!activeMedia) {
+        groups.push({ name: 'All', items: visibleItems });
+      } else {
       mediaOrder.forEach(function (mediaName) {
         var groupItems = visibleItems.filter(function (item) { return (item.media || '') === mediaName; });
         if (!groupItems.length) return;
@@ -297,6 +317,7 @@ description:
           items: visibleItems.filter(function (entry) { return (entry.media || 'Other') === mediaName; })
         });
       });
+      }
 
       groupsRoot.innerHTML = groups.map(function (group) {
         var sectionId = sectionIdFromName(group.name);
