@@ -1,18 +1,18 @@
 [
     {
-        "date": "2026-10-11",
+        "date": "2026-10",
         "title": "Multi-agent Vulnerability Analysis featured on **MBC**.",
         "url": "https://youtu.be/BdfQ0XvuVI8?t=114",
         "highlight": "broadcast"
     },
     {
-        "date": "2026-07-11",
+        "date": "2026-07",
         "title": "Paper on Non-monotonicity is accepted to the **ICML 2026 PhilML Workshop**.",
         "url": "https://openreview.net/forum?id=b6SquyZKd5",
         "highlight": "conference"
     },
     {
-        "date": "2026-07-09",
+        "date": "2026-07",
         "title": "Outstanding Project Award, <br> KAIST Manufacturing AI Bootcamp (Antibody Generation)",
         "url": "/work/2026/antibody-generation/"
     },
@@ -40,7 +40,7 @@
         "highlight": "conference"
     },
     {
-        "date": "2024",
+        "date": "2024-08",
         "title": "Paper on Memorizing Documents with Guidance in Large Language Models is published in **IJCAI 2024**.",
         "url": "https://www.ijcai.org/proceedings/2024/714",
         "highlight": "conference"

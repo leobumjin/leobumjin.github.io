@@ -5,7 +5,7 @@
       "organization": "MBC",
       "tools": "LLM Agents, Multi-Agent Safety, Privacy Boundary Evaluation",
       "summary": "Multi-agent vulnerability research featured on MBC, examining how privacy violations emerge and spread through agent collaboration.",
-      "date": "Oct 11, 2026",
+      "date": "Oct, 2026",
       "highlights": [
         "Built a synthetic testbed to study information-use boundaries under goal pressure in multi-agent systems.",
         "Traced information access, use, and propagation across agent conversations and decisions."
