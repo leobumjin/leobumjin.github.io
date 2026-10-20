@@ -1,3 +1,301 @@
+.project-page {
+  --project-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --project-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 0 0 4rem;
+}
+
+.project-page h1,
+.project-page h2,
+.project-page p,
+.project-page a {
+  font-family: var(--project-sans) !important;
+}
+
+.project-grid {
+  display: grid;
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+}
+
+.project-timeline-entry {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 1.5rem;
+  position: relative;
+}
+
+.project-timeline-entry::before {
+  content: "";
+  position: absolute;
+  left: 6.6rem;
+  top: 0;
+  bottom: -1.25rem;
+  width: 1px;
+  background: color-mix(in srgb, var(--global-theme-color) 22%, transparent);
+}
+
+.project-timeline-entry:first-child::before { top: 50%; }
+.project-timeline-entry:last-child::before { bottom: 50%; }
+
+.project-date {
+  position: relative;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  padding-right: 0;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.project-date-year {
+  font: 0.85rem var(--project-mono);
+  color: var(--global-text-color-light);
+}
+
+.project-date-month {
+  font: 600 0.95rem var(--project-mono);
+  letter-spacing: 0.06em;
+  color: var(--global-theme-color);
+}
+
+.project-date::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 6.6rem;
+  width: 0.9rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--global-theme-color) 30%, transparent);
+}
+
+.project-date::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 5px);
+  left: calc(6.6rem - 5px);
+  width: 11px;
+  height: 11px;
+  box-sizing: border-box;
+  border: 2px solid var(--global-theme-color);
+  border-radius: 50%;
+  background: var(--global-bg-color);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--global-theme-color) 8%, transparent);
+}
+
+.project-heading {
+  box-sizing: border-box;
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 0.6rem 0 0.75rem 7.5rem;
+}
+
+.project-intro {
+  max-width: 64ch;
+  margin: 0.75rem 0 0;
+  color: var(--global-text-color-light);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.project-heading h1 {
+  margin: 0;
+  color: var(--global-theme-color);
+  font-family: Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.25rem);
+  letter-spacing: -0.035em;
+}
+
+.project-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 30%);
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem 1.5rem 1.5rem 1.8rem;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 8px;
+  background-color: var(--global-bg-color);
+  transition: border-color 160ms ease;
+}
+
+.project-card:hover {
+  border-color: var(--global-theme-color);
+}
+
+html[data-theme='dark'] .project-card {
+  background-color: #20242B;
+  border-color: rgba(203, 210, 219, 0.12);
+}
+
+html[data-theme='dark'] .project-card:hover {
+  border-color: rgba(169, 199, 238, 0.3);
+}
+
+.project-number {
+  align-self: stretch;
+
+  color: var(--global-text-color-light);
+  font-family: var(--project-mono);
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.project-card-content { min-width: 0; }
+
+.project-card-title {
+  margin: 0 0 0.85rem;
+  font-family: var(--project-sans);
+  font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.project-page .project-card-title a { color: var(--global-text-color); }
+
+.project-description {
+  margin: 0 0 1.2rem;
+  color: var(--global-text-color-light);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  max-width: 58ch;
+  hyphens: none;
+}
+
+.project-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-card-tags span {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 0.3rem 0.6rem;
+  border: 0;
+  background: color-mix(in srgb, var(--accent-secondary, #486a98) 9%, transparent);
+  border-radius: 5px;
+  font-family: var(--project-mono);
+  color: var(--accent-secondary, #486a98);
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.project-card-tags span:first-child {
+  color: var(--global-theme-color);
+  background: color-mix(in srgb, var(--global-theme-color) 9%, transparent);
+}
+
+.project-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+}
+
+.project-page .project-card-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--global-text-color);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.project-card-actions a span {
+  font-size: inherit;
+  color: inherit;
+}
+
+.project-action-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.project-card-actions a + a {
+  padding-left: 0;
+}
+
+.project-page .project-card-actions .project-card-link:first-child {
+  color: var(--global-theme-color);
+  font-weight: 650;
+}
+
+.project-page .project-card-actions a:hover,
+.project-page .project-card-actions a:focus-visible {
+  color: var(--global-hover-color);
+}
+
+.project-card-preview {
+  display: block;
+  width: 100%;
+  height: auto;
+  align-self: center;
+  margin-top: -0.65rem;
+  margin-bottom: -0.65rem;
+  overflow: hidden;
+  border-radius: 5px;
+  line-height: 0;
+}
+
+.project-card-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 700px) {
+  .project-heading {
+    padding-left: 1rem;
+  }
+  .project-timeline-entry {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    padding-left: 1rem;
+  }
+  .project-timeline-entry::before,
+  .project-timeline-entry:first-child::before { left: 0; top: 0.6rem; }
+  .project-timeline-entry:last-child::before { bottom: 0; }
+  .project-date {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0;
+  }
+  .project-date-month { font-size: 0.95rem; }
+  .project-date::before { display: none; }
+  .project-date::after {
+    left: calc(-1rem - 5px);
+    top: calc(50% - 5px);
+  }
+  .project-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.2rem;
+  }
+  .project-number { font-size: 0.75rem; }
+  .project-card-preview {
+    grid-column: 1;
+    width: 100%;
+    max-width: 360px;
+    margin: 0;
+  }
+  .project-card-preview img {
+    height: auto;
+  }
+}
+
 .work-page {
   --global-link-color: var(--global-text-color-light);
   --global-hover-color: var(--global-theme-color);
