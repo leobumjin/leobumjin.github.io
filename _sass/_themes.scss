@@ -33,23 +33,31 @@
 }
 
 html[data-theme='dark'] {
-  --global-bg-color: #08080c;
+  --bg: #414751;
+  --accent: #A9C7EE;
+  --accent-hover: #C5DAF5;
+  --text: #F7F8FA;
+  --text-muted: #CBD2DB;
+  --border: #626873;
+  --accent-secondary: #A8CDB7;
+
+  --global-bg-color: var(--bg);
   --global-code-bg-color: #{$code-bg-color-dark};
-  --global-text-color: #f5f7ff;
-  --global-text-color-light: #b6bdd3;
-  --global-text-color-very-light: #d6dcef;
-  --global-theme-color: #ce626f;
-  --global-link-color: #ff893f;
-  --global-hover-color: #ff893f;
-  --global-footer-bg-color: #f5f7ff;
-  --global-footer-text-color: #08080c;
+  --global-text-color: var(--text);
+  --global-text-color-light: var(--text-muted);
+  --global-text-color-very-light: var(--text-muted);
+  --global-theme-color: var(--accent);
+  --global-link-color: var(--accent);
+  --global-hover-color: var(--accent-hover);
+  --global-footer-bg-color: var(--text);
+  --global-footer-text-color: var(--bg);
   --global-footer-link-color: #{$black-color};
-  --global-distill-app-color: #dbe1ff;
-  --global-divider-color: rgba(245, 247, 255, 0.14);
-  --global-card-bg-color: #10111a;
-  --global-bg-highlight-color: rgba(142, 162, 255, 0.1);
-  --page-bg-start: #08080c;
-  --page-bg-end: #0a0b10;
+  --global-distill-app-color: var(--accent-secondary);
+  --global-divider-color: var(--border);
+  --global-card-bg-color: var(--bg);
+  --global-bg-highlight-color: rgba(168, 205, 183, 0.1);
+  --page-bg-start: var(--bg);
+  --page-bg-end: var(--bg);
 
   .fa-sun {
     padding-left: 10px;

@@ -718,7 +718,7 @@ html[data-theme='dark'] .home-contact-copy-btn.is-copied img {
 }
 
 html[data-theme='dark'] .home-news-highlight-broadcast {
-  --news-accent: #7da8e0;
+  --news-accent: var(--accent-secondary);
 }
 
 .home-news-item[class*='home-news-highlight-'] .home-news-title-link strong,
