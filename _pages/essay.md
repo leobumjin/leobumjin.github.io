@@ -8,10 +8,20 @@ description:
 <div class="posts-archive-layout">
   <div class="posts-archive">
     <section class="posts-archive-hero">
-      <p class="home-section-label">Posts</p>
-      <h1 id="postsArchiveQuote">Loading quote...</h1>
-      <p class="posts-archive-intro" id="postsArchiveAuthor"></p>
+      <div class="posts-archive-hero-content">
+        <figure class="posts-archive-artwork" id="postsArchiveArtwork" hidden>
+          <img id="postsArchiveArtworkImage" alt="" decoding="async" data-zoomable>
+          <figcaption id="postsArchiveArtworkCaption"></figcaption>
+        </figure>
+        <div class="posts-archive-quote">
+          <h1 id="postsArchiveQuote">Loading quote...</h1>
+          <p class="posts-archive-intro" id="postsArchiveAuthor"></p>
+        </div>
+      </div>
     </section>
+
+    <div class="posts-archive-catalog">
+    <nav class="posts-media-tabs" id="postsMediaTabs" aria-label="Post media" hidden></nav>
 
     <div class="posts-archive-filter-shell" id="postsArchiveFilterShell" hidden>
       <div class="posts-archive-filter" id="postsArchiveFilter"></div>
@@ -20,6 +30,7 @@ description:
     <section class="posts-archive-groups" id="postsArchiveGroups">
       <p class="posts-archive-summary">Loading posts...</p>
     </section>
+    </div>
   </div>
 
   <aside class="posts-archive-nav" id="postsArchiveNav" hidden>
@@ -36,8 +47,13 @@ description:
     var navBox = document.getElementById('postsArchiveNavBox');
     var quoteTitle = document.getElementById('postsArchiveQuote');
     var quoteAuthor = document.getElementById('postsArchiveAuthor');
+    var artwork = document.getElementById('postsArchiveArtwork');
+    var artworkImage = document.getElementById('postsArchiveArtworkImage');
+    var artworkCaption = document.getElementById('postsArchiveArtworkCaption');
+    var mediaTabs = document.getElementById('postsMediaTabs');
     if (!groupsRoot) return;
     var allItems = [];
+    var activeMedia = '';
     var activeCategory = '';
     var colorMapping = {};
     var mediaOrder = [];
@@ -114,7 +130,7 @@ description:
         var dd = String(parsed.getDate()).padStart(2, '0');
         return yy + '-' + mm + '-' + dd;
       }
-      return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      return parsed.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     }
 
     function pickRandomQuote(quotes) {
@@ -125,6 +141,39 @@ description:
       if (!activeQuotes.length) return null;
       var randomIndex = Math.floor(Math.random() * activeQuotes.length);
       return activeQuotes[randomIndex];
+    }
+
+    function pickRandomImage(images) {
+      if (!Array.isArray(images) || !images.length) return null;
+      var activeImages = images.filter(function (image) {
+        return image && image.active === true && String(image.src || '').trim();
+      });
+      if (!activeImages.length) return null;
+      return activeImages[Math.floor(Math.random() * activeImages.length)];
+    }
+
+    function renderArtwork(image) {
+      if (!artwork || !artworkImage || !image) return;
+      var src = String(image.src || '').trim();
+      if (!src) return;
+
+      var caption = String(image.author || image.title || '').trim();
+      artworkImage.src = src;
+      artworkImage.alt = String(image.alt || caption || 'Featured artwork');
+      artworkImage.setAttribute('data-zoom-caption', caption);
+      if (artworkCaption) {
+        artworkCaption.textContent = caption;
+        artworkCaption.hidden = !caption;
+      }
+      artworkImage.addEventListener('error', function () {
+        artwork.hidden = true;
+        if (artwork.parentElement) artwork.parentElement.classList.remove('has-artwork');
+      }, { once: true });
+      artwork.hidden = false;
+      if (artwork.parentElement) artwork.parentElement.classList.add('has-artwork');
+      if (typeof medium_zoom !== 'undefined' && medium_zoom && typeof medium_zoom.attach === 'function') {
+        medium_zoom.attach(artworkImage);
+      }
     }
 
     function renderFilterBar() {
@@ -138,8 +187,42 @@ description:
       if (filterShell) filterShell.hidden = false;
       filterBar.innerHTML =
         '<button class="posts-archive-filter-pill is-active" type="button" data-category-filter="' + escapeHtml(activeCategory) + '">' +
-          escapeHtml(activeCategory) +
+          '#' + escapeHtml(activeCategory) + ' ×' +
         '</button>';
+    }
+
+    function renderMediaTabs() {
+      if (!mediaTabs) return;
+      var mediaNames = Array.from(new Set(allItems.map(function (item) {
+        return String(item.media || 'Other').trim() || 'Other';
+      }))).sort(function (a, b) {
+        var preferredOrder = ['Research', 'Literature', 'Essay'];
+        var aIndex = preferredOrder.indexOf(a);
+        var bIndex = preferredOrder.indexOf(b);
+        var rankDifference = (aIndex === -1 ? preferredOrder.length : aIndex) -
+          (bIndex === -1 ? preferredOrder.length : bIndex);
+        if (rankDifference) return rankDifference;
+        return a.localeCompare(b, 'en', { sensitivity: 'base' });
+      });
+
+      if (!mediaNames.length) {
+        mediaTabs.innerHTML = '';
+        mediaTabs.hidden = true;
+        return;
+      }
+
+      if (activeMedia && mediaNames.indexOf(activeMedia) === -1) {
+        activeMedia = '';
+      }
+
+      mediaTabs.innerHTML = [''].concat(mediaNames).map(function (mediaName) {
+        var isActive = activeMedia === mediaName;
+        var label = mediaName || 'All';
+        return '<button class="posts-media-tab' + (isActive ? ' is-active' : '') + '" type="button"' +
+          ' data-media-filter="' + escapeHtml(mediaName) + '" aria-pressed="' + (isActive ? 'true' : 'false') + '">' +
+          '<span>' + escapeHtml(label) + '</span></button>';
+      }).join('');
+      mediaTabs.hidden = false;
     }
 
     function sectionIdFromName(name) {
@@ -149,12 +232,22 @@ description:
       return normalized ? 'posts-section-' + normalized : 'posts-section';
     }
 
+    function itemTags(item) {
+      var values = Array.isArray(item.tags) ? item.tags : [];
+      return Array.from(new Set(values.map(function (tag) {
+        return String(tag || '').trim();
+      }).filter(Boolean)));
+    }
+
     function renderItems(items) {
       return items.map(function (item) {
         var postUrl = buildPostUrlFromLink(item && item.en_link);
         var media = item.media || '';
         var title = escapeHtml(item.title || 'Untitled');
-        var category = escapeHtml(item.category || '');
+        var tagsHtml = itemTags(item).map(function (tag) {
+          return '<button class="posts-archive-tag" type="button" data-category-filter="' + escapeHtml(tag) +
+            '" aria-pressed="' + (activeCategory === tag ? 'true' : 'false') + '">#' + escapeHtml(tag) + '</button>';
+        }).join('');
         var date = escapeHtml(formatDate(item.date));
         var postPath = postUrl ? postUrl.replace(/^https?:\/\/[^/]+/i, '') : '';
         var viewsHtml = postPath
@@ -183,16 +276,18 @@ description:
               (viewsHtml ? '<div class="posts-archive-inline-meta">' + viewsHtml + '</div>' : '') +
             '</div>' +
             '<div class="posts-archive-side">' +
-              (category ? '<button class="posts-archive-category" type="button" data-category-filter="' + category + '">' + category + '</button>' : '') +
+              tagsHtml +
             '</div>' +
           '</article>';
       }).join('');
     }
 
     function renderPosts() {
-      var visibleItems = activeCategory
-        ? allItems.filter(function (item) { return (item.category || '') === activeCategory; })
-        : allItems;
+      var visibleItems = allItems.filter(function (item) {
+        var matchesMedia = !activeMedia || (item.media || 'Other') === activeMedia;
+        var matchesCategory = !activeCategory || itemTags(item).indexOf(activeCategory) !== -1;
+        return matchesMedia && matchesCategory;
+      });
 
       if (!visibleItems.length) {
         groupsRoot.innerHTML = '<p class="posts-archive-summary">No posts yet.</p>';
@@ -203,6 +298,9 @@ description:
       var groups = [];
       var seen = {};
 
+      if (!activeMedia) {
+        groups.push({ name: 'All', items: visibleItems });
+      } else {
       mediaOrder.forEach(function (mediaName) {
         var groupItems = visibleItems.filter(function (item) { return (item.media || '') === mediaName; });
         if (!groupItems.length) return;
@@ -219,6 +317,7 @@ description:
           items: visibleItems.filter(function (entry) { return (entry.media || 'Other') === mediaName; })
         });
       });
+      }
 
       groupsRoot.innerHTML = groups.map(function (group) {
         var sectionId = sectionIdFromName(group.name);
@@ -246,6 +345,7 @@ description:
       }
 
       renderFilterBar();
+      renderMediaTabs();
     }
 
     Promise.all([
@@ -258,11 +358,18 @@ description:
         return response.json();
       }).catch(function () {
         return [];
+      }),
+      fetch('{{ "/data/images.json" | relative_url }}').then(function (response) {
+        if (!response.ok) throw new Error('Failed to load images.');
+        return response.json();
+      }).catch(function () {
+        return [];
       })
     ])
       .then(function (results) {
         var postData = results[0];
         var quotes = results[1];
+        var images = results[2];
         var items = Array.isArray(postData) ? postData : (Array.isArray(postData.posts) ? postData.posts : []);
         var meta = postData && typeof postData === 'object' && !Array.isArray(postData) ? postData['meta-data'] || {} : {};
 
@@ -270,6 +377,7 @@ description:
         mediaOrder = Object.keys(colorMapping);
 
         var selectedQuote = pickRandomQuote(quotes);
+        renderArtwork(pickRandomImage(images));
         if (quoteTitle) {
           quoteTitle.textContent = selectedQuote && selectedQuote.quote ? '"' + selectedQuote.quote + '"' : 'Posts';
         }
@@ -287,6 +395,7 @@ description:
         }).sort(function (a, b) {
           return new Date(b.date || 0) - new Date(a.date || 0);
         });
+        renderMediaTabs();
         renderPosts();
       })
       .catch(function () {
@@ -296,6 +405,14 @@ description:
       });
 
     document.addEventListener('click', function (event) {
+      var mediaTrigger = event.target.closest('[data-media-filter]');
+      if (mediaTrigger) {
+        activeMedia = mediaTrigger.getAttribute('data-media-filter') || '';
+        activeCategory = '';
+        renderPosts();
+        return;
+      }
+
       var navTrigger = event.target.closest('[data-posts-nav-target]');
       if (navTrigger) {
         event.preventDefault();

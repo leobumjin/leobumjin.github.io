@@ -1,0 +1,166 @@
+{
+  "papadopoulos-etal-2026-mind-viruses": {
+    "author": "Papadopoulos et al.",
+    "year": "2026",
+    "title": "Mind Viruses: Self-Propagating Ideas in Multi-Agent LLM Systems",
+    "url": "https://arxiv.org/abs/2608.10218"
+  },
+  "wikipedia-quine-computing": {
+    "author": "Wikipedia contributors",
+    "year": "2026",
+    "title": "Quine (computing)",
+    "url": "https://en.wikipedia.org/wiki/Quine_(computing)"
+  },
+  "sep-self-reference": {
+    "author": "Bolander",
+    "year": "2024",
+    "title": "Self-Reference and Paradox",
+    "url": "https://plato.stanford.edu/entries/self-reference/"
+  },
+  "sep-goedel-numbering": {
+    "author": "Raatikainen",
+    "year": "2025",
+    "title": "Gödel Numbering",
+    "url": "https://plato.stanford.edu/entries/goedel-incompleteness/sup1.html"
+  },
+  "sep-tarski-truth": {
+    "author": "Hodges",
+    "year": "2022",
+    "title": "Tarski’s Truth Definitions",
+    "url": "https://plato.stanford.edu/entries/tarski-truth/"
+  },
+  "sep-goedel-incompleteness": {
+    "author": "Raatikainen",
+    "year": "2025",
+    "title": "Gödel’s Incompleteness Theorems",
+    "url": "https://plato.stanford.edu/entries/goedel-incompleteness/"
+  },
+  "structuring-sparsity": {
+    "author": "Fel et al.",
+    "year": "2026",
+    "title": "Structuring Sparsity: Block-Sparse Featurizers Capture Visual Concept Manifolds",
+    "url": "https://arxiv.org/abs/2606.25234"
+  },
+  "curve-detectors": {
+    "author": "Cammarata et al.",
+    "year": "2020",
+    "title": "Curve Detectors",
+    "url": "https://distill.pub/2020/circuits/curve-detectors/"
+  },
+  "multidimensional-features": {
+    "author": "Engels et al.",
+    "year": "2025",
+    "title": "Not All Language Model Features Are One-Dimensionally Linear",
+    "url": "https://arxiv.org/abs/2405.14860"
+  },
+  "counting-manifolds": {
+    "author": "Anthropic",
+    "year": "2025",
+    "title": "When Models Manipulate Manifolds: The Geometry of a Counting Task",
+    "url": "https://transformer-circuits.pub/2025/linebreaks/index.html"
+  },
+  "projecting-assumptions": {
+    "author": "Hindupur et al.",
+    "year": "2025",
+    "title": "Projecting Assumptions: The Duality Between Sparse Autoencoders and Concept Geometry",
+    "url": "https://arxiv.org/abs/2503.01822"
+  },
+  "concept-manifolds": {
+    "author": "Bhalla et al.",
+    "year": "2026",
+    "title": "Do Sparse Autoencoders Capture Concept Manifolds?",
+    "url": "https://arxiv.org/abs/2604.28119"
+  },
+  "wu2023interpretability": {
+    "author": "Wu et al.",
+    "year": "2023",
+    "title": "Interpretability at Scale: Identifying Causal Mechanisms in Alpaca",
+    "url": "https://arxiv.org/abs/2305.08809"
+  },
+  "wu2024reft": {
+    "author": "Wu et al.",
+    "year": "2024",
+    "title": "ReFT: Representation Finetuning for Language Models",
+    "url": "https://arxiv.org/abs/2404.03592"
+  },
+  "li2023iti": {
+    "author": "Li et al.",
+    "year": "2023",
+    "title": "Inference-Time Intervention: Eliciting Truthful Answers from a Language Model",
+    "url": "https://arxiv.org/abs/2306.03341"
+  },
+
+  "zou2023representation": {
+    "author": "Zou et al.",
+    "year": "2023",
+    "title": "Representation Engineering: A Top-Down Approach to AI Transparency",
+    "url": "https://arxiv.org/abs/2310.01405"
+  },
+
+  "geiger2025causal": {
+    "author": "Geiger et al.",
+    "year": "2025",
+    "title": "Causal Abstraction: A Theoretical Foundation for Mechanistic Interpretability",
+    "url": "https://jmlr.org/papers/v26/23-0058.html"
+  },
+  "anthropic2026fablemythos": {
+    "author": "Anthropic",
+    "year": "2026",
+    "title": "Claude Fable 5.1 and Mythos 5.1",
+    "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1"
+  },
+  "chao2026stale": {
+    "author": "Chao et al.",
+    "year": "2026",
+    "title": "STALE: Can LLM Agents Know When Their Memories Are No Longer Valid?",
+    "url": "https://arxiv.org/abs/2605.06527"
+  },
+  "luo2026revisebench": {
+    "author": "Luo et al.",
+    "year": "2026",
+    "title": "Can AI Revise Research Papers with Human Review Feedback? An Empirical Study and Benchmark",
+    "url": "https://aclanthology.org/2026.findings-acl.887/"
+  },
+  "zeng2026selfmodeling": {
+    "author": "Zeng et al.",
+    "year": "2026",
+    "title": "Evaluating and Improving LLM Self-Modeling",
+    "url": "https://arxiv.org/abs/2608.30980"
+  },
+  "sharma2024sycophancy": {
+    "author": "Sharma et al.",
+    "year": "2024",
+    "title": "Towards Understanding Sycophancy in Language Models",
+    "url": "https://proceedings.iclr.cc/paper_files/paper/2024/hash/0105f7972202c1d4fb817da9f21a9663-Abstract-Conference.html"
+  },
+  "huang2024selfcorrect": {
+    "author": "Huang et al.",
+    "year": "2024",
+    "title": "Large Language Models Cannot Self-Correct Reasoning Yet",
+    "url": "https://arxiv.org/abs/2310.01798"
+  },
+  "zhao2025reconciliation": {
+    "author": "Zhao et al.",
+    "year": "2025",
+    "title": "Understanding Parametric and Contextual Knowledge Reconciliation within Large Language Models",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/94f7c80260eea8d52a5c0ec7b1637c04-Abstract-Conference.html"
+  },
+  "bursuc2025vericoding": {
+    "author": "Bursuc et al.",
+    "year": "2025",
+    "title": "A Benchmark for Vericoding: Formally Verified Program Synthesis",
+    "url": "https://arxiv.org/abs/2509.22908"
+  },
+  "chen2026prove2me": {
+    "author": "Chen et al.",
+    "year": "2026",
+    "title": "Prove2Me: An Open Collaborative Platform for Scaling Math Formalization",
+    "url": "https://arxiv.org/abs/2608.28433"
+  },
+  "trinh2024alphageometry": {
+    "author": "Trinh et al.",
+    "year": "2024",
+    "title": "Solving Olympiad Geometry without Human Demonstrations",
+    "url": "https://doi.org/10.1038/s41586-023-06747-5"
+  }
+}

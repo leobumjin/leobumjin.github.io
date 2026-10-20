@@ -1,57 +1,48 @@
 [
     {
-        "year": "2026",
-        "date": "July, 11",
-        "title": "Paper on Non-monotonicity is accepted to the ICML 2026 PhilML Workshop.",
+        "date": "2026-10",
+        "title": "Multi-agent Vulnerability Analysis featured on **MBC**.",
+        "url": "https://youtu.be/BdfQ0XvuVI8?t=114",
+        "highlight": "broadcast"
+    },
+    {
+        "date": "2026-07",
+        "title": "Paper on Non-monotonicity is accepted to the **ICML 2026 PhilML Workshop**.",
         "url": "https://openreview.net/forum?id=b6SquyZKd5",
-        "url_description": "OpenReview",
-        "color": "#000000",
-        "dark_color": "#ffffff",
-        "highlight": true,
-        "visible": true
+        "highlight": "conference"
     },
     {
-        "year": "2026",
-        "date": "March",
-        "title": "Paper on LLM Jailbreak is accepted to Findings of ACL 2026.",
-        "url": "https://incomplete-prompt-jailbreak.github.io/",
-        "url_description": "Project Page",
-        "color": "#000000",
-        "dark_color": "#ffffff",
-        "highlight": true,
-        "visible": true
-    },
-    {
-        "year": "2026",
-        "date": "July, 9",
+        "date": "2026-07",
         "title": "Outstanding Project Award, <br> KAIST Manufacturing AI Bootcamp (Antibody Generation)",
-        "url": "/work/2026/antibody-generation/",
-        "url_description": "Blog Post of Project!",
-        "color": "#007000",
-        "dark_color": "#6ee77a",
-        "highlight": true,
-        "visible": true
+        "url": "/work/2026/antibody-generation/"
     },
     {
-        "year": "2026",
-        "date": "March",
-        "title": "Agentic Vulnerability Analysis in AI Agents (KBS Insight)",
+        "date": "2026-03",
+        "title": "Paper on LLM Jailbreak is accepted to **Findings of ACL 2026**.",
+        "url": "https://incomplete-prompt-jailbreak.github.io/",
+        "highlight": "conference"
+    },
+    {
+        "date": "2026-03",
+        "title": "Agentic Vulnerability Analysis in AI Agents (**KBS Insight**)",
         "url": "https://news.kbs.co.kr/news/pc/view/view.do?ncd=8507890",
-        "color": "#0000f0",
-        "dark_color": "#8fa6ff",
-        "url_description": "KBS News",
-        "highlight": true,
-        "visible": true
+        "highlight": "broadcast"
     },
     {
-        "year": "2025",
-        "date": "October",
+        "date": "2025-10",
         "title": "Visiting Research Scholar at NYU Global AI Frontier Lab",
-        "url": "https://nyu.edu/global-ai-frontier-lab",
-        "url_description": "NYU Global AI Frontier Lab",
-        "color": "#800080",
-        "dark_color": "#e28cff",
-        "highlight": true,
-        "visible": true
+        "url": "https://nyu.edu/global-ai-frontier-lab"
+    },
+    {
+        "date": "2025-07",
+        "title": "Paper on Deontological Keyword Bias is published in **ACL 2025 (Main Conference)**.",
+        "url": "https://aclanthology.org/2025.acl-long.360/",
+        "highlight": "conference"
+    },
+    {
+        "date": "2024-08",
+        "title": "Paper on Memorizing Documents with Guidance in Large Language Models is published in **IJCAI 2024**.",
+        "url": "https://www.ijcai.org/proceedings/2024/714",
+        "highlight": "conference"
     }
 ]

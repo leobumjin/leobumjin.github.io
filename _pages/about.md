@@ -12,29 +12,37 @@ _styles: >
 ---
 
 <div class="home-editorial">
+  <div class="home-intro">
   <section class="home-hero">
-    <div class="home-hero-copy">
-      <p class="home-eyebrow">PhD Student | AI Researcher</p>
+    <div class="home-profile-heading">
+      <div class="home-hero-media">
+        <div class="home-hero-avatar">
+          <img src="{{ '/assets/img/bumjini2.png' | relative_url }}" alt="Portrait of Bumjin Park">
+        </div>
+      </div>
+      <div class="home-profile-heading-copy">
+      <p class="home-eyebrow"><span>PhD Student</span><span>AI Researcher</span></p>
       <p class="home-summary">
-        I am a <strong>Ph.D. student at KAIST AI</strong>, advised by <strong>Prof. Jaesik Choi</strong>.
+        I am a <strong>Ph.D. student at KAIST AI</strong>.
       </p>
+      </div>
+    </div>
+    <div class="home-hero-copy">
       <p class="home-summary home-summary-subtle">
-        My research studies <strong>knowledge structure</strong> in logic, AI, and human reasoning, with a focus on how constraints are represented and resolved in large language models. I investigate how such structures are realized within model computations, combining <strong>mechanistic interpretability</strong> (neuron- and circuit-level analysis) with <strong>constraint-aware modeling</strong>.
+        My research explores how large language models <strong>represent, reason over, and revise knowledge</strong>, with a particular focus on <strong>non-monotonic reasoning, belief revision, and learning under changing information</strong>. I study how models maintain or update their beliefs when evidence is introduced, contradicted, or retracted, and how they resolve conflicts among competing rules, constraints, and sources of information.
       </p>
     </div>
 
-    <div class="home-hero-media">
-      <div class="home-hero-avatar">
-        <img src="{{ '/assets/img/bumjini2.png' | relative_url }}" alt="Portrait of Bumjin Park">
-      </div>
-    </div>
   </section>
 
   <section class="home-profile-meta" aria-label="Profile details">
     <p class="home-profile-line">
-      My work aims to understand how models represent requirements, resolve conflicts, and produce behavior consistent with structured knowledge and user intent. Grounded in training across <strong>mathematics</strong>, <strong>computer science</strong>, and <strong>AI</strong> (<strong>B.S.</strong> in Mathematics and Computer Science, <strong>M.S.</strong> in AI), I build systems that are <strong>reliable, transparent, and robust</strong> in real-world settings.
+      I combine <strong>formal approaches to knowledge representation and reasoning</strong> with empirical studies of language models, including <strong>interpretability and learning-based methods</strong>. My goal is to understand how models acquire and maintain structured knowledge, adapt to changing evidence, and make consistent decisions under conflicting information.
     </p>
-    <p class="home-profile-line"><strong>Research interests:</strong> AI Safety, non-monotonic reasoning, constraint conflict, factuality</p>
+    <p class="home-profile-line">
+      With a background in <strong>mathematics, computer science, and AI</strong> (B.S. in Mathematics and Software Engineering; M.S. in AI), I aim to develop AI systems that can <strong>reason reliably, revise their knowledge appropriately, and act consistently with evidence and constraints</strong>.
+    </p>
+    <p class="home-profile-line"><strong>Research interests:</strong> Non-monotonic Reasoning, Belief Revision, Learning under Changing Knowledge, Interpretability, AI Safety</p>
     <div class="home-contact-links">
       <a class="home-contact-link" href="https://www.linkedin.com/in/leobumjin/" target="_blank" rel="noreferrer">
         <img src="{{ '/assets/svg/linkedin.svg' | relative_url }}" alt="" aria-hidden="true">
@@ -58,7 +66,7 @@ _styles: >
           </div>
           <div class="home-contact-email-row">
             <span class="home-contact-email-address">bumjini42@gmail.com</span>
-            <button type="button" class="home-contact-copy-btn" data-copy="leo.bjpark@gmail.com" aria-label="Copy Gmail email">
+            <button type="button" class="home-contact-copy-btn" data-copy="bumjini42@gmail.com" aria-label="Copy Gmail email">
               <img src="{{ '/assets/svg/copy.svg' | relative_url }}" alt="" aria-hidden="true">
             </button>
           </div>
@@ -67,9 +75,11 @@ _styles: >
     </div>
   </section>
 
+  </div>
+
   <section class="home-news" aria-labelledby="home-news-title">
     <div class="home-section-heading">
-      <p class="home-section-label">News</p>
+      <p class="home-section-label" id="home-news-title">News</p>
     </div>
 
     <div class="home-news-list" id="home-news-list">
@@ -153,7 +163,9 @@ _styles: >
     };
 
     const formatInlineBreaks = function(value) {
-      return escapeHtml(value).replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+      return escapeHtml(value)
+        .replace(/&lt;br\s*\/?&gt;/gi, '<br>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     };
 
     const renderEmpty = function(message) {
@@ -174,24 +186,20 @@ _styles: >
     };
 
     const normalizeItem = function(item) {
-      if (typeof item === 'string') {
-        return {
-          year: '',
-          date: '',
-          title: item,
-          color: '',
-          darkColor: ''
-        };
-      }
+      const parts = String(item.date || '').split('-');
+      const year = parts[0] || '';
+      const month = Number(parts[1]);
+      const day = Number(parts[2]);
+      const monthName = month >= 1 && month <= 12
+        ? new Date(Date.UTC(2000, month - 1, 1)).toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }) : '';
+      const date = [monthName, day || ''].filter(Boolean).join(' ');
       return {
-        year: item.year || '',
-        date: item.date || '',
-        title: item.title || item.headline || 'Untitled',
-        color: item.color || '',
-        darkColor: item.dark_color || item.color_dark || '',
-        url: item.url || item.link || '',
-        urlDescription: item.url_description || item.url_desscription || '',
-        highlight: Boolean(item.highlight),
+        year: year,
+        date: date,
+        fullDate: date ? date + (day ? ', ' : ' ') + year : year,
+        title: item.title || 'Untitled',
+        url: item.url || '',
+        highlight: ['broadcast', 'conference'].includes(item.highlight) ? item.highlight : '',
         visible: item.visible !== false
       };
     };
@@ -212,33 +220,17 @@ _styles: >
 
     const renderNewsCard = function(item, dateText) {
       const date = dateText ? '<p class="home-news-date">' + escapeHtml(dateText) + '</p>' : '';
-      const markerColor = item.color || '';
-      const markerDarkColor = item.darkColor || '';
-      const markerStyle = [
-        markerColor ? '--news-marker-color-light: ' + escapeHtml(markerColor) + ';' : '',
-        markerDarkColor ? '--news-marker-color-dark: ' + escapeHtml(markerDarkColor) + ';' : ''
-      ].filter(Boolean).join(' ');
-      const highlightClass = item.highlight ? ' is-highlighted' : '';
-      const body = '<span class="home-news-text">' + formatInlineBreaks(item.title || '') + '</span>';
       const safeUrl = sanitizeUrl(item.url || '');
-      const urlDescription = String(item.urlDescription || '').trim();
-      const markerDot = safeUrl
-        ? '<span class="home-news-link-wrap">' +
-            '<a class="home-news-dot home-news-dot-link" href="' + safeUrl + '" target="_blank" rel="noreferrer" aria-label="' + escapeHtml(urlDescription || 'Open link') + '">' +
-              '<img src="{{ "/assets/svg/link.svg" | relative_url }}" alt="" aria-hidden="true">' +
-            '</a>' +
-            (urlDescription ? '<span class="home-news-link-tooltip" role="tooltip">' + escapeHtml(urlDescription) + '</span>' : '') +
-          '</span>'
-        : '<span class="home-news-dot"></span>';
+      const title = formatInlineBreaks(item.title || '');
+      const body = safeUrl
+        ? '<a class="home-news-title-link" href="' + escapeHtml(safeUrl) + '" target="_blank" rel="noreferrer">' +
+            title + '</a>'
+        : '<span class="home-news-text">' + title + '</span>';
 
       return '' +
-        '<article class="home-news-item">' +
+        '<article class="home-news-item' + (item.highlight ? ' home-news-highlight-' + item.highlight : '') + '">' +
           '<div class="home-news-rail">' +
-            '<div class="home-news-date-wrap' + highlightClass + '">' + date + '</div>' +
-            '<div class="home-news-marker"' + (markerStyle ? ' style="' + markerStyle + '"' : '') + '>' +
-              markerDot +
-              '<span class="home-news-stem"></span>' +
-            '</div>' +
+            '<div class="home-news-date-wrap">' + date + '</div>' +
           '</div>' +
           '<div class="home-news-main">' + body + '</div>' +
         '</article>';
@@ -259,37 +251,9 @@ _styles: >
         return;
       }
 
-      const isMobile = window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
-
-      if (isMobile) {
-        const groups = {};
-        const order = [];
-
-        items.forEach(function(item) {
-          const key = String(item.year || '').trim() || 'Updates';
-          if (!groups[key]) {
-            groups[key] = [];
-            order.push(key);
-          }
-          groups[key].push(item);
-        });
-
-        newsRoot.innerHTML = order.map(function(yearKey) {
-          const cards = groups[yearKey].map(function(item) {
-            return renderNewsCard(item, item.date || item.year || '');
-          }).join('');
-          return '' +
-            '<section class="home-news-year-group">' +
-              '<p class="home-news-year-title">' + escapeHtml(yearKey) + '</p>' +
-              cards +
-            '</section>';
-        }).join('');
-        return;
-      }
 
       newsRoot.innerHTML = items.map(function(item) {
-        const fullDate = [item.year, item.date].filter(function(v) { return String(v || '').trim(); }).join(' ');
-        return renderNewsCard(item, fullDate || item.date || item.year || '');
+        return renderNewsCard(item, item.fullDate);
       }).join('');
     };
 

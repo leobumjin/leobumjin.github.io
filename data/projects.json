@@ -1,6 +1,21 @@
 {
   "items": [
     {
+      "title": "Multi-agent Vulnerability Analysis (MBC)",
+      "organization": "MBC",
+      "tools": "LLM Agents, Multi-Agent Safety, Privacy Boundary Evaluation",
+      "summary": "Multi-agent vulnerability research featured on MBC, examining how privacy violations emerge and spread through agent collaboration.",
+      "date": "Oct, 2026",
+      "highlights": [
+        "Built a synthetic testbed to study information-use boundaries under goal pressure in multi-agent systems.",
+        "Traced information access, use, and propagation across agent conversations and decisions."
+      ],
+      "links": [
+        { "label": "MBC Broadcast", "url": "https://youtu.be/BdfQ0XvuVI8?t=114" },
+        { "label": "GitHub", "url": "https://github.com/leobumjin/multiagent-darkweb-safety" }
+      ]
+    },
+    {
       "title": "POSCO Factory Agent Project",
       "organization": "POSCO",
       "tools": "Time-series Vector DB, LLM Agents, Process Signal Representation",

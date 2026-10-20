@@ -1,47 +1,5 @@
 {
   "metadata": {
-    "color-mapping": {
-      "ACL-main": {
-        "white": "#a0000f",
-        "dark": "#ff8a8a"
-      },
-      "PhilML@ICML": {
-        "white": "#000000",
-        "dark": "#ffffff"
-      },
-      "IJCAI": {
-        "white": "#00a0af",
-        "dark": "#0fa8ff"
-      },
-      "ICPRAI": {
-        "white": "#000000",
-        "dark": "#ffffff"
-      },
-      "ACL Findings": {
-        "white": "#a0000f",
-        "dark": "#ff8a8a"
-      },
-      "Journal": {
-        "white": "#000000",
-        "dark": "#ffffff"
-      },
-      "Sensors": {
-        "white": "#000000",
-        "dark": "#ffffff"
-      },
-      "Conference": {
-        "white": "#000000",
-        "dark": "#ffffff"
-      },
-      "Thesis": {
-        "white": "#400070",
-        "dark": "#c000ff"
-      },
-      "preprint": {
-        "white": "#000000",
-        "dark": "#ffffff"
-      }
-    },
     "link-mapping": {
       "Paper": "paper.svg",
       "Github": "github.svg",

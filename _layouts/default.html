@@ -79,7 +79,7 @@
     }
 
     .container.mt-5 {
-      margin-top: 1.5rem !important;
+      margin-top: 0.1rem !important;
     }
 
     .container,
@@ -183,6 +183,7 @@
 
     .navbar.navbar-light .navbar-nav .nav-item .nav-link,
     .nav-links .nav-link {
+      font-family: 'LoraLocal', 'AritaBuriKR', serif;
       padding: 0.35rem 0.2rem !important;
       margin: 0 0 0 1.2rem;
       color: var(--global-text-color) !important;
@@ -656,7 +657,7 @@
 
     {%- include header.html %}
 
-    <div class="container mt-5{% if page.url == '/' %} container-home{% endif %}">
+    <div class="container mt-5{% if page.url == '/' %} container-home{% endif %}{% if page.url == '/essay/' or page.url == '/work/' %} container-wide{% endif %}">
       {{ content }}
     </div>
 
