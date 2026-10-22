@@ -1,0 +1,7 @@
+{
+  "id": "unlearning",
+  "label": "Unlearning",
+  "icon": "fa-eraser",
+  "description": "Reduce specified behavior while maintaining useful behavior on retained data.",
+  "methods": {}
+}

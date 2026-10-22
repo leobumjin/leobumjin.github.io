@@ -1,0 +1,1750 @@
+{
+  "id": "editing",
+  "label": "Edit",
+  "icon": "fa-pen-nib",
+  "description": "Compare knowledge-editing methods by training inputs, optimized variables, persistent updates, and preservation mechanisms. Includes explicit baselines and adjacent adaptation approaches.",
+  "methods": {
+    "rome": {
+      "label": "ROME",
+      "title": "Rank-One Model Editing",
+      "publication": "NeurIPS 2022",
+      "paper_url": "https://rome.baulab.info/",
+      "summary": "ROME writes **one association** into a selected MLP output matrix using a **rank-one update**. It fits the target key-value pair **exactly in the linear memory model** while minimizing changes on preservation keys.",
+      "formula": "W'= W_0 + \\frac{(v-W_0k)(C^{-1}k)^T}{k^TC^{-1}k}",
+      "formula_explanation": "The update satisfies W′k = v when C is invertible and k is nonzero. This linear constraint does not guarantee perfect end-to-end model behavior.",
+      "formula_tokens": [
+        {
+          "tex": "W'="
+        },
+        {
+          "term": "weight",
+          "tex": "W_0"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "update",
+          "tex": "\\frac{(v-W_0k)(C^{-1}k)^T}{k^TC^{-1}k}"
+        }
+      ],
+      "terms": [
+        {
+          "id": "weight",
+          "name": "Original weight",
+          "description": "W₀ maps MLP keys to output values."
+        },
+        {
+          "id": "update",
+          "name": "Rank-one correction",
+          "description": "k is the edit key, v the optimized target value, and C the preservation-key second moment. The outer product changes one key-value association."
+        },
+        {
+          "id": "moment",
+          "name": "Preservation second moment",
+          "description": "C weights changes on background keys; the displayed inverse assumes positive definiteness."
+        },
+        {
+          "id": "key",
+          "name": "Single edit key",
+          "description": "k is averaged over subject contexts."
+        },
+        {
+          "id": "target",
+          "name": "Target value",
+          "description": "v is optimized with desired-answer likelihood and a preservation term."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Select an MLP layer informed by causal tracing.",
+        "**Extract the subject key** across contexts.",
+        "**Optimize a target value** for the desired prediction.",
+        "Solve for and apply the **rank-one update**.",
+        "Evaluate edit success, paraphrase generalization, and unrelated facts."
+      ],
+      "group": "associative_memory",
+      "keywords": [
+        "activation_target",
+        "closed_form",
+        "rank_one",
+        "key_value",
+        "calibration"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": false,
+        "update_kind": "analytical_weight_insertion"
+      },
+      "training": {
+        "pre_edit_training": "None.",
+        "edit_time_optimization": "Optimize a target value with frozen model weights, then solve a rank-one insertion.",
+        "update_input": "Subject, relation prompt, new object; sampled context prefixes.",
+        "supervision_target": "Desired object tokens and a target internal value.",
+        "preservation_input": "Background text for key moments; generic prompts for the target-search KL term.",
+        "loss_token_scope": "Subject-final position for key/intervention; desired-answer NLL; separate KL prompts.",
+        "updated_parameters": "One selected MLP output matrix.",
+        "returned_state": "Edited weights; reusable key-moment cache.",
+        "limitations": "Exact fitting of a fixed linear key does not guarantee generated answers or dependency-aware retraction."
+      },
+      "formula_status": "normalized_core",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2202.05262v5",
+          "role": "primary",
+          "checked_scope": "Method: key extraction, value optimization, rank-one insertion"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Locating and Editing Factual Associations in GPT",
+      "group_label": "Associative-memory editing"
+    },
+    "memit": {
+      "label": "MEMIT",
+      "title": "Mass-Editing Memory in a Transformer",
+      "publication": "ICLR 2023",
+      "paper_url": "https://memit.baulab.info/",
+      "summary": "MEMIT edits a **batch of associations** and distributes their target residuals **across selected MLP layers**. Each layer uses a **least-squares update** balancing new memories against preservation.",
+      "formula": "W' = W_0 + R K^T (C+KK^T)^{-1}",
+      "formula_explanation": "This is one layer’s update, with R = V − W₀K. C includes the scaled preservation-key second moment. MEMIT recomputes keys and allocates remaining residuals as it progresses through the selected layers.",
+      "formula_tokens": [
+        {
+          "tex": "W'"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "weight",
+          "tex": "W_0"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "residual",
+          "tex": "R"
+        },
+        {
+          "term": "keys",
+          "tex": "K^T"
+        },
+        {
+          "term": "solve",
+          "tex": "(C+KK^T)^{-1}"
+        }
+      ],
+      "terms": [
+        {
+          "id": "weight",
+          "name": "Original weight",
+          "description": "W₀ maps MLP keys to output values."
+        },
+        {
+          "id": "moment",
+          "name": "Preservation statistic",
+          "description": "C is the preservation-key second moment; MEMIT absorbs its preservation scaling into C. The displayed inverse requires a nonsingular system."
+        },
+        {
+          "id": "keys",
+          "name": "Edit keys",
+          "description": "K contains one key vector per requested edit."
+        },
+        {
+          "id": "residual",
+          "name": "Residual targets",
+          "description": "R = V − W₀K contains the desired value changes."
+        },
+        {
+          "id": "solve",
+          "name": "Regularized memory solve",
+          "description": "Balances preservation through C with fitting the batched edit keys K. Unlike an equality constraint, the fit may leave residual error."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Optimize target hidden states for the requested associations.",
+        "Choose the mediating MLP layers.",
+        "At each layer, collect current keys and **allocate remaining target residuals**.",
+        "Solve the layer’s **least-squares update** and continue to the next layer.",
+        "Evaluate the batch for efficacy, generalization, and specificity."
+      ],
+      "group": "associative_memory",
+      "keywords": [
+        "activation_target",
+        "closed_form",
+        "key_value",
+        "multi_layer",
+        "batch_editing",
+        "calibration"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": false,
+        "update_kind": "analytical_weight_insertion"
+      },
+      "training": {
+        "pre_edit_training": "None.",
+        "edit_time_optimization": "Optimize target states, then solve layerwise updates while allocating remaining residuals.",
+        "update_input": "A batch of subject-relation-new-object edits and context prefixes.",
+        "supervision_target": "Desired answer tokens and target hidden states.",
+        "preservation_input": "Background activation second moments.",
+        "loss_token_scope": "Answer-token objective; subject-position target intervention.",
+        "updated_parameters": "Selected MLP output matrices.",
+        "returned_state": "Edited weights and moment cache.",
+        "limitations": "The displayed relation is one layer only; layers interact through recomputed keys and residuals."
+      },
+      "formula_status": "normalized_core",
+      "sources": [
+        {
+          "url": "https://memit.baulab.info/",
+          "role": "primary",
+          "checked_scope": "Official method overview and linked paper"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Mass-Editing Memory in a Transformer",
+      "group_label": "Associative-memory editing"
+    },
+    "emmet": {
+      "label": "EMMET",
+      "title": "Equality-constrained Mass Model Editing for Transformers",
+      "publication": "Findings of EMNLP 2024",
+      "paper_url": "https://aclanthology.org/2024.findings-emnlp.903/",
+      "summary": "EMMET extends ROME’s **equality-constrained memory update to batches**. It preserves old mappings while **enforcing the requested new key-value mappings** in the linear memory model.",
+      "formula": "W' = W_0 + R (K^TC^{-1}K)^{-1} K^TC^{-1}",
+      "formula_explanation": "With R = V − W₀K, the ideal solution satisfies W′K = V. It assumes invertible C and KᵀC⁻¹K; dependent keys require stabilization, which can relax exact equality. Edit distribution across layers is a separate algorithmic choice.",
+      "formula_tokens": [
+        {
+          "tex": "W'"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "weight",
+          "tex": "W_0"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "residual",
+          "tex": "R"
+        },
+        {
+          "term": "gram",
+          "tex": "(K^TC^{-1}K)^{-1}"
+        },
+        {
+          "term": "projection",
+          "tex": "K^TC^{-1}"
+        }
+      ],
+      "terms": [
+        {
+          "id": "weight",
+          "name": "Original weight",
+          "description": "W₀ maps MLP keys to output values."
+        },
+        {
+          "id": "moment",
+          "name": "Preservation statistic",
+          "description": "C is the preservation-key second moment; MEMIT absorbs its preservation scaling into C. The displayed inverse requires a nonsingular system."
+        },
+        {
+          "id": "keys",
+          "name": "Edit keys",
+          "description": "K contains one key vector per requested edit."
+        },
+        {
+          "id": "residual",
+          "name": "Residual targets",
+          "description": "R = V − W₀K contains the desired value changes."
+        },
+        {
+          "id": "gram",
+          "name": "Edit-key Gram inverse",
+          "description": "Couples the batched equality constraints. Requires independent edit keys for the exact inverse."
+        },
+        {
+          "id": "projection",
+          "name": "Preservation-weighted keys",
+          "description": "Weights the correction using C, the preservation-key second moment."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Construct the batch of edit keys K and target values V.",
+        "Estimate the preservation-key second moment C.",
+        "Solve the **equality-constrained update**, using numerical stabilization where necessary.",
+        "Apply the update, optionally using a layer-distribution procedure.",
+        "Evaluate end-to-end edit success and preservation."
+      ],
+      "paper_title": "A Unified Framework for Model Editing",
+      "group": "associative_memory",
+      "keywords": [
+        "activation_target",
+        "closed_form",
+        "key_value",
+        "batch_editing",
+        "equality_constraint"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": false,
+        "update_kind": "analytical_weight_insertion"
+      },
+      "training": {
+        "pre_edit_training": "None.",
+        "edit_time_optimization": "Construct targets and solve batched equality constraints.",
+        "update_input": "Edit keys and desired values, obtained from edit examples.",
+        "supervision_target": "Exact linear mapping of independent edit keys to target values.",
+        "preservation_input": "Preservation keys or their second moments.",
+        "loss_token_scope": "Target-search masks follow the chosen backbone procedure.",
+        "updated_parameters": "Selected MLP output matrices.",
+        "returned_state": "Edited weights and preservation statistics.",
+        "limitations": "Dependent keys can make constraints incompatible; numerical stabilization can relax exact equality."
+      },
+      "formula_status": "normalized_core",
+      "sources": [
+        {
+          "url": "https://aclanthology.org/2024.findings-emnlp.903/",
+          "role": "primary",
+          "checked_scope": "Preservation-memorization objective and equality-constrained solution"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "group_label": "Associative-memory editing"
+    },
+    "pmet": {
+      "label": "PMET",
+      "title": "Precise Model Editing in a Transformer",
+      "publication": "AAAI 2024",
+      "paper_url": "https://ojs.aaai.org/index.php/AAAI/article/view/29818",
+      "summary": "PMET jointly finds **attention and FFN output corrections**, \\(\\delta_{\\mathrm{attn}}^*\\) and \\(\\delta_{\\mathrm{ffn}}^*\\), for the target prediction. It then **updates only FFN weights** using the FFN correction; attention weights remain unchanged.",
+      "formula": "( W_{\\mathrm{FFN}} + \\Delta W ) k \\approx m + \\delta_{\\mathrm{ffn}}^*",
+      "formula_explanation": "A simplified single-key view: \\(m=W_{\\mathrm{FFN}}k\\). The target uses **the FFN correction**, not the complete Transformer-layer correction. The full procedure distributes updates across selected layers. This is a target-fitting schematic, not the complete weight solver. PMET uses square-root residual distribution across selected layers; jointly optimized attention corrections are not written into attention weights.",
+      "formula_tokens": [
+        {
+          "tex": "("
+        },
+        {
+          "term": "weight",
+          "tex": "W_{\\mathrm{FFN}}"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "update",
+          "tex": "\\Delta W"
+        },
+        {
+          "tex": ")"
+        },
+        {
+          "term": "key",
+          "tex": "k"
+        },
+        {
+          "tex": "\\approx"
+        },
+        {
+          "term": "output",
+          "tex": "m"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "ffn_delta",
+          "tex": "\\delta_{\\mathrm{ffn}}^*"
+        }
+      ],
+      "terms": [
+        {
+          "id": "weight",
+          "name": "FFN output weight",
+          "description": "The original FFN output-projection matrix."
+        },
+        {
+          "id": "update",
+          "name": "Parameter update",
+          "description": "The correction written into FFN weights."
+        },
+        {
+          "id": "key",
+          "name": "FFN key",
+          "description": "The input activation to the output projection."
+        },
+        {
+          "id": "output",
+          "name": "Original FFN output",
+          "description": "m = W_FFN k before editing."
+        },
+        {
+          "id": "ffn_delta",
+          "name": "Optimized FFN correction",
+          "description": "Obtained jointly with the attention correction; only this component supplies the FFN target."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Add temporary corrections to attention and FFN outputs.",
+        "Jointly optimize \\(\\delta_{\\mathrm{attn}}\\) and \\(\\delta_{\\mathrm{ffn}}\\) for the desired prediction.",
+        "Build FFN targets from **the optimized FFN correction**.",
+        "Distribute residuals using the paper's square-root rule and solve the FFN weight updates across selected layers.",
+        "Remove temporary interventions; **keep attention weights unchanged**."
+      ],
+      "group": "associative_memory",
+      "keywords": [
+        "activation_target",
+        "attention_ffn_targets",
+        "key_value",
+        "multi_layer",
+        "batch_editing",
+        "closed_form"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": false,
+        "update_kind": "analytical_weight_insertion"
+      },
+      "training": {
+        "pre_edit_training": "None.",
+        "edit_time_optimization": "Jointly optimize temporary attention/FFN output corrections, then insert only FFN targets.",
+        "update_input": "Factual edit prompts, replacement objects, context prefixes.",
+        "supervision_target": "Desired-answer likelihood under temporary component interventions.",
+        "preservation_input": "Background keys and preservation terms in the original procedure.",
+        "loss_token_scope": "Subject-associated interventions and desired-object token likelihood.",
+        "updated_parameters": "Selected FFN output matrices; attention weights stay frozen.",
+        "returned_state": "Edited FFN weights; temporary activation corrections are removed.",
+        "limitations": "Removing the attention correction changes the target-search setting; matching FFN targets alone is not an end-to-end equivalence guarantee."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2308.08742v6",
+          "role": "primary",
+          "checked_scope": "PMET method and square-root residual distribution"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Precise Model Editing in a Transformer",
+      "group_label": "Associative-memory editing"
+    },
+    "alphaedit": {
+      "label": "AlphaEdit",
+      "title": "AlphaEdit: Null-Space Constrained Knowledge Editing for Language Models",
+      "publication": "ICLR 2025",
+      "paper_url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/29c8c615b3187ee995029284702d3f43-Abstract-Conference.html",
+      "summary": "AlphaEdit **fits new key-value associations inside a null-space-constrained update**. Original knowledge is protected by the projector; a separate penalty limits changes on **previously edited keys**, and regularization controls update size.",
+      "formula": "\\Delta_{\\mathrm{AE}} = R K_1^T P ( K_pK_p^TP + K_1K_1^TP + I )^{-1},\\quad W'=W+ \\Delta_{\\mathrm{AE}}",
+      "formula_explanation": "Section 3.3, Eqs. (12)–(14). \\(R=V_1-WK_1\\). The objective combines **new-knowledge fitting**, **update regularization**, and **previous-edit preservation**. \\(P=U_{\\mathrm{null}}U_{\\mathrm{null}}^T\\) comes from SVD of \\(K_0K_0^T\\); exact null directions give \\(\\Delta_{\\mathrm{AE}}K_0=0\\). Small-singular-value thresholding makes that preservation approximate. The displayed identity coefficient is the unit-regularization form. A tunable positive coefficient can be written as alpha I. Preservation refers to fixed selected key mappings, not all model outputs.",
+      "formula_tokens": [
+        {
+          "term": "update",
+          "tex": "\\Delta_{\\mathrm{AE}}"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "residual",
+          "tex": "R"
+        },
+        {
+          "term": "new_keys",
+          "tex": "K_1^T"
+        },
+        {
+          "term": "projector",
+          "tex": "P"
+        },
+        {
+          "tex": "("
+        },
+        {
+          "term": "past",
+          "tex": "K_pK_p^TP"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "fit",
+          "tex": "K_1K_1^TP"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "regularizer",
+          "tex": "I"
+        },
+        {
+          "tex": ")^{-1},\\quad W'=W+"
+        },
+        {
+          "term": "update",
+          "tex": "\\Delta_{\\mathrm{AE}}"
+        }
+      ],
+      "terms": [
+        {
+          "id": "update",
+          "name": "Applied update",
+          "description": "Δ_AE = ΔP is added to the MLP output matrix W."
+        },
+        {
+          "id": "residual",
+          "name": "New target residual",
+          "description": "R = V₁ − WK₁ is what the current edit must change."
+        },
+        {
+          "id": "new_keys",
+          "name": "New edit keys",
+          "description": "Columns of K₁ encode the current edit batch; V₁ contains target values."
+        },
+        {
+          "id": "projector",
+          "name": "Null-space projector",
+          "description": "Built from preserved-key second moments K₀K₀ᵀ, protecting original key mappings."
+        },
+        {
+          "id": "past",
+          "name": "Previous-edit term",
+          "description": "K_p collects keys from previous edits; this term penalizes changes to their outputs."
+        },
+        {
+          "id": "fit",
+          "name": "New-knowledge fitting term",
+          "description": "Arises from fitting the current keys K₁ to target values V₁."
+        },
+        {
+          "id": "regularizer",
+          "name": "Update regularization",
+          "description": "The identity term comes from the squared norm of the projected update."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Collect preserved keys and compute each selected layer’s second moment \\(K_0K_0^T\\).",
+        "Use **SVD** to construct \\(P\\) from zero or small singular-value directions.",
+        "Optimize new target representations and distribute remaining residuals across selected MLP layers.",
+        "Solve for the update **within the projected subspace**, accounting for previous edits and update regularization.",
+        "Apply \\(W\\leftarrow W+\\Delta P\\) and evaluate edit success and preservation."
+      ],
+      "objective": "\\min_{\\tilde\\Delta}\\;\\underbrace{\\|(W+\\tilde\\Delta P)K_1-V_1\\|_F^2}_{\\text{new knowledge}}+\\underbrace{\\|\\tilde\\Delta P\\|_F^2}_{\\text{regularization}}+\\underbrace{\\|\\tilde\\Delta P K_p\\|_F^2}_{\\text{previous edits}}",
+      "group": "preservation_geometry",
+      "keywords": [
+        "activation_target",
+        "key_value",
+        "null_space",
+        "svd",
+        "historical_keys",
+        "multi_layer",
+        "sequential_editing"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": false,
+        "update_kind": "projected_analytical_weight_insertion"
+      },
+      "training": {
+        "pre_edit_training": "None.",
+        "edit_time_optimization": "Optimize target representations and solve updates inside a preservation subspace.",
+        "update_input": "Current factual edit batch.",
+        "supervision_target": "Target-answer likelihood followed by layerwise value fitting.",
+        "preservation_input": "Preserved-key second moments and historical edit keys.",
+        "loss_token_scope": "Target-search masks follow the editing backbone.",
+        "updated_parameters": "Selected MLP output matrices.",
+        "returned_state": "Edited weights, projectors, historical-key statistics.",
+        "limitations": "Thresholded null spaces give approximate protection of sampled fixed keys, not global semantic invariance."
+      },
+      "formula_status": "normalized_core",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2410.02355v3",
+          "role": "primary",
+          "checked_scope": "Sections 3.1-3.3 and sequential-editing objective"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "AlphaEdit: Null-Space Constrained Knowledge Editing for Language Models",
+      "group_label": "Preservation geometry"
+    },
+    "crispedit": {
+      "label": "CrispEdit",
+      "title": "CrispEdit: Low-Curvature Projections for Scalable Non-Destructive LLM Editing",
+      "publication": "ICML 2026",
+      "paper_url": "https://proceedings.mlr.press/v306/ikram26a.html",
+      "summary": "CrispEdit projects edit gradients into **low-curvature directions of capability loss**. A **Bregman-divergence constraint** yields Gauss–Newton curvature without assuming a converged base model. K-FAC enables matrix-free projection.",
+      "objective": "\\min_\\theta\\;\\mathcal L_{\\mathrm{edit}}(\\theta)\\quad\\text{s.t.}\\quad d_{\\mathrm{Breg}}(\\theta,\\theta_0;\\mathcal D_{\\mathrm{cap}})\\leq\\varepsilon",
+      "formula": "Q_l^{\\mathrm{proj}} = U_{\\mathrm{out}} [( U_{\\mathrm{out}}^T Q_l U_{\\mathrm{in}} )\\odot M ] U_{\\mathrm{in}}^T",
+      "formula_tokens": [
+        {
+          "term": "projected",
+          "tex": "Q_l^{\\mathrm{proj}}"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "basis",
+          "tex": "U_{\\mathrm{out}}"
+        },
+        {
+          "tex": "[("
+        },
+        {
+          "term": "basis",
+          "tex": "U_{\\mathrm{out}}^T"
+        },
+        {
+          "term": "gradient",
+          "tex": "Q_l"
+        },
+        {
+          "term": "basis",
+          "tex": "U_{\\mathrm{in}}"
+        },
+        {
+          "tex": ")\\odot"
+        },
+        {
+          "term": "mask",
+          "tex": "M"
+        },
+        {
+          "tex": "]"
+        },
+        {
+          "term": "basis",
+          "tex": "U_{\\mathrm{in}}^T"
+        }
+      ],
+      "formula_explanation": "The capability-set Bregman objective is abbreviated. Its local quadratic term uses Gauss-Newton curvature, approximated by A\\otimes S. The mask M_{ij}=\\mathbf{1}[\\lambda_i^{out}\\lambda_j^{in}\\leq\\lambda_\\gamma] retains low-curvature coordinates. Rotate, mask, rotate back. The displayed equation is a gradient projector, not an inverse-Hessian update. Protection is local and calibration-dependent.",
+      "terms": [
+        {
+          "id": "projected",
+          "name": "Projected gradient",
+          "description": "Used for the layer’s optimizer update."
+        },
+        {
+          "id": "gradient",
+          "name": "Edit gradient",
+          "description": "Q_l = ∇_{W_l} L_edit."
+        },
+        {
+          "id": "basis",
+          "name": "K-FAC eigenbases",
+          "description": "Eigenvectors of activation and output pseudo-gradient second moments."
+        },
+        {
+          "id": "mask",
+          "name": "Low-curvature mask",
+          "description": "Retains components below the spectral threshold; γ controls discarded spectral energy."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Estimate **K-FAC capability curvature** and cache eigenbases and masks.",
+        "Compute edit gradients for selected layers.",
+        "**Rotate, mask high-curvature components, and rotate back** without constructing the full projector.",
+        "Apply projected-gradient optimization with the configured step rule; projecting a gradient is not automatically equivalent to projecting an Adam parameter step.",
+        "For sequential edits, accumulate curvature statistics to protect earlier edits."
+      ],
+      "group": "preservation_geometry",
+      "keywords": [
+        "gradient_descent",
+        "low_curvature",
+        "kfac",
+        "bregman",
+        "calibration",
+        "sequential_editing"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": false,
+        "update_kind": "projected_gradient"
+      },
+      "training": {
+        "pre_edit_training": "No learned editor; precompute capability curvature.",
+        "edit_time_optimization": "Directly optimize edit loss with curvature-restricted gradients.",
+        "update_input": "Edit prompt-answer pairs.",
+        "supervision_target": "Desired outputs under the edit loss.",
+        "preservation_input": "Capability reference data for activation/pseudo-gradient second moments.",
+        "loss_token_scope": "Explicitly configure prompt/answer masks; paper combines prompt-masked editing with projected optimization.",
+        "updated_parameters": "Selected trainable weight matrices; scope is configuration-dependent.",
+        "returned_state": "Edited weights and cached K-FAC statistics/bases.",
+        "limitations": "Local curvature and capability coverage limit protection; cached geometry can become stale after large edits."
+      },
+      "formula_status": "normalized_core",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2602.15823v2",
+          "role": "primary",
+          "checked_scope": "Sections 2-3: Bregman, Gauss-Newton, K-FAC and matrix-free projection"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "CrispEdit: Low-Curvature Projections for Scalable Non-Destructive LLM Editing",
+      "group_label": "Preservation geometry"
+    },
+    "fisheredit": {
+      "label": "FisherEdit",
+      "title": "FisherEdit: Fisher Information Guided Knowledge Editing for Large Language Models",
+      "publication": "arXiv 2026",
+      "paper_url": "https://arxiv.org/abs/2610.25914",
+      "summary": "FisherEdit uses **parameter-wise Fisher-weighted regularization** to protect sensitive weights while fitting new facts. It retains a historical-edit penalty and computes **row-wise closed-form updates** without null-space projection.",
+      "objective": "\\min_{\\tilde\\Delta}\\;\\|\\tilde\\Delta K_1-E\\|_F^2+\\|\\tilde\\Delta K_p\\|_F^2+\\lambda\\|\\sqrt F\\odot\\tilde\\Delta\\|_F^2",
+      "formula": "\\delta_i = e_i K_1^T ( G + \\lambda D_i )^{-1},\\quad W'=W+\\Delta",
+      "formula_tokens": [
+        {
+          "term": "row",
+          "tex": "\\delta_i"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "residual",
+          "tex": "e_i"
+        },
+        {
+          "term": "keys",
+          "tex": "K_1^T"
+        },
+        {
+          "tex": "("
+        },
+        {
+          "term": "gram",
+          "tex": "G"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "lambda",
+          "tex": "\\lambda"
+        },
+        {
+          "term": "fisher",
+          "tex": "D_i"
+        },
+        {
+          "tex": ")^{-1},\\quad W'=W+\\Delta"
+        }
+      ],
+      "formula_explanation": "Eqs. (5)–(8): \\(E=V-WK_1\\), \\(G=K_1K_1^T+K_pK_p^T\\), and \\(D_i=\\mathrm{diag}(F_{i,:})\\). \\(F\\) stores empirical Fisher diagonal entries in weight-matrix shape. **High-Fisher weights receive stronger penalties**. The inverse assumes a nonsingular system; Woodbury reduces the solve when the key count is small. Empirical squared gradients on observed labels are not the exact predictive Fisher. Zero scores may require a numerical floor or damping; record the implementation choice.",
+      "terms": [
+        {
+          "id": "row",
+          "name": "Update row",
+          "description": "Row i of Δ; stack rows to form the weight update."
+        },
+        {
+          "id": "residual",
+          "name": "Target residual row",
+          "description": "Row i of E = V − WK₁."
+        },
+        {
+          "id": "keys",
+          "name": "Current edit keys",
+          "description": "K₁ contains current keys; K_p contains historical edit keys."
+        },
+        {
+          "id": "gram",
+          "name": "Shared key Gram matrix",
+          "description": "Combines current and historical key constraints."
+        },
+        {
+          "id": "lambda",
+          "name": "Regularization strength",
+          "description": "Scales the Fisher penalty."
+        },
+        {
+          "id": "fisher",
+          "name": "Row-specific importance",
+          "description": "Diagonal matrix from Fisher scores for row i."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Estimate **per-example squared-gradient importance** on calibration data.",
+        "Construct current keys, target residuals, and historical keys.",
+        "Solve each update row with its Fisher-weighted penalty.",
+        "Apply the assembled update and retain keys for subsequent edits."
+      ],
+      "group": "preservation_geometry",
+      "keywords": [
+        "activation_target",
+        "key_value",
+        "fisher_diagonal",
+        "closed_form",
+        "historical_keys",
+        "calibration",
+        "sequential_editing"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": false,
+        "update_kind": "importance_regularized_weight_insertion"
+      },
+      "training": {
+        "pre_edit_training": "No learned editor; estimate importance before editing.",
+        "edit_time_optimization": "Optimize value targets, then solve each update row with Fisher-weighted penalties.",
+        "update_input": "Current factual edit examples.",
+        "supervision_target": "Target values and desired answer tokens.",
+        "preservation_input": "Labeled calibration examples for per-example squared gradients; historical keys.",
+        "loss_token_scope": "Calibration CE uses the stated label mask; record target-search token scope separately.",
+        "updated_parameters": "Selected MLP down/output projections.",
+        "returned_state": "Edited weights, empirical Fisher scores, historical-key statistics.",
+        "limitations": "Diagonal empirical importance is a proxy; row systems require nonsingularity or documented stabilization."
+      },
+      "formula_status": "normalized_core",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2610.25914v1",
+          "role": "primary",
+          "checked_scope": "Sections 4.1-4.4: objective, row solver and empirical Fisher"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "FisherEdit: Fisher Information Guided Knowledge Editing for Large Language Models",
+      "group_label": "Preservation geometry"
+    },
+    "knowledgeeditor": {
+      "label": "KE",
+      "title": "Editing Factual Knowledge in Language Models",
+      "publication": "EMNLP 2021",
+      "paper_url": "https://aclanthology.org/2021.emnlp-main.522/",
+      "summary": "Train a hypernetwork to predict targeted weight changes under preservation constraints.",
+      "formula": "\\Delta\\theta=H_\\phi(x_e,y_e^*,g_e)",
+      "formula_explanation": "Schematic interface; request encodings and gradient conditioning follow the implementation.",
+      "formula_tokens": [
+        {
+          "term": "editor",
+          "tex": "\\Delta\\theta=H_\\phi(x_e,y_e^*,g_e)"
+        }
+      ],
+      "terms": [
+        {
+          "id": "editor",
+          "name": "Learned editor",
+          "description": "phi parameterizes the update generator."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Train on edit requests and locality examples.",
+        "Encode a new request and gradient features.",
+        "Predict and apply the parameter update."
+      ],
+      "group": "learned_editor",
+      "keywords": [
+        "hypernetwork",
+        "meta_learning",
+        "locality_supervision"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": true,
+        "update_kind": "hypernetwork_update"
+      },
+      "training": {
+        "pre_edit_training": "Train phi on edit/generalization examples under locality constraints.",
+        "edit_time_optimization": "Run the trained editor.",
+        "update_input": "Edit request and desired answer.",
+        "supervision_target": "Post-edit answer correctness.",
+        "preservation_input": "Unrelated examples and original-model predictions during editor training.",
+        "loss_token_scope": "Task-specific classification or answer loss.",
+        "updated_parameters": "phi during training; selected theta at deployment.",
+        "returned_state": "Edited target parameters and a reusable editor.",
+        "limitations": "Generalization depends on the distribution of training edits."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://aclanthology.org/2021.emnlp-main.522/",
+          "role": "primary",
+          "checked_scope": "Official paper overview and constrained hypernetwork formulation"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Editing Factual Knowledge in Language Models",
+      "group_label": "Learned update generators"
+    },
+    "mend": {
+      "label": "MEND",
+      "title": "Fast Model Editing at Scale",
+      "publication": "ICLR 2022",
+      "paper_url": "https://arxiv.org/html/2110.11309v2",
+      "summary": "Train small networks to transform activation and gradient factors into useful parameter updates.",
+      "formula": "\\Delta W=-\\eta\\sum_i\\widetilde g_i\\widetilde u_i^T",
+      "formula_explanation": "Normalized schematic: transformed input factors u and output-gradient factors g form an update; scaling and aggregation follow the implementation.",
+      "formula_tokens": [
+        {
+          "term": "factors",
+          "tex": "\\Delta W=-\\eta\\sum_i\\widetilde g_i\\widetilde u_i^T"
+        }
+      ],
+      "terms": [
+        {
+          "id": "factors",
+          "name": "Transformed gradient factors",
+          "description": "Factors are produced by the learned editor from the edit gradient."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Train on edit, generalization and locality episodes.",
+        "Extract gradient factors for the new edit.",
+        "Transform factors and apply the resulting update."
+      ],
+      "group": "learned_editor",
+      "keywords": [
+        "hypernetwork",
+        "meta_learning",
+        "gradient_factors",
+        "locality_supervision"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": true,
+        "update_kind": "hypernetwork_update"
+      },
+      "training": {
+        "pre_edit_training": "Train factor-transform networks with post-edit edit/generalization and locality losses.",
+        "edit_time_optimization": "Compute edit gradients and run the editor.",
+        "update_input": "Desired input-output pair.",
+        "supervision_target": "Correct post-edit outputs.",
+        "preservation_input": "Locality examples during editor training.",
+        "loss_token_scope": "Task-specific answer/classification masks.",
+        "updated_parameters": "phi in outer training; selected theta at edit time.",
+        "returned_state": "Edited weights and editor parameters.",
+        "limitations": "A learned update map need not transfer to unseen edit types or long edit sequences."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2110.11309v2",
+          "role": "primary",
+          "checked_scope": "Sections 2-3: gradient decomposition and editor training"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Fast Model Editing at Scale",
+      "group_label": "Learned update generators"
+    },
+    "malmen": {
+      "label": "MALMEN",
+      "title": "Massive Editing for Large Language Models via Meta Learning",
+      "publication": "ICLR 2024",
+      "paper_url": "https://arxiv.org/html/2311.04661v3",
+      "summary": "Learn update signals and aggregate many simultaneous edits through a regularized least-squares solve.",
+      "formula": "\\Delta W=\\arg\\min_D\\|DU-V_\\phi\\|_F^2+\\lambda\\|D\\|_F^2",
+      "formula_explanation": "Normalized aggregation schematic; U contains input activations and V_phi contains learned target changes.",
+      "formula_tokens": [
+        {
+          "term": "aggregation",
+          "tex": "\\Delta W=\\arg\\min_D\\|DU-V_\\phi\\|_F^2+\\lambda\\|D\\|_F^2"
+        }
+      ],
+      "terms": [
+        {
+          "id": "aggregation",
+          "name": "Least-squares aggregation",
+          "description": "Couples multiple learned edit signals through shared keys."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Train the hypernetwork using decoupled backpropagation.",
+        "Collect activation and gradient factors for an edit batch.",
+        "Solve and apply the aggregated update."
+      ],
+      "group": "learned_editor",
+      "keywords": [
+        "hypernetwork",
+        "meta_learning",
+        "gradient_factors",
+        "closed_form",
+        "batch_editing",
+        "locality_supervision"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": true,
+        "update_kind": "hypernetwork_linear_solve"
+      },
+      "training": {
+        "pre_edit_training": "Train phi using edit/generalization and locality episodes.",
+        "edit_time_optimization": "Produce target shifts and solve the batch aggregation.",
+        "update_input": "A batch of requested input-output replacements.",
+        "supervision_target": "Post-edit target correctness.",
+        "preservation_input": "Locality examples for editor training.",
+        "loss_token_scope": "Task-specific target masks.",
+        "updated_parameters": "phi in editor training; selected base matrices at editing.",
+        "returned_state": "Edited weights and trained hypernetwork.",
+        "limitations": "Batch scalability does not establish dependency-aware revision."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2311.04661v3",
+          "role": "primary",
+          "checked_scope": "Sections 3-4: normal equations and memory-economic training"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Massive Editing for Large Language Models via Meta Learning",
+      "group_label": "Learned update generators"
+    },
+    "rledit": {
+      "label": "RLEdit",
+      "title": "Reinforced Lifelong Editing for Language Models",
+      "publication": "ICML 2025",
+      "paper_url": "https://arxiv.org/html/2502.05759v4",
+      "summary": "Train an update-generating hypernetwork over edit sequences so it can respond to a changing target model.",
+      "formula": "\\theta_{t+1}=\\theta_t+H_\\phi(g_t)",
+      "formula_explanation": "Schematic deployment relation; the RL training policy and rewards are defined separately.",
+      "formula_tokens": [
+        {
+          "term": "editor",
+          "tex": "\\theta_{t+1}=\\theta_t+H_\\phi(g_t)"
+        }
+      ],
+      "terms": [
+        {
+          "id": "editor",
+          "name": "Sequential editor",
+          "description": "Current edit gradients condition a reusable update generator."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Train the editor over sequences using editing-based rewards.",
+        "Compute gradients on the current edited model.",
+        "Generate and apply the next update."
+      ],
+      "group": "learned_editor",
+      "keywords": [
+        "hypernetwork",
+        "reinforcement_learning",
+        "sequential_editing",
+        "gradient_factors"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": true,
+        "update_kind": "hypernetwork_update"
+      },
+      "training": {
+        "pre_edit_training": "Optimize phi using sequence-level reinforcement learning.",
+        "edit_time_optimization": "Apply the trained editor to each new edit.",
+        "update_input": "Current edit example and gradients.",
+        "supervision_target": "Low editing losses across the sequence.",
+        "preservation_input": "Historical edit behavior is represented in the training reward/protocol.",
+        "loss_token_scope": "Record masks used for reward and edit loss.",
+        "updated_parameters": "phi during RL; target-model weights during deployment.",
+        "returned_state": "Evolving weights and trained editor.",
+        "limitations": "Protection depends on training sequences and reward coverage."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2502.05759v4",
+          "role": "primary",
+          "checked_scope": "Sections 3.1-3.3: RL formulation and deployment"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Reinforced Lifelong Editing for Language Models",
+      "group_label": "Learned update generators"
+    },
+    "wise": {
+      "label": "WISE",
+      "title": "Rethinking the Knowledge Memory for Lifelong Model Editing",
+      "publication": "NeurIPS 2024",
+      "paper_url": "https://arxiv.org/html/2405.14768v3",
+      "summary": "Learn edits in side-memory weights while preserving original main memory; use activation-based routing and memory merging.",
+      "formula": "f(x)=\\operatorname{Route}(x;W_{\\mathrm{main}},W_{\\mathrm{side}})",
+      "formula_explanation": "Architectural schematic, not the full routing loss or merging rule.",
+      "formula_tokens": [
+        {
+          "term": "memory",
+          "tex": "f(x)=\\operatorname{Route}(x;W_{\\mathrm{main}},W_{\\mathrm{side}})"
+        }
+      ],
+      "terms": [
+        {
+          "id": "memory",
+          "name": "Main and side memories",
+          "description": "Original main weights and editable side weights supply alternative computations."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Initialize side memory from a selected FFN matrix.",
+        "Train edit and activation-routing objectives.",
+        "Shard/merge side memories and route future queries."
+      ],
+      "group": "auxiliary_memory",
+      "keywords": [
+        "side_memory",
+        "scope_routing",
+        "gradient_descent",
+        "sequential_editing"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": false,
+        "requires_pre_edit_training": false,
+        "update_kind": "side_memory_gradient"
+      },
+      "training": {
+        "pre_edit_training": "No separate meta-trained editor.",
+        "edit_time_optimization": "Optimize side weights and activation constraints.",
+        "update_input": "Edit prompts and desired responses.",
+        "supervision_target": "Edit likelihood and routing-related activation behavior.",
+        "preservation_input": "Original main-memory responses/activations.",
+        "loss_token_scope": "Record edit-answer and routing-position masks.",
+        "updated_parameters": "Side-memory FFN weights; main weights fixed.",
+        "returned_state": "Side weights, routing thresholds and merged memory state.",
+        "limitations": "Routing errors and memory interference can affect locality."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2405.14768v3",
+          "role": "primary",
+          "checked_scope": "Section 2.3: side memory, activation routing, sharding and merging"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Rethinking the Knowledge Memory for Lifelong Model Editing",
+      "group_label": "Auxiliary memory and routing"
+    },
+    "grace": {
+      "label": "GRACE",
+      "title": "Aging with GRACE: Lifelong Model Editing with Discrete Key-Value Adaptors",
+      "publication": "NeurIPS 2023",
+      "paper_url": "https://arxiv.org/abs/2211.11031",
+      "summary": "Store local activation replacements in a growing key-value codebook without changing original model weights.",
+      "formula": "h^\\ell(x)\\leftarrow v_i\\quad\\mathrm{if}\\quad\\|h^\\ell(x)-k_i\\|_2<\\epsilon_i",
+      "formula_explanation": "Simplified local lookup; nearest-entry selection and radius updates are part of the algorithm.",
+      "formula_tokens": [
+        {
+          "term": "codebook",
+          "tex": "h^\\ell(x)\\leftarrow v_i\\quad\\mathrm{if}\\quad\\|h^\\ell(x)-k_i\\|_2<\\epsilon_i"
+        }
+      ],
+      "terms": [
+        {
+          "id": "codebook",
+          "name": "Activation codebook",
+          "description": "Each entry stores a key, learned replacement value and activation radius."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Find a nearby activation key or create an entry.",
+        "Optimize its replacement value on the edit.",
+        "Adjust radii and use local retrieval at inference."
+      ],
+      "group": "auxiliary_memory",
+      "keywords": [
+        "activation_codebook",
+        "key_value",
+        "retrieval",
+        "gradient_descent",
+        "sequential_editing"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": false,
+        "requires_pre_edit_training": false,
+        "update_kind": "activation_memory"
+      },
+      "training": {
+        "pre_edit_training": "No meta-training or upstream dataset required.",
+        "edit_time_optimization": "Learn a replacement activation and manage codebook radii.",
+        "update_input": "Streaming erroneous input and desired output.",
+        "supervision_target": "Correct output under an activation replacement.",
+        "preservation_input": "No external retain set required in the original setup.",
+        "loss_token_scope": "Task-specific output loss.",
+        "updated_parameters": "Codebook values; original model weights fixed.",
+        "returned_state": "Keys, values and radii.",
+        "limitations": "Distance-based scope may miss paraphrases or capture unrelated queries."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2211.11031",
+          "role": "primary",
+          "checked_scope": "Official NeurIPS overview and codebook mechanism"
+        },
+        {
+          "url": "https://papers.neurips.cc/paper_files/paper/2023/hash/95b6e2ff961580e03c0a662a63a71812-Abstract-Conference.html",
+          "role": "primary",
+          "checked_scope": "Official conference metadata and mechanism"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Aging with GRACE: Lifelong Model Editing with Discrete Key-Value Adaptors",
+      "group_label": "Auxiliary memory and routing"
+    },
+    "serac": {
+      "label": "SERAC",
+      "title": "Memory-Based Model Editing at Scale",
+      "publication": "ICML 2022",
+      "paper_url": "https://proceedings.mlr.press/v162/mitchell22a.html",
+      "summary": "Retrieve stored edit descriptors and use a learned scope model to select base or counterfactual predictions.",
+      "formula": "p(y\\mid x)=\\operatorname{Route}(x,\\mathcal M;p_{\\theta_0},p_\\phi)",
+      "formula_explanation": "Routing schematic; not a specified probabilistic mixture.",
+      "formula_tokens": [
+        {
+          "term": "routing",
+          "tex": "p(y\\mid x)=\\operatorname{Route}(x,\\mathcal M;p_{\\theta_0},p_\\phi)"
+        }
+      ],
+      "terms": [
+        {
+          "id": "routing",
+          "name": "Scope-aware retrieval",
+          "description": "The stored edits condition a classifier and counterfactual model."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Train scope and counterfactual components.",
+        "Store each new edit descriptor.",
+        "Retrieve edits and route the query to a response model."
+      ],
+      "group": "auxiliary_memory",
+      "keywords": [
+        "retrieval",
+        "scope_routing",
+        "locality_supervision"
+      ],
+      "filters": {
+        "scope": "core",
+        "base_weight_update_at_edit": false,
+        "requires_pre_edit_training": true,
+        "update_kind": "retrieval_memory"
+      },
+      "training": {
+        "pre_edit_training": "Train a scope classifier and counterfactual response model.",
+        "edit_time_optimization": "Store the edit; no base-weight optimization.",
+        "update_input": "Edit descriptor, then a query at inference.",
+        "supervision_target": "In-scope responses and scope labels during training.",
+        "preservation_input": "Out-of-scope queries for classifier/locality training.",
+        "loss_token_scope": "Scope classification plus response-generation masks.",
+        "updated_parameters": "Auxiliary networks during training; edit memory at deployment.",
+        "returned_state": "Edit cache and auxiliary networks.",
+        "limitations": "Depends on learned scope and retrieval coverage."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://proceedings.mlr.press/v162/mitchell22a.html",
+          "role": "primary",
+          "checked_scope": "Official paper overview and retrieval/counterfactual architecture"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Memory-Based Model Editing at Scale",
+      "group_label": "Auxiliary memory and routing"
+    },
+    "lte": {
+      "label": "LTE",
+      "title": "Learning to Edit: Aligning LLMs with Knowledge Editing",
+      "publication": "ACL 2024",
+      "paper_url": "https://aclanthology.org/2024.acl-long.258/",
+      "summary": "Align the model to use retrieved edit context, applying relevant changes while retaining out-of-scope behavior.",
+      "formula": "\\widehat y\\sim p_\\theta(\\cdot\\mid x,\\operatorname{Retrieve}(x,\\mathcal M))",
+      "formula_explanation": "Inference schematic after alignment; adding a fact updates memory rather than base weights.",
+      "formula_tokens": [
+        {
+          "term": "context",
+          "tex": "\\widehat y\\sim p_\\theta(\\cdot\\mid x,\\operatorname{Retrieve}(x,\\mathcal M))"
+        }
+      ],
+      "terms": [
+        {
+          "id": "context",
+          "name": "Retrieved edit context",
+          "description": "Relevant updates are supplied in the prompt."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Align the model on edit-conditioned parallel data.",
+        "Store new edits in retrieval memory.",
+        "Retrieve relevant updates and generate the answer."
+      ],
+      "group": "learned_adaptation",
+      "keywords": [
+        "context_conditioning",
+        "retrieval",
+        "scope_routing",
+        "locality_supervision"
+      ],
+      "filters": {
+        "scope": "adjacent",
+        "base_weight_update_at_edit": false,
+        "requires_pre_edit_training": true,
+        "update_kind": "contextual_memory"
+      },
+      "training": {
+        "pre_edit_training": "Fine-tune theta on edit-conditioned in-scope and out-of-scope examples.",
+        "edit_time_optimization": "Store and retrieve new edit information.",
+        "update_input": "Retrieved knowledge plus query.",
+        "supervision_target": "Aligned reference responses.",
+        "preservation_input": "Out-of-scope examples and language-proficiency preservation data in alignment.",
+        "loss_token_scope": "Supervised response tokens.",
+        "updated_parameters": "Base/adaptation parameters during alignment; memory at new-edit time.",
+        "returned_state": "Aligned model and retrieval memory.",
+        "limitations": "Context application is not permanent factual insertion into base weights."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://aclanthology.org/2024.acl-long.258/",
+          "role": "primary",
+          "checked_scope": "Official alignment/inference description"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Learning to Edit: Aligning LLMs with Knowledge Editing",
+      "group_label": "Learning to apply or generate updates"
+    },
+    "seal": {
+      "label": "SEAL",
+      "title": "Self-Adapting Language Models",
+      "publication": "arXiv 2025",
+      "paper_url": "https://arxiv.org/html/2506.10943v2",
+      "summary": "Learn to generate training text and update directives whose resulting weight changes improve downstream performance.",
+      "formula": "s\\sim p_\\theta(\\cdot\\mid C),\\qquad\\theta'=\\operatorname{SFT}(\\theta,s)",
+      "formula_explanation": "Nested adaptation schematic: C is new information and s is a generated self-edit.",
+      "formula_tokens": [
+        {
+          "term": "self_edit",
+          "tex": "s\\sim p_\\theta(\\cdot\\mid C),\\qquad\\theta'=\\operatorname{SFT}(\\theta,s)"
+        }
+      ],
+      "terms": [
+        {
+          "id": "self_edit",
+          "name": "Generated self-edit",
+          "description": "Text or directives define an inner-loop adaptation episode."
+        }
+      ],
+      "process_title": "Editing process",
+      "steps": [
+        "Generate a self-edit from new information.",
+        "Run inner-loop fine-tuning.",
+        "Evaluate updated-model performance and improve self-edit generation."
+      ],
+      "group": "learned_adaptation",
+      "keywords": [
+        "self_edit",
+        "synthetic_data",
+        "reinforcement_learning",
+        "gradient_descent"
+      ],
+      "filters": {
+        "scope": "adjacent",
+        "base_weight_update_at_edit": true,
+        "requires_pre_edit_training": true,
+        "update_kind": "generated_data_inner_training"
+      },
+      "training": {
+        "pre_edit_training": "Use downstream post-adaptation performance to improve self-edit generation.",
+        "edit_time_optimization": "Generate adaptation data/directives and run inner SFT.",
+        "update_input": "New context or task examples.",
+        "supervision_target": "Generated training targets; downstream reward.",
+        "preservation_input": "No universal locality guarantee; retention evaluation must be added explicitly.",
+        "loss_token_scope": "Generated self-edit SFT tokens, task-dependent.",
+        "updated_parameters": "Model/adaptation parameters in nested training.",
+        "returned_state": "Adapted weights and a learned self-editing policy.",
+        "limitations": "An adjacent self-adaptation method; not evidence of logical retraction or edit locality."
+      },
+      "formula_status": "schematic",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2506.10943v2",
+          "role": "primary",
+          "checked_scope": "Sections 3.1-3.2: self-edit generation and nested adaptation"
+        }
+      ],
+      "verification": {
+        "level": "primary_source_review",
+        "implementation_reproduced": false
+      },
+      "paper_title": "Self-Adapting Language Models",
+      "group_label": "Learning to apply or generate updates"
+    }
+  },
+  "schema_version": "2.0",
+  "reviewed_at": "2026-10-22",
+  "method_groups": [
+    {
+      "id": "fine_tuning",
+      "label": "Fine-tuning baselines",
+      "description": "Directly optimize model weights or low-rank factors for each edit.",
+      "method_ids": [
+        "ft",
+        "constrained_ft",
+        "lora_ft"
+      ]
+    },
+    {
+      "id": "associative_memory",
+      "label": "Associative-memory editing",
+      "description": "Optimize internal targets, then solve for key-value weight updates.",
+      "method_ids": [
+        "rome",
+        "memit",
+        "emmet",
+        "pmet"
+      ]
+    },
+    {
+      "id": "preservation_geometry",
+      "label": "Preservation geometry",
+      "description": "Constrain or regularize changes using preservation statistics or capability curvature.",
+      "method_ids": [
+        "alphaedit",
+        "crispedit",
+        "fisheredit"
+      ]
+    },
+    {
+      "id": "learned_editor",
+      "label": "Learned update generators",
+      "description": "Train an auxiliary editor to produce target-model parameter updates.",
+      "method_ids": [
+        "knowledgeeditor",
+        "mend",
+        "malmen",
+        "rledit"
+      ]
+    },
+    {
+      "id": "auxiliary_memory",
+      "label": "Auxiliary memory and routing",
+      "description": "Store edits in side weights, activation codebooks, or retrieval systems.",
+      "method_ids": [
+        "wise",
+        "grace",
+        "serac"
+      ]
+    },
+    {
+      "id": "learned_adaptation",
+      "label": "Learning to apply or generate updates",
+      "description": "Train the model to use edit context or generate effective adaptation data.",
+      "method_ids": [
+        "lte",
+        "seal"
+      ]
+    }
+  ],
+  "schema_notes": {
+    "compatibility": "Existing method IDs and display fields are retained. New fields are additive; renderers must opt in to group and keyword filters.",
+    "keywords": "Arrays contain stable IDs from keyword_catalog. Display labels and facets are defined centrally.",
+    "classification": "Each method has one navigation group. Keywords and filters support overlapping mechanisms.",
+    "formula_status": "normalized_core = core relation in unified notation; schematic = conceptual summary; baseline = configurable baseline, not a unique paper algorithm.",
+    "training": "pre_edit_training and edit_time_optimization describe different stages. Optimizing an activation correction does not itself change base weights.",
+    "sources": "Primary-source content review; no claim of implementation reproduction. Generic baseline recipes are labeled explicitly.",
+    "evaluation": "Use generated answers, generalization, locality, and capability tests; a linear key-value equality is not an end-to-end guarantee.",
+    "formula_tokens": "Render tokens as math fragments; formula uses whitespace between fragments to avoid accidental TeX control-word concatenation.",
+    "base_weight_filter": "Refers to original base tensors during the default edit procedure; LoRA keeps them frozen until an optional explicit merge. Side memories and activation values are separate state."
+  },
+  "keyword_catalog": [
+    {
+      "id": "gradient_descent",
+      "label": "Gradient descent",
+      "facet": "solver"
+    },
+    {
+      "id": "parameter_constraint",
+      "label": "Parameter constraint",
+      "facet": "preservation"
+    },
+    {
+      "id": "low_rank",
+      "label": "Low-rank parameterization",
+      "facet": "representation"
+    },
+    {
+      "id": "activation_target",
+      "label": "Activation-target optimization",
+      "facet": "training"
+    },
+    {
+      "id": "closed_form",
+      "label": "Analytical linear solve",
+      "facet": "solver"
+    },
+    {
+      "id": "rank_one",
+      "label": "Rank-one correction",
+      "facet": "representation"
+    },
+    {
+      "id": "key_value",
+      "label": "Key-value memory",
+      "facet": "representation"
+    },
+    {
+      "id": "multi_layer",
+      "label": "Multiple edited layers",
+      "facet": "structure"
+    },
+    {
+      "id": "batch_editing",
+      "label": "Batch editing",
+      "facet": "setting"
+    },
+    {
+      "id": "equality_constraint",
+      "label": "Equality constraint",
+      "facet": "solver"
+    },
+    {
+      "id": "attention_ffn_targets",
+      "label": "Joint attention / FFN target search",
+      "facet": "training"
+    },
+    {
+      "id": "null_space",
+      "label": "Null-space restriction",
+      "facet": "preservation"
+    },
+    {
+      "id": "svd",
+      "label": "Singular-value decomposition",
+      "facet": "solver"
+    },
+    {
+      "id": "historical_keys",
+      "label": "Historical edit keys",
+      "facet": "data"
+    },
+    {
+      "id": "fisher_diagonal",
+      "label": "Empirical diagonal Fisher",
+      "facet": "preservation"
+    },
+    {
+      "id": "low_curvature",
+      "label": "Low-curvature projection",
+      "facet": "preservation"
+    },
+    {
+      "id": "kfac",
+      "label": "K-FAC",
+      "facet": "solver"
+    },
+    {
+      "id": "bregman",
+      "label": "Bregman capability constraint",
+      "facet": "preservation"
+    },
+    {
+      "id": "hypernetwork",
+      "label": "Hypernetwork",
+      "facet": "training"
+    },
+    {
+      "id": "meta_learning",
+      "label": "Meta-learning",
+      "facet": "training"
+    },
+    {
+      "id": "gradient_factors",
+      "label": "Gradient-factor transformation",
+      "facet": "representation"
+    },
+    {
+      "id": "reinforcement_learning",
+      "label": "Reinforcement learning",
+      "facet": "training"
+    },
+    {
+      "id": "sequential_editing",
+      "label": "Sequential editing",
+      "facet": "setting"
+    },
+    {
+      "id": "side_memory",
+      "label": "Side-memory weights",
+      "facet": "storage"
+    },
+    {
+      "id": "activation_codebook",
+      "label": "Activation codebook",
+      "facet": "storage"
+    },
+    {
+      "id": "retrieval",
+      "label": "Retrieval",
+      "facet": "storage"
+    },
+    {
+      "id": "scope_routing",
+      "label": "Scope routing",
+      "facet": "preservation"
+    },
+    {
+      "id": "context_conditioning",
+      "label": "Edit-context conditioning",
+      "facet": "training"
+    },
+    {
+      "id": "synthetic_data",
+      "label": "Generated training data",
+      "facet": "data"
+    },
+    {
+      "id": "self_edit",
+      "label": "Self-generated update instructions",
+      "facet": "training"
+    },
+    {
+      "id": "calibration",
+      "label": "Calibration statistics",
+      "facet": "data"
+    },
+    {
+      "id": "locality_supervision",
+      "label": "Locality supervision",
+      "facet": "data"
+    }
+  ],
+  "method_order": [
+    "ft",
+    "constrained_ft",
+    "lora_ft",
+    "rome",
+    "memit",
+    "emmet",
+    "pmet",
+    "alphaedit",
+    "crispedit",
+    "fisheredit",
+    "knowledgeeditor",
+    "mend",
+    "malmen",
+    "rledit",
+    "wise",
+    "grace",
+    "serac",
+    "lte",
+    "seal"
+  ],
+  "filters": [
+    {
+      "id": "group",
+      "label": "Method family",
+      "type": "single_select",
+      "path": "group"
+    },
+    {
+      "id": "keywords",
+      "label": "Mechanisms and data",
+      "type": "multi_select",
+      "path": "keywords"
+    },
+    {
+      "id": "base_weight_update_at_edit",
+      "label": "Changes original base weights at edit time",
+      "type": "boolean",
+      "path": "filters.base_weight_update_at_edit"
+    },
+    {
+      "id": "requires_pre_edit_training",
+      "label": "Requires pre-edit training",
+      "type": "boolean",
+      "path": "filters.requires_pre_edit_training"
+    },
+    {
+      "id": "scope",
+      "label": "Core / baseline / adjacent",
+      "type": "single_select",
+      "path": "filters.scope"
+    }
+  ],
+  "review_notes": [
+    "Corrected ROME term definitions that previously mixed single-key notation with MEMIT batch notation.",
+    "Separated temporary activation optimization from persistent weight changes, especially for PMET.",
+    "Added PMET square-root residual allocation and the distinction between target-search and deployment states.",
+    "Clarified that AlphaEdit uses a unit regularization coefficient in the displayed formula and only preserves fixed selected key mappings under the exact projector assumptions.",
+    "Clarified that CrispEdit uses a K-FAC gradient projector, not inverse-Hessian preconditioning; generic Adam steps need separate treatment.",
+    "Distinguished empirical diagonal Fisher from predictive Fisher and documented row-solver numerical assumptions.",
+    "Added 12 representative baselines, learned editors, memory methods and adjacent adaptation methods; this is not an exhaustive editing survey.",
+    "Added a controlled keyword catalog, six method groups, structured training fields and explicit formula-status labels."
+  ]
+}

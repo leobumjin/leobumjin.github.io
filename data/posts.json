@@ -1,6 +1,20 @@
 {
   "posts": [
     {
+        "title": "Consistency vs. Coherence in Belief Systems",
+        "date": "2026-10-22",
+        "media": "Research",
+        "tags": ["Belief Revision", "Non-monotonic Reasoning", "Truth Maintenance Systems"],
+        "en_link": "technical_en/2026-10-22-consistency-coherence.md"
+    },
+    {
+        "title": "How Neural Network Weights Are Updated",
+        "date": "2026-10-22",
+        "media": "Literature",
+        "tags": ["Neural Networks", "Optimization", "Fine-Tuning"],
+        "en_link": "technical_en/2026-10-22-weight-update.md"
+    },
+    {
         "title": "The Dark Web and AI: Information Access and Safety in Multi-Agent Systems",
         "date": "2026-10-01",
         "media": "Research",

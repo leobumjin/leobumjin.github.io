@@ -1,0 +1,7 @@
+{
+  "id": "continual_learning",
+  "label": "Continual Learning",
+  "icon": "fa-layer-group",
+  "description": "Learn a new task while retaining performance on previously learned tasks.",
+  "methods": {}
+}

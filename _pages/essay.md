@@ -16,6 +16,7 @@ description:
         <div class="posts-archive-quote">
           <h1 id="postsArchiveQuote">Loading quote...</h1>
           <p class="posts-archive-intro" id="postsArchiveAuthor"></p>
+          <a class="posts-more-quotes" href="{{ '/quotes/' | relative_url }}">See more quotes →</a>
         </div>
       </div>
     </section>
@@ -353,9 +354,9 @@ description:
         if (!response.ok) throw new Error('Failed to load posts.');
         return response.json();
       }),
-      fetch('{{ "/data/quote.json" | relative_url }}').then(function (response) {
+      fetch('{{ "/assets/jsons/quotes.json" | relative_url }}').then(function (response) {
         if (!response.ok) throw new Error('Failed to load quotes.');
-        return response.json();
+        return response.json().then(function (data) { return data.quotes || []; });
       }).catch(function () {
         return [];
       }),
@@ -379,10 +380,20 @@ description:
         var selectedQuote = pickRandomQuote(quotes);
         renderArtwork(pickRandomImage(images));
         if (quoteTitle) {
-          quoteTitle.textContent = selectedQuote && selectedQuote.quote ? '"' + selectedQuote.quote + '"' : 'Posts';
+          quoteTitle.replaceChildren();
+          var quoteText = selectedQuote && selectedQuote.text ? '“' + selectedQuote.text + '”' : 'Posts';
+          quoteText.split(/(\*\*[^*]+\*\*)/g).forEach(function (part) {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              var strong = document.createElement('strong');
+              strong.textContent = part.slice(2, -2);
+              quoteTitle.appendChild(strong);
+            } else {
+              quoteTitle.appendChild(document.createTextNode(part));
+            }
+          });
         }
         if (quoteAuthor) {
-          quoteAuthor.textContent = selectedQuote && selectedQuote.author ? selectedQuote.author : '';
+          quoteAuthor.textContent = selectedQuote ? [selectedQuote.author, selectedQuote.source].filter(Boolean).join(' — ') : '';
         }
 
         if (!Array.isArray(items) || !items.length) {

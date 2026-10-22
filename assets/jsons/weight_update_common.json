@@ -1,0 +1,290 @@
+{
+  "id": "common",
+  "label": "Common",
+  "description": "Weight-update parameterizations shared across editing, continual learning, and unlearning.",
+  "methods": {
+    "full_finetuning": {
+      "label": "Full fine-tuning",
+      "title": "Update all trainable parameters",
+      "summary": "Full fine-tuning optimizes **every trainable model parameter** using the selected task objective. The objective may target editing, continual learning, or unlearning, with preservation terms where appropriate.",
+      "formula": "\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta L(\\theta_t)",
+      "formula_explanation": "This is a gradient-descent update for a generic task loss L. All trainable parameters can change. Optimizers such as Adam use a different update rule based on the same gradients.",
+      "formula_tokens": [
+        {
+          "term": "updated",
+          "tex": "\\theta_{t+1}"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "current",
+          "tex": "\\theta_t"
+        },
+        {
+          "tex": "-"
+        },
+        {
+          "term": "rate",
+          "tex": "\\eta"
+        },
+        {
+          "term": "gradient",
+          "tex": "\\nabla_\\theta"
+        },
+        {
+          "term": "loss",
+          "tex": "L(\\theta_t)"
+        }
+      ],
+      "terms": [
+        {
+          "id": "updated",
+          "name": "Updated parameters",
+          "description": "All trainable weights after the step."
+        },
+        {
+          "id": "current",
+          "name": "Current parameters",
+          "description": "All trainable weights before the step."
+        },
+        {
+          "id": "rate",
+          "name": "Learning rate",
+          "description": "Controls the size of a gradient-descent step."
+        },
+        {
+          "id": "gradient",
+          "name": "Gradient",
+          "description": "The derivative of the task loss with respect to model parameters."
+        },
+        {
+          "id": "loss",
+          "name": "Task objective",
+          "description": "The objective selected for editing, continual learning, or unlearning."
+        }
+      ],
+      "steps": [
+        "Choose the task objective and any preservation or retention terms.",
+        "Evaluate the objective on a training batch.",
+        "Backpropagate through **all trainable parameters**.",
+        "Apply the optimizer update and evaluate target behavior and retained capabilities."
+      ]
+    },
+    "constrained_finetuning": {
+      "label": "Constrained fine-tuning",
+      "title": "Fine-tune within an update budget",
+      "summary": "Optimize a **cumulative perturbation Δ** across all trainable parameters while keeping its **norm strictly below ε**. This parameterization applies to editing, continual learning, and unlearning with the corresponding task objective.",
+      "formula": "\\theta' = \\theta + \\Delta, \\qquad \\|\\Delta\\| < \\epsilon",
+      "formula_explanation": "Optimize the selected task objective at θ + Δ. Keep θ fixed throughout optimization and constrain the cumulative change Δ, not only each individual optimizer step. Choose a norm and a positive budget ε.",
+      "formula_tokens": [
+        {
+          "term": "updated_parameters",
+          "tex": "\\theta'"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "reference_parameters",
+          "tex": "\\theta"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "perturbation",
+          "tex": "\\Delta"
+        },
+        {
+          "tex": ",\\quad"
+        },
+        {
+          "term": "update_norm",
+          "tex": "\\|\\Delta\\|"
+        },
+        {
+          "tex": "<"
+        },
+        {
+          "term": "budget",
+          "tex": "\\epsilon"
+        }
+      ],
+      "terms": [
+        {
+          "id": "updated_parameters",
+          "symbol": "\\theta'",
+          "name": "Updated parameters",
+          "description": "The model parameters after adding the learned perturbation."
+        },
+        {
+          "id": "reference_parameters",
+          "symbol": "\\theta",
+          "name": "Reference parameters",
+          "description": "The fixed model parameters at the start of adaptation."
+        },
+        {
+          "id": "perturbation",
+          "symbol": "\\Delta",
+          "name": "Cumulative update",
+          "description": "The learned difference between the adapted model and the fixed reference model."
+        },
+        {
+          "id": "update_norm",
+          "symbol": "\\|\\Delta\\|",
+          "name": "Update norm",
+          "description": "The size of the cumulative update under the chosen norm."
+        },
+        {
+          "id": "budget",
+          "symbol": "\\epsilon",
+          "name": "Update budget",
+          "description": "A positive upper bound. The update norm must remain strictly below this value."
+        }
+      ],
+      "steps": [
+        "Keep a **fixed copy of the reference parameters θ** and initialize Δ to zero.",
+        "Evaluate the selected task objective using the adapted parameters θ + Δ.",
+        "Compute gradients with respect to Δ and propose an optimizer step.",
+        "If the proposed norm reaches or exceeds ε, rescale Δ to a radius strictly smaller than ε under the chosen norm.",
+        "Repeat while enforcing the **cumulative norm budget**, then use θ′ = θ + Δ."
+      ]
+    },
+    "lora": {
+      "label": "LoRA",
+      "title": "Low-Rank Adaptation",
+      "publication": "ICLR 2022",
+      "paper_url": "https://openreview.net/forum?id=nZeVKeeFYf9",
+      "summary": "LoRA **freezes the base weight** and learns a **scaled low-rank update BA**. Use the selected editing, continual-learning, or unlearning objective, including any preservation or retention term.",
+      "formula": "W' = W_0 + \\frac{\\alpha}{r}BA",
+      "formula_explanation": "For \\(W_0 \\in \\mathbb{R}^{d\\times k}\\), \\(B \\in \\mathbb{R}^{d\\times r}\\) and \\(A \\in \\mathbb{R}^{r\\times k}\\). **Only \\(A\\) and \\(B\\) are trained.** The update has **rank at most \\(r\\)**; \\(\\alpha/r\\) scales it.",
+      "formula_tokens": [
+        {
+          "tex": "W'"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "base",
+          "tex": "W_0"
+        },
+        {
+          "tex": "+"
+        },
+        {
+          "term": "scale",
+          "tex": "\\frac{\\alpha}{r}"
+        },
+        {
+          "term": "B",
+          "tex": "B"
+        },
+        {
+          "term": "A",
+          "tex": "A"
+        }
+      ],
+      "terms": [
+        {
+          "id": "base",
+          "symbol": "W_0",
+          "name": "Frozen base weight",
+          "description": "The pretrained weight matrix W₀ ∈ ℝ^(d×k), held fixed during adaptation."
+        },
+        {
+          "id": "B",
+          "symbol": "B",
+          "name": "Low-rank output factor",
+          "description": "A trainable d×r matrix, initialized to zero."
+        },
+        {
+          "id": "A",
+          "symbol": "A",
+          "name": "Low-rank input factor",
+          "description": "A trainable r×k matrix, randomly initialized. The rank r is much smaller than d and k."
+        },
+        {
+          "id": "scale",
+          "symbol": "\\alpha/r",
+          "name": "Adapter scale",
+          "description": "α is a scaling hyperparameter and r is the adapter rank."
+        }
+      ],
+      "steps": [
+        "Select the weight matrices to adapt and **freeze the base model weights**.",
+        "Choose rank r and scaling α; initialize A randomly and B to zero.",
+        "**Optimize A and B** using the selected task objective and any preservation or retention term.",
+        "Evaluate target behavior and retained capabilities; merge the scaled BA update into W₀ if desired."
+      ]
+    },
+    "dora": {
+      "label": "DoRA",
+      "title": "Weight-Decomposed Low-Rank Adaptation",
+      "publication": "ICML 2024",
+      "paper_url": "https://proceedings.mlr.press/v235/liu24bn.html",
+      "summary": "DoRA **separates weight magnitude from direction**. It learns a **magnitude vector m** and uses **low-rank factors to adapt direction**. Use the selected editing, continual-learning, or unlearning objective, including any preservation or retention term.",
+      "formula": "W' = m \\odot \\frac{W_0 + BA}{\\|W_0 + BA\\|_c}",
+      "formula_explanation": "The denominator contains **one L2 norm per column**, not a single matrix norm. Normalize each column of W₀ + BA, then scale it by its learned magnitude in m. Multiplication and division broadcast column-wise. Adapter scaling is absorbed into BA here.",
+      "formula_tokens": [
+        {
+          "tex": "W'"
+        },
+        {
+          "tex": "="
+        },
+        {
+          "term": "magnitude",
+          "tex": "m"
+        },
+        {
+          "tex": "\\odot"
+        },
+        {
+          "term": "direction",
+          "tex": "\\frac{W_0 + BA}{\\|W_0 + BA\\|_c}"
+        }
+      ],
+      "terms": [
+        {
+          "id": "base",
+          "symbol": "W_0",
+          "name": "Frozen base weight",
+          "description": "The pretrained weight matrix W₀ ∈ ℝ^(d×k), held fixed during adaptation."
+        },
+        {
+          "id": "B",
+          "symbol": "B",
+          "name": "Low-rank output factor",
+          "description": "A trainable d×r matrix, initialized to zero."
+        },
+        {
+          "id": "A",
+          "symbol": "A",
+          "name": "Low-rank input factor",
+          "description": "A trainable r×k matrix, randomly initialized. The rank r is much smaller than d and k."
+        },
+        {
+          "id": "magnitude",
+          "symbol": "m",
+          "name": "Magnitude",
+          "description": "A trainable value for each column, initialized to the L2 norm of the corresponding column of W₀."
+        },
+        {
+          "id": "direction",
+          "symbol": "(W_0+BA)/\\|W_0+BA\\|_c",
+          "name": "Normalized direction",
+          "description": "Each column of W₀ + BA is divided by its own L2 norm. A and B train the direction while W₀ stays frozen."
+        }
+      ],
+      "steps": [
+        "Freeze W₀ and initialize each magnitude in m from the corresponding column norm of W₀.",
+        "Initialize A randomly and B to zero, so the initial effective weight equals W₀.",
+        "Form the column-normalized direction from W₀ + BA and multiply by m.",
+        "**Optimize m, A and B** using the selected task objective and any preservation or retention term; the paper detaches the normalization denominator during backpropagation.",
+        "Evaluate the adapted model and, if desired, materialize the effective weight for inference."
+      ]
+    }
+  }
+}

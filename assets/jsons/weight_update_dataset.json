@@ -1,0 +1,115 @@
+{
+  "categories": {
+    "editing": {
+      "label": "Edit",
+      "methods": {
+        "target_set": {
+          "label": "Target evaluation set",
+          "title": "Evaluate the intended change",
+          "summary": "A dataset role rather than a named benchmark: held-out examples for the behavior the update is intended to change. Editing probes the revised behavior, continual learning probes the new task, and unlearning probes the designated removal criterion.",
+          "detail_tabs": [
+            "Summary",
+            "Process"
+          ],
+          "process_title": "Dataset preparation",
+          "steps": [
+            "Specify the Task and target behavior.",
+            "Separate evaluation examples from optimization examples.",
+            "Include paraphrases or variants when testing generalization.",
+            "Record the split, scoring rule, and any overlap with training data."
+          ]
+        },
+        "retain_set": {
+          "label": "Retained evaluation set",
+          "title": "Evaluate behavior that should remain",
+          "summary": "A dataset role rather than a named benchmark: held-out examples covering knowledge or capabilities that should survive the update. Keep evaluation examples separate from any replay or preservation examples used for optimization.",
+          "detail_tabs": [
+            "Summary",
+            "Process"
+          ],
+          "process_title": "Dataset preparation",
+          "steps": [
+            "Define the capabilities to preserve.",
+            "Create a held-out evaluation split covering those capabilities.",
+            "Evaluate the reference and adapted models on the same examples.",
+            "Report results by capability as well as in aggregate."
+          ]
+        }
+      }
+    },
+    "continual_learning": {
+      "label": "Continual Learning",
+      "methods": {
+        "target_set": {
+          "label": "Target evaluation set",
+          "title": "Evaluate the intended change",
+          "summary": "A dataset role rather than a named benchmark: held-out examples for the behavior the update is intended to change. Editing probes the revised behavior, continual learning probes the new task, and unlearning probes the designated removal criterion.",
+          "detail_tabs": [
+            "Summary",
+            "Process"
+          ],
+          "process_title": "Dataset preparation",
+          "steps": [
+            "Specify the Task and target behavior.",
+            "Separate evaluation examples from optimization examples.",
+            "Include paraphrases or variants when testing generalization.",
+            "Record the split, scoring rule, and any overlap with training data."
+          ]
+        },
+        "retain_set": {
+          "label": "Retained evaluation set",
+          "title": "Evaluate behavior that should remain",
+          "summary": "A dataset role rather than a named benchmark: held-out examples covering knowledge or capabilities that should survive the update. Keep evaluation examples separate from any replay or preservation examples used for optimization.",
+          "detail_tabs": [
+            "Summary",
+            "Process"
+          ],
+          "process_title": "Dataset preparation",
+          "steps": [
+            "Define the capabilities to preserve.",
+            "Create a held-out evaluation split covering those capabilities.",
+            "Evaluate the reference and adapted models on the same examples.",
+            "Report results by capability as well as in aggregate."
+          ]
+        }
+      }
+    },
+    "unlearning": {
+      "label": "Unlearning",
+      "methods": {
+        "target_set": {
+          "label": "Target evaluation set",
+          "title": "Evaluate the intended change",
+          "summary": "A dataset role rather than a named benchmark: held-out examples for the behavior the update is intended to change. Editing probes the revised behavior, continual learning probes the new task, and unlearning probes the designated removal criterion.",
+          "detail_tabs": [
+            "Summary",
+            "Process"
+          ],
+          "process_title": "Dataset preparation",
+          "steps": [
+            "Specify the Task and target behavior.",
+            "Separate evaluation examples from optimization examples.",
+            "Include paraphrases or variants when testing generalization.",
+            "Record the split, scoring rule, and any overlap with training data."
+          ]
+        },
+        "retain_set": {
+          "label": "Retained evaluation set",
+          "title": "Evaluate behavior that should remain",
+          "summary": "A dataset role rather than a named benchmark: held-out examples covering knowledge or capabilities that should survive the update. Keep evaluation examples separate from any replay or preservation examples used for optimization.",
+          "detail_tabs": [
+            "Summary",
+            "Process"
+          ],
+          "process_title": "Dataset preparation",
+          "steps": [
+            "Define the capabilities to preserve.",
+            "Create a held-out evaluation split covering those capabilities.",
+            "Evaluate the reference and adapted models on the same examples.",
+            "Report results by capability as well as in aggregate."
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "quotes": [
+    {
+      "id": "gardenfors-knowledge-in-flux",
+      "source": "Knowledge in Flux",
+      "added_date": "2024-10-22",
+      "author": "Peter Gardenfors",
+      "text": "The philosophically most important problem seems to be the frame problem.",
+      "full": "Turning now to artificial intelligence, the philosophically most important problem seems to be **the frame problem**. In general, this problem can be defined as the problem of finding a (basically epistemic) model that permits changing and complex information about the world to be represented in an adequate and efficient way. A solution to the frame problem would be a way of describing the form of the world that would enable us to translate efficiently our knowledge and beliefs about the world into a computer program. The simple belief sets are badly suited for describing actions that may be performed in such worlds and the changes of the world the actions bring about.",
+      "active": true
+    },
+    {
+      "id": "minsky-out-of-focus",
+      "author": "Marvin Minsky",
+      "text": "Everything is similar if you're willing to look that far out of focus",
+      "active": true
+    },
+    {
+      "id": "jobs-great-work",
+      "author": "Steve Jobs",
+      "text": "The only way to do great work is to love what you do.",
+      "active": false
+    },
+    {
+      "id": "quine-revision",
+      "author": "Willard Van Orman Quine",
+      "text": "No statement is immune to revision",
+      "active": false
+    },
+    {
+      "id": "popper-conjectural",
+      "author": "Karl Popper",
+      "text": "All knowledge is conjectural.",
+      "active": false
+    }
+  ]
+}

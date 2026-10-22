@@ -1,0 +1,118 @@
+{
+  "categories": {
+    "editing": {
+      "label": "Edit",
+      "methods": {
+        "target_success": {
+          "label": "Target success rate",
+          "title": "Measure the requested behavior",
+          "summary": "The fraction of target evaluation examples that satisfy a predefined success criterion. Define success separately for editing, continual learning, and unlearning; a high score only describes that chosen criterion.",
+          "formula": "S = \\frac{1}{N} \\sum_{i=1}^{N} \\mathbf{1}[c(x_i, f_{\\theta'}(x_i))]",
+          "formula_explanation": "N is the number of target examples. The indicator is one when the model output meets the task-specific criterion c, and zero otherwise.",
+          "detail_tabs": [
+            "Summary",
+            "Formula",
+            "Process"
+          ],
+          "process_title": "Evaluation process",
+          "steps": [
+            "Define the target behavior and success criterion before evaluation.",
+            "Run the adapted model on held-out target examples.",
+            "Apply the criterion to each output and average the binary scores.",
+            "Report this score alongside preservation or retention measurements."
+          ]
+        },
+        "retention": {
+          "label": "Retention accuracy change",
+          "title": "Measure changes on retained behavior",
+          "summary": "Compare accuracy before and after adaptation on the same retained evaluation examples. This metric applies when examples have an explicit correctness criterion.",
+          "formula": "\\Delta A = A(\\theta'; D_{\\mathrm{retain}}) - A(\\theta; D_{\\mathrm{retain}})",
+          "formula_explanation": "A denotes accuracy. A negative difference indicates reduced accuracy on the retained set; zero indicates unchanged aggregate accuracy, not necessarily identical predictions.",
+          "process_title": "Evaluation process",
+          "steps": [
+            "Fix the retained evaluation set and correctness criterion.",
+            "Measure reference-model accuracy.",
+            "Measure adapted-model accuracy using the same settings.",
+            "Report both accuracies and their difference."
+          ]
+        }
+      }
+    },
+    "continual_learning": {
+      "label": "Continual Learning",
+      "methods": {
+        "target_success": {
+          "label": "Target success rate",
+          "title": "Measure the requested behavior",
+          "summary": "The fraction of target evaluation examples that satisfy a predefined success criterion. Define success separately for editing, continual learning, and unlearning; a high score only describes that chosen criterion.",
+          "formula": "S = \\frac{1}{N} \\sum_{i=1}^{N} \\mathbf{1}[c(x_i, f_{\\theta'}(x_i))]",
+          "formula_explanation": "N is the number of target examples. The indicator is one when the model output meets the task-specific criterion c, and zero otherwise.",
+          "detail_tabs": [
+            "Summary",
+            "Formula",
+            "Process"
+          ],
+          "process_title": "Evaluation process",
+          "steps": [
+            "Define the target behavior and success criterion before evaluation.",
+            "Run the adapted model on held-out target examples.",
+            "Apply the criterion to each output and average the binary scores.",
+            "Report this score alongside preservation or retention measurements."
+          ]
+        },
+        "retention": {
+          "label": "Retention accuracy change",
+          "title": "Measure changes on retained behavior",
+          "summary": "Compare accuracy before and after adaptation on the same retained evaluation examples. This metric applies when examples have an explicit correctness criterion.",
+          "formula": "\\Delta A = A(\\theta'; D_{\\mathrm{retain}}) - A(\\theta; D_{\\mathrm{retain}})",
+          "formula_explanation": "A denotes accuracy. A negative difference indicates reduced accuracy on the retained set; zero indicates unchanged aggregate accuracy, not necessarily identical predictions.",
+          "process_title": "Evaluation process",
+          "steps": [
+            "Fix the retained evaluation set and correctness criterion.",
+            "Measure reference-model accuracy.",
+            "Measure adapted-model accuracy using the same settings.",
+            "Report both accuracies and their difference."
+          ]
+        }
+      }
+    },
+    "unlearning": {
+      "label": "Unlearning",
+      "methods": {
+        "target_success": {
+          "label": "Target success rate",
+          "title": "Measure the requested behavior",
+          "summary": "The fraction of target evaluation examples that satisfy a predefined success criterion. Define success separately for editing, continual learning, and unlearning; a high score only describes that chosen criterion.",
+          "formula": "S = \\frac{1}{N} \\sum_{i=1}^{N} \\mathbf{1}[c(x_i, f_{\\theta'}(x_i))]",
+          "formula_explanation": "N is the number of target examples. The indicator is one when the model output meets the task-specific criterion c, and zero otherwise.",
+          "detail_tabs": [
+            "Summary",
+            "Formula",
+            "Process"
+          ],
+          "process_title": "Evaluation process",
+          "steps": [
+            "Define the target behavior and success criterion before evaluation.",
+            "Run the adapted model on held-out target examples.",
+            "Apply the criterion to each output and average the binary scores.",
+            "Report this score alongside preservation or retention measurements."
+          ]
+        },
+        "retention": {
+          "label": "Retention accuracy change",
+          "title": "Measure changes on retained behavior",
+          "summary": "Compare accuracy before and after adaptation on the same retained evaluation examples. This metric applies when examples have an explicit correctness criterion.",
+          "formula": "\\Delta A = A(\\theta'; D_{\\mathrm{retain}}) - A(\\theta; D_{\\mathrm{retain}})",
+          "formula_explanation": "A denotes accuracy. A negative difference indicates reduced accuracy on the retained set; zero indicates unchanged aggregate accuracy, not necessarily identical predictions.",
+          "process_title": "Evaluation process",
+          "steps": [
+            "Fix the retained evaluation set and correctness criterion.",
+            "Measure reference-model accuracy.",
+            "Measure adapted-model accuracy using the same settings.",
+            "Report both accuracies and their difference."
+          ]
+        }
+      }
+    }
+  }
+}
