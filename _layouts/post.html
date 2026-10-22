@@ -703,7 +703,7 @@ layout: default
         if (topicTags && tags.length) {
           tags.forEach(function (tag) {
             var label = document.createElement('span');
-            label.textContent = '#' + tag;
+            label.textContent = tag;
             topicTags.appendChild(label);
           });
           topicTags.hidden = false;

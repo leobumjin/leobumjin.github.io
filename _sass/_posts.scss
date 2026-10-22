@@ -1253,10 +1253,27 @@ html[data-theme='dark'] .post-content .paper-references em {
 .post-topic-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 0.75rem;
-  margin: 0 0 1.5rem;
-  color: var(--global-text-color-light);
-  font-size: 0.78rem;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0 0 1.8rem;
+}
+
+.post-content .post-topic-tags > span {
+  padding: 0.28rem 0.65rem;
+  border: 1px solid color-mix(in srgb, #91324b 20%, transparent);
+  border-radius: 2rem;
+  background: color-mix(in srgb, #91324b 5%, var(--global-bg-color));
+  color: #91324b;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 0.73rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+html[data-theme='dark'] .post-content .post-topic-tags > span {
+  border-color: color-mix(in srgb, #d68ba1 28%, transparent);
+  background: color-mix(in srgb, #d68ba1 8%, var(--global-bg-color));
+  color: #d68ba1;
 }
 
 .post-topic-tags[hidden] { display: none; }
