@@ -24,6 +24,12 @@ description:
     <div class="posts-archive-catalog">
     <nav class="posts-media-tabs" id="postsMediaTabs" aria-label="Post media" hidden></nav>
 
+    <div class="posts-content-search" id="postsContentSearch" hidden>
+      <label for="postsSearchInput">Search post content</label>
+      <input id="postsSearchInput" type="search" placeholder="Search inside posts…" autocomplete="off" aria-controls="postsArchiveGroups">
+      <p id="postsSearchStatus" role="status" aria-live="polite"></p>
+    </div>
+
     <div class="posts-archive-filter-shell" id="postsArchiveFilterShell" hidden>
       <div class="posts-archive-filter" id="postsArchiveFilter"></div>
     </div>
@@ -52,6 +58,15 @@ description:
     var artworkImage = document.getElementById('postsArchiveArtworkImage');
     var artworkCaption = document.getElementById('postsArchiveArtworkCaption');
     var mediaTabs = document.getElementById('postsMediaTabs');
+    var searchShell = document.getElementById('postsContentSearch');
+    var searchInput = document.getElementById('postsSearchInput');
+    var searchStatus = document.getElementById('postsSearchStatus');
+    var searchOpen = false;
+    var searchQuery = '';
+    var searchIndexPromise;
+    var searchDocuments = [];
+    var searchReady = false;
+    var searchTimer;
     if (!groupsRoot) return;
     var allItems = [];
     var activeMedia = '';
@@ -67,6 +82,74 @@ description:
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
     }
+
+    function documentsFor(item) {
+      var links = [item.en_link].filter(Boolean);
+      return searchDocuments.filter(function (document) {
+        return links.some(function (link) {
+          return document.path === link || document.url === buildPostUrlFromLink(link);
+        });
+      });
+    }
+
+    function highlightMatches(text) {
+      if (!searchQuery) return escapeHtml(text);
+      var lower = text.toLowerCase();
+      var query = searchQuery.toLowerCase();
+      var html = '';
+      var start = 0;
+      var match;
+      while ((match = lower.indexOf(query, start)) !== -1) {
+        html += escapeHtml(text.slice(start, match)) + '<mark>' + escapeHtml(text.slice(match, match + query.length)) + '</mark>';
+        start = match + query.length;
+      }
+      return html + escapeHtml(text.slice(start));
+    }
+
+    function searchSnippets(item) {
+      if (!searchQuery) return '';
+      var snippets = [];
+      documentsFor(item).forEach(function (document) {
+        var text = document.text;
+        var lower = text.toLowerCase();
+        var cursor = 0;
+        var index;
+        while (snippets.length < 3 && (index = lower.indexOf(searchQuery.toLowerCase(), cursor)) !== -1) {
+          var start = Math.max(0, index - 70);
+          var end = Math.min(text.length, index + searchQuery.length + 130);
+          snippets.push('<a class="posts-search-snippet" href="' + escapeHtml(document.url) + '">' +
+            (start ? '…' : '') + highlightMatches(text.slice(start, end)) + (end < text.length ? '…' : '') + '</a>');
+          cursor = end;
+        }
+      });
+      return snippets.length ? '<div class="posts-search-snippets">' + snippets.join('') + '</div>' : '';
+    }
+
+    function loadSearchIndex() {
+      if (!searchIndexPromise) {
+        searchStatus.textContent = 'Loading post content…';
+        searchIndexPromise = fetch('{{ "/post_content_index.json" | relative_url }}')
+          .then(function (response) {
+            if (!response.ok) throw new Error('Search index unavailable');
+            return response.json();
+          }).then(function (documents) {
+            searchDocuments = documents;
+            searchReady = true;
+            renderPosts();
+          }).catch(function () {
+            searchIndexPromise = null;
+            searchStatus.textContent = 'Unable to load post content. Close and reopen search to retry.';
+          });
+      }
+    }
+
+    searchInput.addEventListener('input', function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () {
+        searchQuery = searchInput.value.trim();
+        renderPosts();
+      }, 180);
+    });
 
     function resolveThemeColors(value) {
       if (!value) return { light: '', dark: '' };
@@ -244,11 +327,7 @@ description:
       return items.map(function (item) {
         var postUrl = buildPostUrlFromLink(item && item.en_link);
         var media = item.media || '';
-        var title = escapeHtml(item.title || 'Untitled');
-        var tagsHtml = itemTags(item).map(function (tag) {
-          return '<button class="posts-archive-tag" type="button" data-category-filter="' + escapeHtml(tag) +
-            '" aria-pressed="' + (activeCategory === tag ? 'true' : 'false') + '">#' + escapeHtml(tag) + '</button>';
-        }).join('');
+        var title = highlightMatches(item.title || 'Untitled');
         var date = escapeHtml(formatDate(item.date));
         var postPath = postUrl ? postUrl.replace(/^https?:\/\/[^/]+/i, '') : '';
         var viewsHtml = postPath
@@ -275,24 +354,32 @@ description:
                   : '<span aria-disabled="true">' + title + '</span>') +
               '</h2>' +
               (viewsHtml ? '<div class="posts-archive-inline-meta">' + viewsHtml + '</div>' : '') +
-            '</div>' +
-            '<div class="posts-archive-side">' +
-              tagsHtml +
+              searchSnippets(item) +
             '</div>' +
           '</article>';
       }).join('');
     }
 
     function renderPosts() {
+      var searchButton = '<button class="posts-search-toggle' + (searchOpen ? ' is-active' : '') + '" type="button" data-post-search-toggle aria-label="Search post content" aria-expanded="' + searchOpen + '" aria-controls="postsContentSearch">' +
+        '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>';
       var visibleItems = allItems.filter(function (item) {
         var matchesMedia = !activeMedia || (item.media || 'Other') === activeMedia;
         var matchesCategory = !activeCategory || itemTags(item).indexOf(activeCategory) !== -1;
-        return matchesMedia && matchesCategory;
+        var matchesSearch = !searchQuery || (searchReady && (
+          String(item.title || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+          documentsFor(item).some(function (document) { return document.text.toLowerCase().includes(searchQuery.toLowerCase()); })
+        ));
+        return matchesMedia && matchesCategory && matchesSearch;
       });
 
+      if (searchReady) searchStatus.textContent = searchQuery ? visibleItems.length + ' matching posts' : '';
+
       if (!visibleItems.length) {
-        groupsRoot.innerHTML = '<p class="posts-archive-summary">No posts yet.</p>';
+        groupsRoot.innerHTML = '<div class="posts-archive-section-heading"><p class="home-section-label posts-archive-section-label">' + escapeHtml(activeMedia || 'All') + '</p>' + searchButton + '</div><p class="posts-archive-summary">' + (searchQuery ? 'No matching posts.' : 'No posts yet.') + '</p>';
+        if (navRoot) navRoot.hidden = true;
         renderFilterBar();
+        renderMediaTabs();
         return;
       }
 
@@ -328,6 +415,7 @@ description:
           '<section class="posts-archive-group" id="' + sectionId + '">' +
             '<div class="posts-archive-section-heading">' +
               '<p class="home-section-label posts-archive-section-label"' + sectionStyle + '>' + escapeHtml(group.name) + '</p>' +
+              searchButton +
             '</div>' +
             '<div class="posts-archive-list">' +
               '<div class="posts-archive-items">' + renderItems(group.items) + '</div>' +
@@ -416,6 +504,20 @@ description:
       });
 
     document.addEventListener('click', function (event) {
+      if (event.target.closest('[data-post-search-toggle]')) {
+        searchOpen = !searchOpen;
+        searchShell.hidden = !searchOpen;
+        if (searchOpen) {
+          searchInput.focus();
+          loadSearchIndex();
+        } else {
+          clearTimeout(searchTimer);
+          searchInput.value = '';
+          searchQuery = '';
+        }
+        renderPosts();
+        return;
+      }
       var mediaTrigger = event.target.closest('[data-media-filter]');
       if (mediaTrigger) {
         activeMedia = mediaTrigger.getAttribute('data-media-filter') || '';

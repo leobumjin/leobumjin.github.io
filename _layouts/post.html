@@ -48,6 +48,7 @@ layout: default
   </header>
 
   <article class="post-content">
+    <div class="post-topic-tags" id="postTopicTags" aria-label="Topics" hidden></div>
     {{ content | rewrite_relative_img_src: site.img_path }}
   </article>
 
@@ -696,6 +697,17 @@ layout: default
         });
 
         if (!matched) return;
+
+        var topicTags = document.getElementById('postTopicTags');
+        var tags = Array.isArray(matched.tags) ? matched.tags : [];
+        if (topicTags && tags.length) {
+          tags.forEach(function (tag) {
+            var label = document.createElement('span');
+            label.textContent = '#' + tag;
+            topicTags.appendChild(label);
+          });
+          topicTags.hidden = false;
+        }
 
         var engUrl = postUrlFromLink(matched.en_link);
         var korUrl = postUrlFromLink(matched.kr_link);
