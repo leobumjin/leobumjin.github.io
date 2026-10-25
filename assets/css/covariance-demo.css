@@ -1,0 +1,68 @@
+.covariance-demo { --cov-pc1: #287c91; --cov-pc2: #b96945; margin: 2rem 0; color: var(--global-text-color); }
+html[data-theme='dark'] .covariance-demo { --cov-pc1: #80c9d4; --cov-pc2: #edaa8b; }
+.cov-actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-size: .8rem; margin-bottom: 1.25rem; }
+.cov-actions button { background: transparent; color: inherit; border: 1px solid var(--global-divider-color); padding: .3rem .7rem; cursor: pointer; font: inherit; }
+.cov-views { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1.5rem; }
+.covariance-demo .cov-views h3 { margin: 0; padding: 0; border: 0; font-size: .95rem; font-weight: 500; text-align: center; }
+.cov-views svg { display: block; width: 100%; height: auto; }
+.cov-coordinate { stroke: currentColor; stroke-opacity: .13; stroke-width: 1; }
+.cov-coordinate-label { fill: currentColor; opacity: .4; font-size: 12px; }
+.cov-point { fill: currentColor; opacity: .45; }
+.cov-sample.is-toggle .cov-point { fill: var(--cov-pc1); opacity: 1; }
+.cov-sample[role='button'] { cursor: pointer; }
+.cov-hit-target { fill: transparent; }
+.cov-sample.is-excluded .cov-point { fill: none; stroke: currentColor; stroke-width: 1.5; opacity: .2; }
+.cov-sample.is-excluded text { opacity: .25; }
+.cov-sample:focus .cov-hit-target { stroke: var(--cov-pc1); stroke-width: 2; }
+.cov-principal { stroke-width: 7; stroke-linecap: round; }
+.cov-principal.cov-pc1 { stroke: var(--cov-pc1); }
+.cov-principal.cov-pc2 { stroke: var(--cov-pc2); }
+.cov-pc-label { font-size: 13px; font-weight: 600; }
+.cov-pc-label.cov-pc1 { fill: var(--cov-pc1); }
+.cov-pc-label.cov-pc2 { fill: var(--cov-pc2); }
+.cov-mean { fill: currentColor; }
+.cov-mean-label { fill: currentColor; font-size: 14px; }
+.cov-sample-label { fill: var(--cov-pc1); font-size: 13px; font-weight: 600; paint-order: stroke; stroke: var(--global-bg-color); stroke-width: 3px; }
+.covariance-demo .cov-summary { font-size: .8rem; line-height: 1.6; text-align: center; margin: .5rem 0 1.3rem; }
+.cov-equation { display: flex; align-items: center; gap: .8rem; margin: 1rem 0; }
+.cov-equals { flex: none; font-style: italic; font-size: 1.1rem; }
+.cov-fraction { min-width: 0; flex: 1; }
+.cov-terms { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .45rem .2rem; padding: .3rem 0 .8rem; border-bottom: 1px solid currentColor; }
+.cov-term-group { display: flex; align-items: center; gap: .25rem; }
+.cov-plus { font-size: .85rem; opacity: .5; }
+.cov-term { display: inline-block; padding: .3rem .2rem; color: inherit; font-family: inherit; font-size: .85rem; white-space: nowrap; }
+button.cov-term { border: 1px solid var(--global-divider-color); border-radius: 3px; background: transparent; cursor: pointer; color: var(--cov-pc1); }
+button.cov-term:hover, button.cov-term:focus-visible { border-color: var(--cov-pc1); outline: none; }
+.cov-term-group.is-excluded { opacity: .25; }
+.cov-term-group.is-excluded .cov-term { text-decoration: line-through; }
+.cov-denominator { text-align: center; padding-top: .5rem; font-size: .85rem; }
+.covariance-demo .cov-note, .covariance-demo figcaption { font-size: .75rem; line-height: 1.65; text-align: left; color: var(--global-text-color-light); margin-top: .5rem; }
+@media(max-width:480px) { .cov-views { grid-template-columns: 1fr; gap: 1rem; } .cov-views svg { max-width: 360px; margin: auto; } .cov-equation { gap: .4rem; } }
+/* Keep the figure compact and let the changing sum carry the emphasis. */
+.post-content figure.covariance-demo { max-width: 660px; margin: 2rem auto; }
+.cov-actions { margin-bottom: .85rem; color: var(--global-text-color-light); font-family: system-ui, sans-serif; font-size: .75rem; }
+.cov-actions button { border-radius: 4px; padding: .25rem .6rem; font-size: .72rem; }
+.cov-views { gap: 1.25rem; }
+.covariance-demo .cov-views h3 { font-family: system-ui, sans-serif; font-size: .72rem; font-weight: 500; color: var(--global-text-color-light); }
+.cov-views svg { max-width: 300px; margin: .2rem auto 0; }
+.cov-principal { stroke-width: 5.5; }
+.cov-coordinate { stroke-opacity: .1; }
+.covariance-demo .cov-summary { margin: .1rem 0 1rem; font-family: system-ui, sans-serif; font-size: .72rem; color: var(--global-text-color-light); }
+.cov-equation { gap: .65rem; margin: .75rem 0 0; }
+.cov-terms { gap: .35rem .15rem; padding: .25rem 0 .6rem; border-bottom-color: color-mix(in srgb, var(--global-text-color) 45%, transparent); }
+.cov-term { font-size: .9rem; padding: .25rem .15rem; }
+button.cov-term { background: color-mix(in srgb, var(--cov-pc1) 7%, transparent); border: 1px solid transparent; padding: .25rem .3rem; border-radius: 4px; }
+button.cov-term:hover { background: color-mix(in srgb, var(--cov-pc1) 13%, transparent); }
+button.cov-term:focus-visible, .cov-actions button:focus-visible { outline: 2px solid var(--cov-pc1); outline-offset: 2px; }
+.cov-term-group { gap: .2rem; }
+.cov-plus { font-size: .75rem; opacity: .35; }
+.cov-denominator { padding-top: .4rem; font-size: .8rem; }
+.post-content figure.covariance-demo > figcaption.post-image-caption { border: 0; padding: 0; margin: .85rem 0 0; background: transparent; font-family: system-ui, sans-serif; font-size: .7rem; line-height: 1.55; text-align: center; }
+@media (max-width:480px) {
+  .cov-views { grid-template-columns: 1fr; gap: .8rem; }
+  .cov-views svg { min-width: 0; max-width: 260px; }
+  .cov-equation { gap: .4rem; }
+  .cov-term { font-size: .85rem; }
+  .cov-actions { margin-bottom: 1rem; }
+  .post-content figure.covariance-demo > figcaption.post-image-caption { text-align: left; }
+}

@@ -1,0 +1,14 @@
+<div id="covariance-interactive">
+  <div class="cov-actions"><span>Click 1–3 to toggle.</span><div><button type="button" id="cov-restore">Reset</button></div></div>
+  <div class="cov-views">
+    <section><h3>Samples</h3><svg id="cov-samples" viewBox="0 20 360 300" role="group" aria-label="Toggle the first three samples with click, Enter, or Space"></svg></section>
+    <section><h3>Principal axes</h3><svg id="cov-principal" viewBox="0 20 360 300" role="img" aria-label="PCA axes of the included samples"></svg></section>
+  </div>
+  <p id="cov-summary" class="cov-summary" role="status">Loading sample contributions…</p>
+  <div class="cov-equation" aria-label="Covariance as the sum of included rank-one sample contributions">
+    <span class="cov-equals">C =</span>
+    <div class="cov-fraction"><div id="cov-terms" class="cov-terms"></div><div id="cov-denominator" class="cov-denominator">10 − 1 = 9</div></div>
+  </div>
+
+</div>
+<noscript>Enable JavaScript to toggle the first three samples and see the corresponding covariance terms and principal axes.</noscript>

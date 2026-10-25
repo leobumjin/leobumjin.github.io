@@ -1,6 +1,17 @@
 {
   "posts": [
     {
+        "title": "Rank-One Matrix Decomposition: Covariance Matrix Perspective",
+        "date": "2026-10-25",
+        "media": "Literature",
+        "tags": [
+            "Linear Algebra",
+            "PCA",
+            "SVD"
+        ],
+        "en_link": "technical_en/2026-10-25-rank-one-covariance.md"
+    },
+    {
         "title": "Scurvy and the Limits of Causal Understanding",
         "date": "2026-10-25",
         "media": "Essay",
