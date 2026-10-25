@@ -1,0 +1,14 @@
+.causal-lag { margin: 2rem 0; padding: 1rem; border: 1px solid var(--global-divider-color); color: var(--global-text-color); }
+.causal-lag-legend { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; font-size: .85rem; }
+.causal-smoking { color: #267692; }
+.causal-mortality { color: #ae5146; }
+html[data-theme='dark'] .causal-smoking { color: #75c1dc; }
+html[data-theme='dark'] .causal-mortality { color: #f19c90; }
+.causal-lag-scroll { overflow-x: auto; }
+.causal-lag svg { display: block; width: 100%; min-width: 580px; height: auto; font-family: inherit; }
+.causal-lag svg text { fill: currentColor; font-size: 12px; }
+.causal-lag-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; font-size: .85rem; margin: .5rem 0 1rem; }
+.causal-lag-controls[hidden] { display: none; }
+.causal-lag-controls input { flex: 1; min-width: 120px; accent-color: #267692; }
+.causal-lag-controls button { color: inherit; background: transparent; border: 1px solid var(--global-divider-color); padding: .3rem .6rem; cursor: pointer; }
+.causal-lag figcaption { font-size: .8rem; line-height: 1.6; text-align: left; }

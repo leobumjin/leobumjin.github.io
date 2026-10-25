@@ -1,6 +1,17 @@
 {
   "posts": [
     {
+        "title": "Causality Appears with a Time Lag",
+        "date": "2026-10-25",
+        "media": "Essay",
+        "tags": [
+            "Causality",
+            "Reading"
+        ],
+        "en_link": "technical_en/2026-10-25-causality-time-lag.md",
+        "kr_link": "technical_kr/2026-10-25-causality-time-lag.md"
+    },
+    {
         "title": "Consistency vs. Foundations vs. Coherence in Belief Systems",
         "date": "2026-10-22",
         "media": "Research",
