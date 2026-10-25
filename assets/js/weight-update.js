@@ -64,6 +64,29 @@
 
     function renderPanel(name) {
       panel.replaceChildren();
+      if (item.preservation) {
+        if (name === 'objective') {
+          panel.appendChild(emphasizedElement('p', 'weight-update-summary', item.summary));
+          if (item.objective) {
+            var loss = element('div', 'weight-update-formula-panel weight-update-formula');
+            loss.textContent = '\\[' + item.objective + '\\]';
+            panel.appendChild(loss);
+          }
+        } else if (name === 'weight update') {
+          var update = element('div', 'weight-update-formula-panel weight-update-formula');
+          update.textContent = '\\[' + item.formula + '\\]';
+          panel.append(update, emphasizedElement('p', 'weight-update-formula-explanation', item.formula_explanation));
+          var symbols = element('dl', 'weight-update-symbols');
+          (item.terms || []).forEach(function (term) {
+            symbols.append(element('dt', '', term.name), element('dd', '', term.description));
+          });
+          panel.appendChild(symbols);
+        } else {
+          panel.appendChild(emphasizedElement('p', 'weight-update-summary', name === 'limitations' ? item.limitations : item.preservation));
+        }
+        typeset(panel);
+        return;
+      }
       if (name === 'summary') {
         panel.appendChild(emphasizedElement('p', 'weight-update-summary', item.summary));
         if (!item.formula) {
@@ -210,6 +233,9 @@
       methodList.scrollTop = 0;
       noMatches.hidden = true;
       var methods = entriesFrom(task.value.methods, 'title').sort(function (a, b) {
+        if (Array.isArray(task.value.method_order)) {
+          return task.value.method_order.indexOf(a.key) - task.value.method_order.indexOf(b.key);
+        }
         return a.value.label.localeCompare(b.value.label, 'en', { sensitivity: 'base' });
       });
       if (!methods.length) {

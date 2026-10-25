@@ -1,0 +1,664 @@
+{
+  "categories": {
+    "editing": {
+      "label": "Knowledge Editing",
+      "methods": {
+        "ft_edit": {
+          "label": "FT-Edit",
+          "title": "Fine-tuning for a targeted edit",
+          "summary": "A configurable baseline: fit edited answers while penalizing changes on a chosen locality set.",
+          "objective": "\\mathcal L=\\mathcal L_{\\mathrm{edit}}+\\lambda\\mathcal L_{\\mathrm{locality}}",
+          "formula": "\\theta_{s+1}=\\theta_s-\\eta\\nabla_\\theta\\mathcal L(\\theta_s)",
+          "formula_explanation": "The locality term may be a KL divergence from the original model on unrelated prompts; this recipe is not a uniquely standardized algorithm.",
+          "terms": [
+            {
+              "id": "0",
+              "name": "θₛ, η",
+              "description": "Current parameters and learning rate at optimization step s."
+            },
+            {
+              "id": "1",
+              "name": "λ",
+              "description": "Strength of the locality penalty."
+            },
+            {
+              "id": "2",
+              "name": "Locality set",
+              "description": "Prompts on which the original output distribution is treated as the preservation target."
+            }
+          ],
+          "preservation": "Use explicit locality examples and optionally restrict the trainable layers or parameter distance.",
+          "limitations": "Coverage is limited by the locality set. Small parameter movement does not certify small semantic change.",
+          "paper_url": "https://rome.baulab.info/",
+          "publication": "Baseline context: ROME",
+          "detail_tabs": [
+            "Objective",
+            "Weight Update",
+            "Preservation Mechanism",
+            "Limitations"
+          ]
+        },
+        "rome": {
+          "label": "ROME",
+          "title": "Rank-One Model Editing",
+          "publication": "NeurIPS 2022",
+          "paper_url": "https://rome.baulab.info/",
+          "summary": "ROME writes **one association** into a selected MLP output matrix using a **rank-one update**. It fits the target key-value pair **exactly in the linear memory model** while minimizing changes on preservation keys.",
+          "formula": "\\Delta W=\\frac{(v^*-Wk^*)k^{*\\top}C^{-1}}{k^{*\\top}C^{-1}k^*}",
+          "formula_explanation": "The update satisfies W′k = v when C is invertible and k is nonzero. This linear constraint does not guarantee perfect end-to-end model behavior.",
+          "formula_tokens": [],
+          "terms": [
+            {
+              "name": "W, ΔW",
+              "description": "Original MLP output matrix and its persistent correction."
+            },
+            {
+              "name": "k*, v*",
+              "description": "Fixed edit key and optimized target value."
+            },
+            {
+              "name": "K₀, C",
+              "description": "Background keys and their uncentered second moment C = K₀K₀ᵀ, with regularization if needed."
+            },
+            {
+              "name": "Inverse assumption",
+              "description": "The displayed formula assumes an invertible positive-definite C and a nonzero key."
+            }
+          ],
+          "process_title": "Editing process",
+          "steps": [
+            "Select an MLP layer informed by causal tracing.",
+            "**Extract the subject key** across contexts.",
+            "**Optimize a target value** for the desired prediction.",
+            "Solve for and apply the **rank-one update**.",
+            "Evaluate edit success, paraphrase generalization, and unrelated facts."
+          ],
+          "group": "associative_memory",
+          "keywords": [
+            "activation_target",
+            "closed_form",
+            "rank_one",
+            "key_value",
+            "calibration"
+          ],
+          "filters": {
+            "scope": "core",
+            "base_weight_update_at_edit": true,
+            "requires_pre_edit_training": false,
+            "update_kind": "analytical_weight_insertion"
+          },
+          "training": {
+            "pre_edit_training": "None.",
+            "edit_time_optimization": "Optimize a target value with frozen model weights, then solve a rank-one insertion.",
+            "update_input": "Subject, relation prompt, new object; sampled context prefixes.",
+            "supervision_target": "Desired object tokens and a target internal value.",
+            "preservation_input": "Background text for key moments; generic prompts for the target-search KL term.",
+            "loss_token_scope": "Subject-final position for key/intervention; desired-answer NLL; separate KL prompts.",
+            "updated_parameters": "One selected MLP output matrix.",
+            "returned_state": "Edited weights; reusable key-moment cache.",
+            "limitations": "Exact fitting of a fixed linear key does not guarantee generated answers or dependency-aware retraction."
+          },
+          "formula_status": "normalized_core",
+          "sources": [
+            {
+              "url": "https://arxiv.org/html/2202.05262v5",
+              "role": "primary",
+              "checked_scope": "Method: key extraction, value optimization, rank-one insertion"
+            }
+          ],
+          "verification": {
+            "level": "primary_source_review",
+            "implementation_reproduced": false
+          },
+          "paper_title": "Locating and Editing Factual Associations in GPT",
+          "group_label": "Associative-memory editing",
+          "detail_tabs": [
+            "Objective",
+            "Weight Update",
+            "Preservation Mechanism",
+            "Limitations"
+          ],
+          "preservation": "C = K₀K₀ᵀ is a background-key second moment, often informally called a covariance. It weights interference on the sampled key distribution. The equality concerns a fixed linear key mapping.",
+          "limitations": "Exact fitting of a fixed linear key does not guarantee generated answers or dependency-aware retraction. None of these constraints decides which conclusions remain justified after evidence is withdrawn.",
+          "objective": "\\min_{\\Delta W}\\;\\|\\Delta W K_0\\|_F^2\\quad\\mathrm{s.t.}\\quad(W+\\Delta W)k^*=v^*"
+        },
+        "memit": {
+          "label": "MEMIT",
+          "title": "Mass-Editing Memory in a Transformer",
+          "publication": "ICLR 2023",
+          "paper_url": "https://memit.baulab.info/",
+          "summary": "MEMIT edits a **batch of associations** and distributes their target residuals **across selected MLP layers**. Each layer uses a **least-squares update** balancing new memories against preservation.",
+          "formula": "W' = W_0 + R K^T (C+KK^T)^{-1}",
+          "formula_explanation": "This is one layer’s update, with R = V − W₀K. C includes the scaled preservation-key second moment. MEMIT recomputes keys and allocates remaining residuals as it progresses through the selected layers.",
+          "formula_tokens": [
+            {
+              "tex": "W'"
+            },
+            {
+              "tex": "="
+            },
+            {
+              "term": "weight",
+              "tex": "W_0"
+            },
+            {
+              "tex": "+"
+            },
+            {
+              "term": "residual",
+              "tex": "R"
+            },
+            {
+              "term": "keys",
+              "tex": "K^T"
+            },
+            {
+              "term": "solve",
+              "tex": "(C+KK^T)^{-1}"
+            }
+          ],
+          "terms": [
+            {
+              "id": "weight",
+              "name": "Original weight",
+              "description": "W₀ maps MLP keys to output values."
+            },
+            {
+              "id": "moment",
+              "name": "Preservation statistic",
+              "description": "C is the preservation-key second moment; MEMIT absorbs its preservation scaling into C. The displayed inverse requires a nonsingular system."
+            },
+            {
+              "id": "keys",
+              "name": "Edit keys",
+              "description": "K contains one key vector per requested edit."
+            },
+            {
+              "id": "residual",
+              "name": "Residual targets",
+              "description": "R = V − W₀K contains the desired value changes."
+            },
+            {
+              "id": "solve",
+              "name": "Regularized memory solve",
+              "description": "Balances preservation through C with fitting the batched edit keys K. Unlike an equality constraint, the fit may leave residual error."
+            },
+            {
+              "name": "K₀, V",
+              "description": "Background keys and desired edited values; preservation scaling is absorbed into C."
+            }
+          ],
+          "process_title": "Editing process",
+          "steps": [
+            "Optimize target hidden states for the requested associations.",
+            "Choose the mediating MLP layers.",
+            "At each layer, collect current keys and **allocate remaining target residuals**.",
+            "Solve the layer’s **least-squares update** and continue to the next layer.",
+            "Evaluate the batch for efficacy, generalization, and specificity."
+          ],
+          "group": "associative_memory",
+          "keywords": [
+            "activation_target",
+            "closed_form",
+            "key_value",
+            "multi_layer",
+            "batch_editing",
+            "calibration"
+          ],
+          "filters": {
+            "scope": "core",
+            "base_weight_update_at_edit": true,
+            "requires_pre_edit_training": false,
+            "update_kind": "analytical_weight_insertion"
+          },
+          "training": {
+            "pre_edit_training": "None.",
+            "edit_time_optimization": "Optimize target states, then solve layerwise updates while allocating remaining residuals.",
+            "update_input": "A batch of subject-relation-new-object edits and context prefixes.",
+            "supervision_target": "Desired answer tokens and target hidden states.",
+            "preservation_input": "Background activation second moments.",
+            "loss_token_scope": "Answer-token objective; subject-position target intervention.",
+            "updated_parameters": "Selected MLP output matrices.",
+            "returned_state": "Edited weights and moment cache.",
+            "limitations": "The displayed relation is one layer only; layers interact through recomputed keys and residuals."
+          },
+          "formula_status": "normalized_core",
+          "sources": [
+            {
+              "url": "https://memit.baulab.info/",
+              "role": "primary",
+              "checked_scope": "Official method overview and linked paper"
+            }
+          ],
+          "verification": {
+            "level": "primary_source_review",
+            "implementation_reproduced": false
+          },
+          "paper_title": "Mass-Editing Memory in a Transformer",
+          "group_label": "Associative-memory editing",
+          "detail_tabs": [
+            "Objective",
+            "Weight Update",
+            "Preservation Mechanism",
+            "Limitations"
+          ],
+          "preservation": "Background-key second moments penalize changes to existing mappings. The soft least-squares fit trades preservation against edit error; residuals are distributed across selected layers.",
+          "limitations": "The displayed relation is one layer only; layers interact through recomputed keys and residuals. None of these constraints decides which conclusions remain justified after evidence is withdrawn.",
+          "objective": "\\min_{\\Delta W}\\;\\|\\Delta W K_0\\|_F^2+\\|(W+\\Delta W)K-V\\|_F^2"
+        },
+        "alphaedit": {
+          "label": "AlphaEdit",
+          "title": "AlphaEdit: Null-Space Constrained Knowledge Editing for Language Models",
+          "publication": "ICLR 2025",
+          "paper_url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/29c8c615b3187ee995029284702d3f43-Abstract-Conference.html",
+          "summary": "AlphaEdit **fits new key-value associations inside a null-space-constrained update**. Original knowledge is protected by the projector; a separate penalty limits changes on **previously edited keys**, and regularization controls update size.",
+          "formula": "\\Delta_{\\mathrm{AE}} = R K_1^T P ( K_pK_p^TP + K_1K_1^TP + I )^{-1},\\quad W'=W+ \\Delta_{\\mathrm{AE}}",
+          "formula_explanation": "Section 3.3, Eqs. (12)–(14). \\(R=V_1-WK_1\\). The objective combines **new-knowledge fitting**, **update regularization**, and **previous-edit preservation**. \\(P=U_{\\mathrm{null}}U_{\\mathrm{null}}^T\\) comes from SVD of \\(K_0K_0^T\\); exact null directions give \\(\\Delta_{\\mathrm{AE}}K_0=0\\). Small-singular-value thresholding makes that preservation approximate. The displayed identity coefficient is the unit-regularization form. A tunable positive coefficient can be written as alpha I. Preservation refers to fixed selected key mappings, not all model outputs.",
+          "formula_tokens": [
+            {
+              "term": "update",
+              "tex": "\\Delta_{\\mathrm{AE}}"
+            },
+            {
+              "tex": "="
+            },
+            {
+              "term": "residual",
+              "tex": "R"
+            },
+            {
+              "term": "new_keys",
+              "tex": "K_1^T"
+            },
+            {
+              "term": "projector",
+              "tex": "P"
+            },
+            {
+              "tex": "("
+            },
+            {
+              "term": "past",
+              "tex": "K_pK_p^TP"
+            },
+            {
+              "tex": "+"
+            },
+            {
+              "term": "fit",
+              "tex": "K_1K_1^TP"
+            },
+            {
+              "tex": "+"
+            },
+            {
+              "term": "regularizer",
+              "tex": "I"
+            },
+            {
+              "tex": ")^{-1},\\quad W'=W+"
+            },
+            {
+              "term": "update",
+              "tex": "\\Delta_{\\mathrm{AE}}"
+            }
+          ],
+          "terms": [
+            {
+              "id": "update",
+              "name": "Applied update",
+              "description": "Δ_AE = ΔP is added to the MLP output matrix W."
+            },
+            {
+              "id": "residual",
+              "name": "New target residual",
+              "description": "R = V₁ − WK₁ is what the current edit must change."
+            },
+            {
+              "id": "new_keys",
+              "name": "New edit keys",
+              "description": "Columns of K₁ encode the current edit batch; V₁ contains target values."
+            },
+            {
+              "id": "projector",
+              "name": "Null-space projector",
+              "description": "Built from preserved-key second moments K₀K₀ᵀ, protecting original key mappings."
+            },
+            {
+              "id": "past",
+              "name": "Previous-edit term",
+              "description": "K_p collects keys from previous edits; this term penalizes changes to their outputs."
+            },
+            {
+              "id": "fit",
+              "name": "New-knowledge fitting term",
+              "description": "Arises from fitting the current keys K₁ to target values V₁."
+            },
+            {
+              "id": "regularizer",
+              "name": "Update regularization",
+              "description": "The identity term comes from the squared norm of the projected update."
+            }
+          ],
+          "process_title": "Editing process",
+          "steps": [
+            "Collect preserved keys and compute each selected layer’s second moment \\(K_0K_0^T\\).",
+            "Use **SVD** to construct \\(P\\) from zero or small singular-value directions.",
+            "Optimize new target representations and distribute remaining residuals across selected MLP layers.",
+            "Solve for the update **within the projected subspace**, accounting for previous edits and update regularization.",
+            "Apply \\(W\\leftarrow W+\\Delta P\\) and evaluate edit success and preservation."
+          ],
+          "objective": "\\min_{\\tilde\\Delta}\\;\\underbrace{\\|(W+\\tilde\\Delta P)K_1-V_1\\|_F^2}_{\\text{new knowledge}}+\\underbrace{\\|\\tilde\\Delta P\\|_F^2}_{\\text{regularization}}+\\underbrace{\\|\\tilde\\Delta P K_p\\|_F^2}_{\\text{previous edits}}",
+          "group": "preservation_geometry",
+          "keywords": [
+            "activation_target",
+            "key_value",
+            "null_space",
+            "svd",
+            "historical_keys",
+            "multi_layer",
+            "sequential_editing"
+          ],
+          "filters": {
+            "scope": "core",
+            "base_weight_update_at_edit": true,
+            "requires_pre_edit_training": false,
+            "update_kind": "projected_analytical_weight_insertion"
+          },
+          "training": {
+            "pre_edit_training": "None.",
+            "edit_time_optimization": "Optimize target representations and solve updates inside a preservation subspace.",
+            "update_input": "Current factual edit batch.",
+            "supervision_target": "Target-answer likelihood followed by layerwise value fitting.",
+            "preservation_input": "Preserved-key second moments and historical edit keys.",
+            "loss_token_scope": "Target-search masks follow the editing backbone.",
+            "updated_parameters": "Selected MLP output matrices.",
+            "returned_state": "Edited weights, projectors, historical-key statistics.",
+            "limitations": "Thresholded null spaces give approximate protection of sampled fixed keys, not global semantic invariance."
+          },
+          "formula_status": "normalized_core",
+          "sources": [
+            {
+              "url": "https://arxiv.org/html/2410.02355v3",
+              "role": "primary",
+              "checked_scope": "Sections 3.1-3.3 and sequential-editing objective"
+            }
+          ],
+          "verification": {
+            "level": "primary_source_review",
+            "implementation_reproduced": false
+          },
+          "paper_title": "AlphaEdit: Null-Space Constrained Knowledge Editing for Language Models",
+          "group_label": "Preservation geometry",
+          "detail_tabs": [
+            "Objective",
+            "Weight Update",
+            "Preservation Mechanism",
+            "Limitations"
+          ],
+          "preservation": "Restrict the update to the null space of preserved-key statistics. Exact null directions protect fixed mappings; thresholded small singular values give approximate protection. Historical edit keys receive a separate penalty.",
+          "limitations": "Thresholded null spaces give approximate protection of sampled fixed keys, not global semantic invariance. None of these constraints decides which conclusions remain justified after evidence is withdrawn."
+        },
+        "crispedit": {
+          "label": "CrispEdit",
+          "title": "CrispEdit: Low-Curvature Projections for Scalable Non-Destructive LLM Editing",
+          "publication": "ICML 2026",
+          "paper_url": "https://proceedings.mlr.press/v306/ikram26a.html",
+          "summary": "CrispEdit projects edit gradients into **low-curvature directions of capability loss**. A **Bregman-divergence constraint** yields Gauss–Newton curvature without assuming a converged base model. K-FAC enables matrix-free projection.",
+          "objective": "\\min_\\theta\\;\\mathcal L_{\\mathrm{edit}}(\\theta)\\quad\\text{s.t.}\\quad d_{\\mathrm{Breg}}(\\theta,\\theta_0;\\mathcal D_{\\mathrm{cap}})\\leq\\varepsilon",
+          "formula": "Q_l^{\\mathrm{proj}} = U_{\\mathrm{out}} [( U_{\\mathrm{out}}^T Q_l U_{\\mathrm{in}} )\\odot M ] U_{\\mathrm{in}}^T",
+          "formula_tokens": [
+            {
+              "term": "projected",
+              "tex": "Q_l^{\\mathrm{proj}}"
+            },
+            {
+              "tex": "="
+            },
+            {
+              "term": "basis",
+              "tex": "U_{\\mathrm{out}}"
+            },
+            {
+              "tex": "[("
+            },
+            {
+              "term": "basis",
+              "tex": "U_{\\mathrm{out}}^T"
+            },
+            {
+              "term": "gradient",
+              "tex": "Q_l"
+            },
+            {
+              "term": "basis",
+              "tex": "U_{\\mathrm{in}}"
+            },
+            {
+              "tex": ")\\odot"
+            },
+            {
+              "term": "mask",
+              "tex": "M"
+            },
+            {
+              "tex": "]"
+            },
+            {
+              "term": "basis",
+              "tex": "U_{\\mathrm{in}}^T"
+            }
+          ],
+          "formula_explanation": "The capability-set Bregman objective is abbreviated. Its local quadratic term uses Gauss-Newton curvature, approximated by A\\otimes S. The mask M_{ij}=\\mathbf{1}[\\lambda_i^{out}\\lambda_j^{in}\\leq\\lambda_\\gamma] retains low-curvature coordinates. Rotate, mask, rotate back. The displayed equation is a gradient projector, not an inverse-Hessian update. Protection is local and calibration-dependent.",
+          "terms": [
+            {
+              "id": "projected",
+              "name": "Projected gradient",
+              "description": "Used for the layer’s optimizer update."
+            },
+            {
+              "id": "gradient",
+              "name": "Edit gradient",
+              "description": "Q_l = ∇_{W_l} L_edit."
+            },
+            {
+              "id": "basis",
+              "name": "K-FAC eigenbases",
+              "description": "Eigenvectors of activation and output pseudo-gradient second moments."
+            },
+            {
+              "id": "mask",
+              "name": "Low-curvature mask",
+              "description": "Retains components below the spectral threshold; γ controls discarded spectral energy."
+            }
+          ],
+          "process_title": "Editing process",
+          "steps": [
+            "Estimate **K-FAC capability curvature** and cache eigenbases and masks.",
+            "Compute edit gradients for selected layers.",
+            "**Rotate, mask high-curvature components, and rotate back** without constructing the full projector.",
+            "Apply projected-gradient optimization with the configured step rule; projecting a gradient is not automatically equivalent to projecting an Adam parameter step.",
+            "For sequential edits, accumulate curvature statistics to protect earlier edits."
+          ],
+          "group": "preservation_geometry",
+          "keywords": [
+            "gradient_descent",
+            "low_curvature",
+            "kfac",
+            "bregman",
+            "calibration",
+            "sequential_editing"
+          ],
+          "filters": {
+            "scope": "core",
+            "base_weight_update_at_edit": true,
+            "requires_pre_edit_training": false,
+            "update_kind": "projected_gradient"
+          },
+          "training": {
+            "pre_edit_training": "No learned editor; precompute capability curvature.",
+            "edit_time_optimization": "Directly optimize edit loss with curvature-restricted gradients.",
+            "update_input": "Edit prompt-answer pairs.",
+            "supervision_target": "Desired outputs under the edit loss.",
+            "preservation_input": "Capability reference data for activation/pseudo-gradient second moments.",
+            "loss_token_scope": "Explicitly configure prompt/answer masks; paper combines prompt-masked editing with projected optimization.",
+            "updated_parameters": "Selected trainable weight matrices; scope is configuration-dependent.",
+            "returned_state": "Edited weights and cached K-FAC statistics/bases.",
+            "limitations": "Local curvature and capability coverage limit protection; cached geometry can become stale after large edits."
+          },
+          "formula_status": "normalized_core",
+          "sources": [
+            {
+              "url": "https://arxiv.org/html/2602.15823v2",
+              "role": "primary",
+              "checked_scope": "Sections 2-3: Bregman, Gauss-Newton, K-FAC and matrix-free projection"
+            }
+          ],
+          "verification": {
+            "level": "primary_source_review",
+            "implementation_reproduced": false
+          },
+          "paper_title": "CrispEdit: Low-Curvature Projections for Scalable Non-Destructive LLM Editing",
+          "group_label": "Preservation geometry",
+          "detail_tabs": [
+            "Objective",
+            "Weight Update",
+            "Preservation Mechanism",
+            "Limitations"
+          ],
+          "preservation": "Use a capability-set Bregman divergence. Its local quadratic geometry is Gauss–Newton curvature; K-FAC makes projection onto low-curvature gradient directions tractable. This is projection, not inverse-Hessian preconditioning.",
+          "limitations": "Local curvature and capability coverage limit protection; cached geometry can become stale after large edits. None of these constraints decides which conclusions remain justified after evidence is withdrawn."
+        }
+      },
+      "method_order": [
+        "ft_edit",
+        "rome",
+        "memit",
+        "alphaedit",
+        "crispedit"
+      ]
+    },
+    "unlearning": {
+      "label": "Machine Unlearning",
+      "methods": {
+        "ga_graddiff": {
+          "label": "GA / GradDiff",
+          "title": "Gradient ascent and gradient difference",
+          "summary": "Increase forget-set negative log-likelihood; optionally add a retain-set loss to counter collateral damage.",
+          "objective": "\\mathcal L_{\\mathrm{GD}}=-\\mathcal L_f+\\lambda\\mathcal L_r",
+          "formula": "\\theta_{s+1}=\\theta_s+\\eta\\nabla\\mathcal L_f-\\eta\\lambda\\nabla\\mathcal L_r",
+          "formula_explanation": "Both Lf and Lr are ordinary negative log-likelihood losses. Set λ = 0 for pure gradient ascent. Minimizing −Lf makes forget examples less likely.",
+          "terms": [
+            {
+              "id": "0",
+              "name": "Df, Dr",
+              "description": "Forget and retain datasets."
+            },
+            {
+              "id": "1",
+              "name": "Lf, Lr",
+              "description": "Negative log-likelihood on the respective datasets."
+            },
+            {
+              "id": "2",
+              "name": "η, λ",
+              "description": "Step size and retention weight."
+            }
+          ],
+          "preservation": "GradDiff explicitly trains on retain examples; pure GA has no retention term.",
+          "limitations": "Unbounded ascent can degrade model utility. Suppressing an answer does not establish deletion of training influence or withdrawal of its supporting evidence.",
+          "paper_url": "https://arxiv.org/abs/2404.05868",
+          "publication": "NPO paper: GA baseline",
+          "detail_tabs": [
+            "Objective",
+            "Weight Update",
+            "Preservation Mechanism",
+            "Limitations"
+          ]
+        },
+        "npo": {
+          "label": "NPO",
+          "title": "Negative Preference Optimization",
+          "summary": "Reduce forget-response likelihood relative to a fixed reference, with smaller gradient contributions once the ratio becomes low.",
+          "objective": "\\mathcal L_{\\mathrm{NPO}}=-\\frac{2}{\\beta}\\mathbb E_{(x,y)\\sim D_f}\\log\\sigma\\!\\left(-\\beta\\log\\frac{\\pi_\\theta(y\\mid x)}{\\pi_{\\mathrm{ref}}(y\\mid x)}\\right)",
+          "formula": "\\theta_{s+1}=\\theta_s-\\eta\\nabla_\\theta\\left(\\mathcal L_{\\mathrm{NPO}}+\\lambda\\mathcal L_r\\right)",
+          "formula_explanation": "The ratio uses conditional sequence probabilities. The gradient multiplier on ∇log πθ is 2rᵝ/(1+rᵝ), where r = πθ/πref. It shrinks as r decreases. The retain term shown is an optional augmentation, not part of bare NPO.",
+          "terms": [
+            {
+              "id": "0",
+              "name": "πθ, πref",
+              "description": "Current model and frozen pre-unlearning reference."
+            },
+            {
+              "id": "1",
+              "name": "β > 0, σ",
+              "description": "Preference scale and logistic sigmoid."
+            },
+            {
+              "id": "2",
+              "name": "Df, Lr",
+              "description": "Forget examples and an optional retain-set loss."
+            }
+          ],
+          "preservation": "Bare NPO controls the forget gradient rather than explicitly preserving retain behavior. Retain loss or KL augmentation must be stated separately.",
+          "limitations": "Lower likelihood is not a guarantee of retraining equivalence, privacy, or irrecoverable information removal. Machine unlearning targets training influence; logical belief retraction is a different requirement.",
+          "paper_url": "https://arxiv.org/abs/2404.05868",
+          "publication": "COLM 2024",
+          "detail_tabs": [
+            "Objective",
+            "Weight Update",
+            "Preservation Mechanism",
+            "Limitations"
+          ]
+        }
+      },
+      "method_order": [
+        "ga_graddiff",
+        "npo"
+      ]
+    },
+    "continual_learning": {
+      "label": "Continual Learning",
+      "methods": {
+        "ewc": {
+          "label": "EWC",
+          "title": "Elastic Weight Consolidation",
+          "summary": "Learn a new task while penalizing movement in parameters estimated to matter for an earlier task.",
+          "objective": "\\mathcal L_{\\mathrm{EWC}}=\\mathcal L_{\\mathrm{new}}+\\frac{\\lambda}{2}\\sum_i F_i(\\theta_i-\\theta_i^*)^2",
+          "formula": "\\theta_{i,s+1}=\\theta_{i,s}-\\eta\\left[\\partial_i\\mathcal L_{\\mathrm{new}}+\\lambda F_i(\\theta_{i,s}-\\theta_i^*)\\right]",
+          "formula_explanation": "This is the one-previous-task, diagonal-Fisher formulation. Multiple tasks require an explicit consolidation scheme. A gradient step is shown for intuition; optimizers may differ.",
+          "terms": [
+            {
+              "id": "0",
+              "name": "θ*",
+              "description": "Parameters after learning the previous task."
+            },
+            {
+              "id": "1",
+              "name": "Fi",
+              "description": "Diagonal Fisher estimate of previous-task parameter importance, not a truth score."
+            },
+            {
+              "id": "2",
+              "name": "λ",
+              "description": "Strength of consolidation."
+            }
+          ],
+          "preservation": "Use a Fisher-weighted quadratic penalty: movement on high-importance coordinates costs more.",
+          "limitations": "Diagonal and local approximations limit protection. EWC preserves prior task performance; it does not judge whether older knowledge remains valid under new evidence. Continual learning need not be non-monotonic.",
+          "paper_url": "https://doi.org/10.1073/pnas.1611835114",
+          "publication": "PNAS 2017",
+          "detail_tabs": [
+            "Objective",
+            "Weight Update",
+            "Preservation Mechanism",
+            "Limitations"
+          ]
+        }
+      },
+      "method_order": [
+        "ewc"
+      ]
+    }
+  }
+}

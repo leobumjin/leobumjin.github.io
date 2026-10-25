@@ -1,0 +1,16 @@
+.scurvy-models { margin: 2rem 0; padding: 1.25rem; border: 1px solid var(--global-divider-color); color: var(--global-text-color); }
+.scurvy-models .scurvy-models-title { margin: 0 0 1rem; font-size: 1.05rem; font-weight: 600; }
+.scurvy-observation { display: grid; gap: .3rem; border-left: 3px solid currentColor; padding: .65rem 1rem; margin-bottom: 1.25rem; }
+.scurvy-model-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.scurvy-model { border-top: 3px solid var(--scurvy-accent); padding: .9rem; background: color-mix(in srgb, var(--scurvy-accent) 6%, transparent); }
+.scurvy-hypothesis { --scurvy-accent: #ad6350; }
+.scurvy-current { --scurvy-accent: #347c80; }
+html[data-theme='dark'] .scurvy-hypothesis { --scurvy-accent: #e6a08b; }
+html[data-theme='dark'] .scurvy-current { --scurvy-accent: #7bc5c9; }
+.scurvy-models .scurvy-model h3 { font-size: 1rem; margin: 0 0 1rem; }
+.scurvy-models .scurvy-model ol { padding-left: 1.3rem; margin: 0; }
+.scurvy-models .scurvy-model li { padding-left: .25rem; margin-bottom: 1rem; line-height: 1.55; font-size: .9rem; }
+.scurvy-model li span { display: block; font-size: .75rem; color: var(--global-text-color); opacity: .8; margin-bottom: .2rem; }
+.scurvy-models .scurvy-model p { border-top: 1px solid var(--global-divider-color); padding-top: .75rem; margin: 0; font-size: .85rem; line-height: 1.6; }
+.scurvy-models figcaption { margin-top: 1rem; font-size: .8rem; line-height: 1.6; text-align: left; }
+@media (max-width: 600px) { .scurvy-model-grid { grid-template-columns: 1fr; } .scurvy-models { padding: 1rem; } }

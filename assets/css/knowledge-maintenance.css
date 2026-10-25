@@ -1,0 +1,10 @@
+.weight-update-symbols { font-size: .85rem; line-height: 1.6; margin-top: 1.2rem; }
+.weight-update-symbols dt { margin-top: .7rem; font-weight: 600; }
+.weight-update-symbols dd { margin: .15rem 0 0; color: var(--global-text-color-light); }
+.support-demo { border: 1px solid var(--global-divider-color); padding: 1.25rem; margin: 2rem 0; }
+.support-demo-controls, .support-demo-flow { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+.support-demo-controls label { display: flex; gap: .5rem; align-items: center; cursor: pointer; font-size: .9rem; }
+.support-demo-flow > * { padding: .6rem .9rem; border: 1px solid var(--global-divider-color); }
+.support-demo-flow [data-valid='false'] { text-decoration: line-through; opacity: .6; }
+.support-demo #support-explanation, .support-demo figcaption { font-size: .85rem; line-height: 1.6; text-align: left; }
+@media (max-width: 600px) { .support-demo { padding: 1rem; } .support-demo-flow { flex-direction: column; } }
