@@ -93,15 +93,13 @@ An LLM can generate a trajectory that is accepted only after symbolic execution,
 
 [OpenThoughts3 (2025)](https://arxiv.org/abs/2506.04178) combines question sourcing, filtering, teacher traces, and answer filtering. [DeepSeek-R1 (2025)](https://doi.org/10.1038/s41586-025-09422-z) combines verifiable rewards, rejection sampling, and supervised fine-tuning. These are not exceptions to the taxonomy: their **generation is LLM-based**, while their **verification is independent**.
 
-### Evaluating Capability Transfer
+### ContinuousBench: What Synthetic Data Can—and Cannot—Transfer
 
-**[ContinuousBench (2026)](https://arxiv.org/abs/2606.01849)** asks a complementary question: can differentially private synthetic text transfer genuinely new knowledge or capabilities to a model? Its continuously refreshed evaluation settings—including procedurally generated knowledge and recent news—help distinguish apparent post-training gains from performance on material already familiar to the model. The benchmark is therefore especially relevant when assessing whether synthetic reasoning data teaches transferable operations rather than distribution-specific patterns.
+**[ContinuousBench (2026)](https://arxiv.org/abs/2606.01849)** reframes synthetic data as an information-transfer mechanism. Its value is not that generated text resembles the original corpus, but that training on it gives a model access to useful knowledge or capabilities that it did not previously have.
 
-Its central reported ordering is:
+Its key question is whether synthetic text transfers corpus-specific knowledge rather than merely matching style or improving familiar benchmarks. **Differential privacy (DP)** limits the influence of each individual record, while facts repeated across many records can in principle remain as population-level knowledge.
 
-> **No training** < **Train on DP synthetic text** < **Train on the real corpus**
-
-In other words, differentially private synthetic text can convey useful signal relative to no additional training, while still transferring less capability than the underlying real corpus.
+The main result is cautionary: non-private synthetic text transfers substantial knowledge, but current DP synthesis preserves much less, even at ε = 100. For synthetic reasoning data, the lesson is simple: fluency and scale are not enough—evaluation should test transfer to unseen rules, entities, and reasoning structures.
 
 ## 4. A Unified Taxonomy
 
@@ -221,8 +219,6 @@ Reasoning diversity is not exclusive to LLM-generated data. A formal generator c
 - **Linguistic diversity:** alternative expressions of equivalent problems or steps.
 
 Surface variation is not necessarily meaningful reasoning variation. Stronger verification does not automatically improve generalization either: a verifier may check only final answers, and strict filtering may remove unusual but valid solutions. Reliability, diversity, and downstream generalization are empirical properties of a pipeline, not consequences of its label.
-
-ContinuousBench makes this issue concrete: synthetic text can be fluent and internally consistent without transferring useful new knowledge or capability. For synthetic reasoning data, an analogous evaluation should vary unseen predicates, entities, rule compositions, and natural-language realizations—not only templates or surface wording.
 
 ### Note: Researchers to Follow
 
