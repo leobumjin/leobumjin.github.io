@@ -1,6 +1,13 @@
 {
   "posts": [
     {
+      "title": "Synthetic Reasoning Data: Formal Generation, LLM Synthesis, and Verification",
+      "date": "2026-10-27",
+      "media": "Research",
+      "tags": ["Synthetic Data", "Reasoning", "LLM"],
+      "en_link": "technical_en/2026-10-27-synthetic-reasoning-data.md"
+    },
+    {
         "title": "Rank-One Matrix Decomposition: Covariance Matrix Perspective",
         "date": "2026-10-25",
         "media": "Literature",
