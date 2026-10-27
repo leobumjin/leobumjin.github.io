@@ -93,6 +93,16 @@ An LLM can generate a trajectory that is accepted only after symbolic execution,
 
 [OpenThoughts3 (2025)](https://arxiv.org/abs/2506.04178) combines question sourcing, filtering, teacher traces, and answer filtering. [DeepSeek-R1 (2025)](https://doi.org/10.1038/s41586-025-09422-z) combines verifiable rewards, rejection sampling, and supervised fine-tuning. These are not exceptions to the taxonomy: their **generation is LLM-based**, while their **verification is independent**.
 
+### Evaluating Capability Transfer
+
+**[ContinuousBench (2026)](https://arxiv.org/abs/2606.01849)** asks a complementary question: can differentially private synthetic text transfer genuinely new knowledge or capabilities to a model? Its continuously refreshed evaluation settings—including procedurally generated knowledge and recent news—help distinguish apparent post-training gains from performance on material already familiar to the model. The benchmark is therefore especially relevant when assessing whether synthetic reasoning data teaches transferable operations rather than distribution-specific patterns.
+
+Its central reported ordering is:
+
+> **No training** < **Train on DP synthetic text** < **Train on the real corpus**
+
+In other words, differentially private synthetic text can convey useful signal relative to no additional training, while still transferring less capability than the underlying real corpus.
+
 ## 4. A Unified Taxonomy
 
 The two paradigms can be subdivided by the mechanism that produces the reasoning data. Verification applies across both columns.
@@ -211,4 +221,11 @@ Reasoning diversity is not exclusive to LLM-generated data. A formal generator c
 - **Linguistic diversity:** alternative expressions of equivalent problems or steps.
 
 Surface variation is not necessarily meaningful reasoning variation. Stronger verification does not automatically improve generalization either: a verifier may check only final answers, and strict filtering may remove unusual but valid solutions. Reliability, diversity, and downstream generalization are empirical properties of a pipeline, not consequences of its label.
+
+ContinuousBench makes this issue concrete: synthetic text can be fluent and internally consistent without transferring useful new knowledge or capability. For synthetic reasoning data, an analogous evaluation should vary unseen predicates, entities, rule compositions, and natural-language realizations—not only templates or surface wording.
+
+### Note: Researchers to Follow
+
+- **Gautam Kamath** (NYU Courant; Vector Institute) studies the reliability of synthetic data from a theoretical perspective: whether generated data transfers genuinely new knowledge or capabilities, and how privacy, robustness, and data poisoning affect that transfer.
+- **Shubham Toshniwal** (Databricks Mosaic AI) studies synthetic data for reasoning training, including teacher-generated mathematical supervision, data filtering and selection, reinforcement learning, and agentic reasoning. His work on OpenMathInstruct-2 and KARL is especially relevant to synthetic reasoning pipelines.
 
