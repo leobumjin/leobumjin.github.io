@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Synthetic Reasoning Data: Formal Generation, LLM Synthesis, and Verification"
+mini-title: Verifiable Reasoning Data
 permalink: /blog/2026/synthetic-reasoning-data-en/
 ---
 

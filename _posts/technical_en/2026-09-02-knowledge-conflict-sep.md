@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Knowledge Revision Survey - Fable/AttributeConflict
+mini-title: Knowledge Conflict Survey
 permalink: /blog/2026/knowledge-conflict-sep-en/
 ---
 

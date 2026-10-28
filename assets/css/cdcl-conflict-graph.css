@@ -1,0 +1,112 @@
+.cdcl-conflict-graph {
+  --cdcl-assumption: #2f63d7;
+  --cdcl-derived: #647b98;
+  --cdcl-conflict: #bd3548;
+  --cdcl-edge: #9aa9ba;
+  margin: 2.5rem 0;
+  padding: clamp(1rem, 3vw, 1.8rem) clamp(0.4rem, 2.5vw, 1.4rem) 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--global-divider-color) 78%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--global-divider-color) 78%, transparent);
+  color: var(--global-text-color);
+}
+
+.cdcl-conflict-graph__canvas {
+  position: relative;
+  width: min(100%, 54rem);
+  height: clamp(27rem, 52vw, 35rem);
+  margin: 0 auto;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--cdcl-assumption) 8%, transparent), transparent 38%);
+}
+
+.cdcl-conflict-graph__edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cdcl-conflict-graph__edges path {
+  fill: none;
+  stroke: var(--cdcl-edge);
+  stroke-linecap: round;
+  stroke-width: 6;
+}
+
+.cdcl-conflict-graph__node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(8.7rem, 31%, 14.5rem);
+  height: clamp(4.65rem, 8vw, 5.4rem);
+  padding: 0.62rem 0.8rem;
+  border: 1px solid color-mix(in srgb, #ffffff 28%, transparent);
+  border-radius: 1.15rem;
+  box-shadow: 0 0.65rem 1.45rem color-mix(in srgb, #192839 19%, transparent);
+  box-sizing: border-box;
+  color: #fff;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  line-height: 1.1;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.cdcl-conflict-graph__node span,
+.cdcl-conflict-graph__node strong {
+  color: inherit;
+  font-family: inherit !important;
+}
+
+.cdcl-conflict-graph__node span {
+  margin-bottom: 0.22rem;
+  font-size: clamp(0.54rem, 1.3vw, 0.67rem);
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  opacity: 0.78;
+  text-transform: uppercase;
+}
+
+.cdcl-conflict-graph__node strong {
+  font-size: clamp(1rem, 2.7vw, 1.68rem);
+  font-weight: 680;
+  letter-spacing: -0.035em;
+}
+
+.cdcl-conflict-graph__node--assumption { top: 13%; left: 50%; background: var(--cdcl-assumption); }
+.cdcl-conflict-graph__node--derived { background: var(--cdcl-derived); }
+.cdcl-conflict-graph__node--b { top: 48%; left: 23%; }
+.cdcl-conflict-graph__node--c { top: 73%; left: 23%; }
+.cdcl-conflict-graph__node--d { top: 48%; left: 77%; }
+.cdcl-conflict-graph__node--conflict { top: 92%; left: 50%; background: var(--cdcl-conflict); }
+
+.cdcl-conflict-graph figcaption {
+  width: min(100%, 54rem);
+  margin: 0.95rem auto 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: center;
+}
+
+html[data-theme='dark'] .cdcl-conflict-graph {
+  --cdcl-assumption: #5a88f2;
+  --cdcl-derived: #778ca6;
+  --cdcl-conflict: #dc6170;
+  --cdcl-edge: #93a3b6;
+}
+
+@media (max-width: 600px) {
+  .cdcl-conflict-graph { padding-inline: 0; }
+  .cdcl-conflict-graph__canvas { height: clamp(24rem, 125vw, 29rem); }
+  .cdcl-conflict-graph__edges path { stroke-width: 4.5; }
+  .cdcl-conflict-graph__node { width: 39%; border-radius: 0.95rem; }
+  .cdcl-conflict-graph__node--b,
+  .cdcl-conflict-graph__node--c { left: 24%; }
+  .cdcl-conflict-graph__node--d { left: 76%; }
+  .cdcl-conflict-graph__node span { font-size: 0.5rem; }
+  .cdcl-conflict-graph__node strong { font-size: clamp(0.88rem, 4.3vw, 1.12rem); }
+}

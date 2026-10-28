@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Consistency vs. Foundations vs. Coherence in Belief Systems"
+mini-title: How Beliefs Change
 permalink: /blog/2026/consistency-coherence-en/
 ---
 

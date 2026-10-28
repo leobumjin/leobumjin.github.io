@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Causal Abstraction as Intervention-Aligned Representation Search
+mini-title: Causality and Representation
 permalink: /blog/2025/causality-interpretability-kr/
 ---
 

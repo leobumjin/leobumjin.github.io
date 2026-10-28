@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Verified AI - Formalization, Theorem Proving, and Vericoding
+mini-title: Formal Methods for AI
 permalink: /blog/2026/verified-ai-formalization-kr/
 ---
 
