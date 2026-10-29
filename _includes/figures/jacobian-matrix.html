@@ -1,0 +1,8 @@
+<div class="jl-demo" data-jacobian-matrix data-lang="{{ include.lang | default: 'en' }}">
+  <section class="jl-matrix-card" aria-label="Matrix comparison">
+    <div class="jl-matrix-heading"><strong>{% if include.lang == 'kr' %}행렬 × hidden{% else %}Matrix × hidden{% endif %}</strong><div class="jl-matrix-switch" role="group" aria-label="Matrix lens"><button type="button" data-matrix-route="direct" aria-pressed="false">Logit Lens</button><button type="button" data-matrix-route="jacobian" aria-pressed="true">J-space</button></div></div>
+    <p class="jl-note">{% if include.lang == 'kr' %}독립적인 예시 · 고정된 h와 임의의 J 행렬{% else %}Independent example · fixed h and an arbitrary J matrix.{% endif %}</p>
+    <div class="jl-formula" data-jl-formula></div>
+    <div class="jl-product" data-jl-product aria-label="Matrix times hidden equals response"></div>
+  </section>
+</div>

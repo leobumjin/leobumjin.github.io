@@ -1,6 +1,14 @@
 {
   "posts": [
     {
+      "title": "The Jacobian Lens: Response Magnitude and Coherence",
+      "date": "2026-10-29",
+      "media": "Literature",
+      "tags": ["Interpretability", "Linear Algebra", "SVD"],
+      "en_link": "technical_en/2026-10-29-jacobian-lens.md",
+      "kr_link": "technical_kr/2026-10-29-jacobian-lens.md"
+    },
+    {
       "title": "Conflict-Driven Clause Learning: Reasoning Through Failure",
       "date": "2026-10-28",
       "media": "Literature",

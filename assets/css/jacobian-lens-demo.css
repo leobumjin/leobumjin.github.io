@@ -1,0 +1,87 @@
+.jl-demo { --jl-red:#a5133b; --jl-blue:#315b88; margin:2rem 0; padding:1.2rem; border:1px solid var(--global-divider-color,#ddd); border-radius:12px; color:var(--global-text-color,#17253b); font:14px/1.6 system-ui,sans-serif; }
+html[data-theme='dark'] .jl-demo { --jl-red:#f18ba8; --jl-blue:#8db9ea; }
+.jl-demo .jl-heading { display:flex; flex-direction:column; gap:.3rem; margin-bottom:1.2rem; }
+.jl-demo .jl-heading strong { color:var(--jl-red); font-size:1.4rem; }
+.jl-demo button { font:inherit; color:inherit; background:var(--global-bg-color,#fff); border:1px solid var(--global-divider-color,#ccd4df); border-radius:6px; cursor:pointer; }
+.jl-demo button:focus-visible { outline:3px solid var(--jl-blue); outline-offset:3px; }
+.jl-demo button[aria-pressed='true'] { color:var(--jl-red); border-color:var(--jl-red); background:color-mix(in srgb,var(--jl-red) 10%,var(--global-bg-color,#fff)); box-shadow:inset 0 0 0 1px var(--jl-red); }
+.jl-demo .jl-graph { position:relative; height:270px; margin:1.5rem 0 0; }
+.jl-demo .jl-edges { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.jl-demo .jl-edges path { fill:none; stroke:var(--jl-blue); stroke-width:.7; opacity:.16; stroke-dasharray:4 3; }
+.jl-demo .jl-edges path.is-active { stroke:var(--jl-red); stroke-width:1.5; opacity:.65; }
+.jl-demo.jl-direct .jl-edges path { stroke:#999; opacity:.14; }
+.jl-demo.jl-direct .jl-edges path.is-active { stroke:#999; opacity:.3; }
+.jl-demo.jl-direct .jl-node[data-output][aria-pressed='true'] { color:var(--global-text-color,#555); border-color:#888; background:color-mix(in srgb,#888 24%,var(--global-bg-color,#fff)); box-shadow:inset 0 0 0 1px #888; }
+.jl-demo .jl-level { height:90px; position:relative; }
+.jl-demo .jl-level-label { position:absolute; top:-16px; font-size:.6rem; color:var(--jl-blue); }
+.jl-demo .jl-nodes { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.6rem; padding:5px 0; }
+.jl-demo .jl-node { height:50px; padding:.1rem; line-height:1.4; }
+.jl-demo .jl-node span { display:block; font-size:.85rem; }
+.jl-demo .jl-node small { display:block; font-size:.65rem; }
+.jl-demo .jl-node:disabled { opacity:.35; cursor:default; }
+.jl-demo .jl-status,.jl-demo .jl-note { color:var(--global-text-color-light,#657084); font-size:.7rem; }
+.jl-demo .jl-switch { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin:1rem 0; }
+.jl-demo .jl-switch button { padding:.65rem .3rem; }
+.jl-demo .jl-formula { font:italic 1.1rem/1.6 Georgia,serif; margin:1rem 0; }
+.jl-demo .jl-product { display:flex; align-items:center; justify-content:space-between; gap:.6rem; overflow-x:auto; padding:.5rem 0 1rem; }
+.jl-demo .jl-product > b { color:var(--jl-blue); }
+.jl-demo .jl-operand { flex-shrink:0; text-align:center; }
+.jl-demo .jl-operand > span { font-size:.6rem; color:var(--jl-blue); }
+.jl-demo .jl-bracket { display:grid; border-left:1px solid var(--jl-blue); border-right:1px solid var(--jl-blue); padding:.3rem; column-gap:.6rem; margin-top:.6rem; font: .75rem/2.4 ui-monospace,monospace; }
+.jl-demo .jl-decode { border-top:1px solid var(--global-divider-color,#ddd); padding:1rem 0; text-align:center; font-size:.65rem; color:var(--jl-red); }
+.jl-demo .jl-bar-row { display:grid; grid-template-columns:4rem minmax(0,1fr) 3.2rem; align-items:center; gap:.6rem; font-size:.8rem; margin:.6rem 0; }
+.jl-demo .jl-bar-row > span { white-space:nowrap; overflow-wrap:normal; word-break:normal; }
+.jl-demo .jl-track { height:7px; background:color-mix(in srgb,currentColor 9%,transparent); border-radius:2px; }
+.jl-demo .jl-track i { display:block; height:100%; border-radius:2px; transition:width .15s; }
+.jl-demo summary { cursor:pointer; font-size:.75rem; }
+.jl-demo details p { font-size:.7rem; }
+@media(max-width:540px) { .jl-demo { padding:.8rem; } .jl-demo .jl-nodes { gap:.3rem; } .jl-demo .jl-bracket { font-size:.65rem; column-gap:.35rem; padding:.2rem; } .jl-demo .jl-product { gap:.4rem; } }
+
+.jl-demo .jl-bars { margin:1.2rem 0; }
+.jl-demo .jl-pipeline { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items:stretch; gap:.3rem; margin:1.2rem 0; }
+.jl-demo .jl-flow-block { display:flex; align-items:center; justify-content:center; min-width:0; padding:.65rem .15rem; border:1px solid var(--jl-blue); border-radius:5px; background:color-mix(in srgb,var(--jl-blue) 7%,var(--global-bg-color,#fff)); }
+.jl-demo .jl-flow-block strong { font:500 .75rem/1.4 system-ui,sans-serif; white-space:nowrap; }
+.jl-demo .jl-flow-block small { display:none; }
+.jl-demo .jl-logits,.jl-demo .jl-softmax { border-color:var(--jl-red); background:color-mix(in srgb,var(--jl-red) 10%,var(--global-bg-color,#fff)); }
+.jl-demo .jl-flow-arrow { align-self:center; color:var(--jl-red); font:.8rem/1 system-ui,sans-serif; }
+@media(max-width:540px) { .jl-demo .jl-pipeline { gap:.15rem; } .jl-demo .jl-flow-block strong { font-size:.56rem; } .jl-demo .jl-flow-arrow { font-size:.65rem; } }
+.jl-demo .jl-graph { margin-top:0; padding-top:22px; height:292px; box-sizing:border-box; }
+.jl-demo .jl-edges { top:22px; height:270px; }
+.jl-demo .jl-level-label { background:var(--global-bg-color,#fff); }
+.jl-demo .jl-network { position:relative; padding-bottom:14px; }
+.jl-demo .jl-readout-wire { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:2; }
+.jl-demo .jl-readout-wire path { fill:none; stroke:var(--jl-red); stroke-width:1.3; stroke-linejoin:round; stroke-linecap:round; }
+
+.jl-demo .jl-matrix-card { margin:1.2rem 0; padding:1rem; border:1px solid var(--global-divider-color,#ddd); border-radius:10px; background:color-mix(in srgb,var(--jl-blue) 3%,var(--global-bg-color,#fff)); }
+.jl-demo .jl-matrix-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.7rem; }
+.jl-demo .jl-matrix-heading > strong { font:500 .85rem/1.4 system-ui,sans-serif; }
+.jl-demo .jl-matrix-switch { display:flex; gap:.3rem; }
+.jl-demo .jl-matrix-switch button { font-size:.75rem; padding:.4rem .7rem; }
+.jl-demo .jl-matrix-card .jl-formula { font:italic 1rem/1.5 Georgia,serif; margin:.8rem 0; }
+.jl-demo .jl-product > b { font:500 2rem/1 system-ui,sans-serif; flex-shrink:0; padding:0 .35rem; }
+.jl-demo .jl-annotated-matrix { position:relative; flex-shrink:0; }
+.jl-demo .jl-identity-matrix { flex-shrink:0; }
+.jl-demo .jl-identity-matrix .jl-operand > span,
+.jl-demo .jl-annotated-matrix .jl-operand > span { color:var(--jl-red); font:600 .95rem/1.5 system-ui,sans-serif; }
+.jl-demo .jl-underbrace { position:absolute; top:100%; left:0; width:100%; height:18px; fill:none; stroke:var(--jl-red); stroke-width:1.5; }
+.jl-demo .jl-matrix-meaning { position:absolute; top:calc(100% + 22px); left:0; width:100%; margin:0; color:var(--jl-red); font:600 .75rem/1.6 system-ui,sans-serif; text-align:center; }
+.jl-demo .jl-matrix-card .jl-product { padding-bottom:7rem; }
+.jl-demo .jl-read-arrow { flex-shrink:0; color:var(--jl-red); font:1.5rem/1 system-ui,sans-serif; }
+.jl-demo .jl-read-unembedding { flex-shrink:0; border:1px solid var(--jl-red); border-radius:6px; padding:.6rem .5rem; color:var(--jl-red); text-align:center; background:color-mix(in srgb,var(--jl-red) 6%,var(--global-bg-color,#fff)); }
+.jl-demo .jl-read-unembedding span,.jl-demo .jl-read-unembedding small { display:block; font:.65rem/1.5 system-ui,sans-serif; }
+.jl-demo .jl-read-unembedding strong { display:block; font:600 .75rem/1.5 system-ui,sans-serif; }
+@media(max-width:540px) { .jl-demo .jl-matrix-card { padding:.65rem; } .jl-demo .jl-product > b { font-size:1.6rem; padding:0 .1rem; } }
+
+.jl-demo .jl-token-labels { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.6rem; text-align:center; padding:.1rem 0 .65rem; font:500 1.15rem/1.5 system-ui,sans-serif; }
+.jl-demo .jl-node span { font-size:1rem; }
+@media(max-width:540px) { .jl-demo .jl-token-labels { gap:.3rem; font-size:1rem; } }
+/* Keep explanatory text and matrix labels readable at article scale. */
+.post-content .jl-demo :is(p, li, blockquote, h2, h3, h4, a, strong, em) { font-family:'AritaBuriKR',serif !important; }
+.jl-demo .jl-status,
+.jl-demo .jl-note,
+.jl-demo details p { font-size:.9rem; line-height:1.75; }
+.jl-demo summary { font-size:.95rem; line-height:1.6; }
+.jl-demo .jl-matrix-heading > strong { font-size:1.1rem; line-height:1.5; }
+.jl-demo .jl-operand > span { font-size:.9rem; line-height:1.6; }
+.jl-demo .jl-identity-matrix .jl-operand > span,
+.jl-demo .jl-annotated-matrix .jl-operand > span { font-size:1.05rem; }

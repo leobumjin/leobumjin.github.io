@@ -1,0 +1,926 @@
+.graphDemo {
+  display: grid;
+}
+.graphScroller {
+  overflow-x: auto;
+}
+.graphWorkspace {
+  min-width: 600px;
+  container-type: inline-size;
+}
+.graphInstructions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.graphCanvas {
+  position: relative;
+}
+.graphEdges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.inactiveEdge {
+  fill: none;
+}
+.activeEdge {
+  fill: none;
+}
+.lensEdge {
+  fill: none;
+  stroke-dasharray: 1.1 0.6;
+}
+.hiddenReadEdge {
+  fill: none;
+  color: #edc486;
+}
+.directLensEdge {
+  fill: none;
+  color: #c1ade5;
+}
+.chosenRoute {
+  opacity: 1;
+}
+.hiddenNode {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 12%;
+  height: 8%;
+  border: 1px solid #58646d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  z-index: 1;
+  padding: 2px;
+}
+.hiddenNode > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+}
+.hiddenNode small {
+  font-size: 10px;
+}
+.focusNode {
+  outline-offset: 3px;
+}
+.nodeValues {
+  display: flex;
+  align-items: center;
+}
+.nodeValues i {
+  border-radius: 50%;
+}
+.graphLayerName {
+  position: absolute;
+  left: 5.5%;
+  pointer-events: none;
+}
+.graphToken {
+  position: absolute;
+  bottom: -13px;
+  transform: translateX(-50%);
+  font-size: 15px;
+  text-align: center;
+}
+.graphToken small {
+  display: block;
+  font-size: 10px;
+  margin-top: 4px;
+}
+.graphLegend {
+  display: flex;
+  flex-wrap: wrap;
+}
+.averageControls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.averageControls button {
+  border: 1px solid #52616a;
+}
+.graphHint {
+  margin: 12px 0 0;
+  word-break: keep-all;
+}
+.decoderNode {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  width: 24%;
+  height: 8%;
+  border: 1px solid #bba786;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.decoderNode > span {
+  font-size: clamp(13px, 2.2cqw, 19px);
+  line-height: 1.1;
+}
+.decoderNode small {
+  font-size: clamp(8px, 1.3cqw, 11px);
+}
+.decoderNode:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.unembeddingNode {
+  width: 27%;
+  border: 1.5px solid #edc486;
+}
+.unembeddingNode > span {
+  font-family: Georgia, serif;
+  font-size: clamp(20px, 3.2cqw, 27px);
+}
+.poolNode {
+  width: 28%;
+}
+.logitsNode {
+  width: 23%;
+}
+.softmaxNode {
+  width: 25%;
+}
+.liftedHiddenNode {
+  width: 24%;
+}
+.liftedHiddenNode > small {
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(8px, 1.3cqw, 11px);
+  white-space: pre;
+}
+.routeLabel {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  border: 0;
+  border-radius: 3px;
+}
+.graphReadout {
+  container-type: inline-size;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #ffffff18;
+  padding-left: 28px;
+}
+.readoutTabs,
+.lensMode {
+  display: flex;
+  gap: 18px;
+  border-bottom: 1px solid #ffffff24;
+  padding-bottom: 10px;
+  flex-wrap: wrap;
+}
+.readoutTabs button,
+.lensMode button {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 5px 0;
+}
+.readoutTabs button[aria-pressed="true"],
+.lensMode button[aria-pressed="true"] {
+  color: var(--accent);
+  box-shadow: 0 2px var(--accent);
+}
+.lensMode {
+  border: 0;
+  padding: 0;
+  gap: 18px;
+}
+.graphReadout section + section {
+  border-top: 1px solid #ffffff2a;
+  padding-top: 16px;
+}
+.graphReadout h2 {
+  font-size: 17px;
+  font-weight: 500;
+  margin: 0;
+}
+.graphReadout h2 small {
+  font-size: 11px;
+  float: right;
+  padding-top: 4px;
+}
+.graphReadout section > p {
+  font-size: clamp(19px, 4.5cqw, 27px);
+  color: var(--accent);
+  margin: 12px 0;
+  overflow-x: auto;
+}
+.graphReadout :global(.katex) {
+  font-size: 1em;
+}
+.graphMatrix {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.graphMatrix th,
+.graphMatrix td {
+  padding: 9px 8px;
+  text-align: center;
+  border-bottom: 1px solid #ffffff10;
+}
+.graphMatrix th {
+  font-size: 11px;
+  font-weight: 400;
+}
+.graphReadout .matrixDetail {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+.emptyMatrix {
+  min-height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+  border: 1px dashed #ffffff30;
+}
+.graphReadout .lensPanel {
+  border: 0;
+  padding: 0;
+}
+.routeSwitch {
+  display: flex;
+  margin: 10px 0;
+}
+.routeSwitch button {
+  border: 1px solid #53616a;
+}
+.lensInputControls {
+  min-height: 38px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+.lensInputControls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lensInputControls select {
+  border: 1px solid #52646b;
+  border-radius: 3px;
+  padding: 5px;
+}
+.lensInputControls input {
+  width: 100px;
+}
+.lensFlow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lensFlow > div > span {
+  display: block;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.flowOperator {
+  font-size: 21px;
+}
+.cleanVector,
+.miniMatrix {
+  position: relative;
+  display: grid;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-left: 1px solid #a5bcc6;
+  border-right: 1px solid #a5bcc6;
+  font-variant-numeric: tabular-nums;
+  font-size: 15px;
+  text-align: right;
+}
+.cleanVector:before,
+.miniMatrix:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(#a5bcc6, #a5bcc6) left top/5px 1px no-repeat,
+    linear-gradient(#a5bcc6, #a5bcc6) right top/5px 1px no-repeat,
+    linear-gradient(#a5bcc6, #a5bcc6) left bottom/5px 1px no-repeat,
+    linear-gradient(#a5bcc6, #a5bcc6) right bottom/5px 1px no-repeat;
+  pointer-events: none;
+}
+.miniMatrix {
+  grid-template-columns: repeat(4, 1fr);
+}
+.cleanVector {
+  font-size: clamp(12px, 3.2cqw, 16px);
+}
+.decodeStep {
+  text-align: center;
+  border-top: 1px solid #ffffff20;
+}
+.logitBars {
+  display: grid;
+}
+.logitBars > div {
+  display: grid;
+  grid-template-columns: 34px 1fr 54px;
+  align-items: center;
+  gap: 10px;
+}
+.logitBars b {
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  text-align: right;
+}
+.logitTrack {
+  position: relative;
+}
+.logitBar {
+  position: absolute;
+}
+.zeroLine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 1px;
+}
+.graphReadout .lensCaveat {
+  margin: 18px 0 0;
+  word-break: keep-all;
+}
+.noSelection {
+  font-size: 12px;
+}
+@media (max-width: 1150px) {
+  .graphReadout {
+    border-left: 0;
+    border-top: 1px solid #ffffff18;
+  }
+  .graphWorkspace {
+    max-width: 900px;
+    margin: auto;
+  }
+  .logitBars {
+    max-width: 600px;
+  }
+}
+.graphDemo {
+  grid-template-columns: minmax(0, 1.6fr) minmax(360px, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+.graphScroller {
+  background: #182024;
+  border: 1px solid #2c383d;
+  border-radius: 12px;
+  padding: 22px 18px 24px;
+}
+.graphInstructions {
+  align-items: center;
+  font-size: 12px;
+  padding: 0 4px;
+}
+.graphInstructions strong {
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+.graphInstructions label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+}
+.graphCanvas {
+  margin-top: 26px;
+  height: 62cqw;
+}
+.graphLayerName {
+  font-size: 10px;
+  letter-spacing: 0.025em;
+}
+.graphReadout {
+  border: 1px solid #2c383d;
+  border-radius: 12px;
+  background: #151c1f;
+  padding: 22px;
+  gap: 20px;
+}
+.hiddenNode {
+  border-radius: 6px;
+}
+.hiddenNode > span:first-child {
+  font-weight: 500;
+  font-size: clamp(13px, 2.1cqw, 18px);
+}
+.focusNode {
+  outline: none;
+}
+.focusNode:after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid #182024;
+  border-radius: 50%;
+}
+.nodeValues {
+  gap: 4px;
+}
+.nodeValues i {
+  width: 3px;
+  height: 3px;
+}
+.decoderNode {
+  border-radius: 6px;
+}
+.liftedHiddenNode {
+  background: #302b23;
+  border-color: #9a835e;
+}
+.routeLabel {
+  background: #182024;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 3px 8px;
+  color: #dcc28e;
+}
+.directRouteLabel {
+  color: #c1b3dd;
+}
+.routeLabel[aria-pressed="true"] {
+  outline: 0;
+  background: #353124;
+  box-shadow: inset 0 0 0 1px #8d7c58;
+}
+.directRouteLabel[aria-pressed="true"] {
+  background: #2c2938;
+  box-shadow: inset 0 0 0 1px #87789f;
+}
+.lensEdge {
+  stroke-width: 0.25;
+}
+.hiddenReadEdge {
+  stroke: #c6a77c;
+  stroke-width: 0.28;
+}
+.directLensEdge {
+  stroke: #b6a4d0;
+  stroke-width: 0.28;
+}
+.chosenRoute {
+  stroke-width: 0.4;
+}
+.quietRoute {
+  opacity: 0.25;
+}
+.graphLegend {
+  border-top: 1px solid #ffffff0c;
+  padding: 15px 2px 0;
+  margin-top: 30px;
+  gap: 8px 14px;
+  font-size: 10px;
+}
+.averageControls {
+  font-size: 11px;
+  gap: 8px;
+  margin-top: 18px;
+}
+.averageControls button {
+  padding: 6px 9px;
+  border-radius: 5px;
+}
+.graphHint {
+  font-size: 11px;
+  line-height: 1.8;
+}
+.readoutTabs {
+  gap: 22px;
+  padding-bottom: 10px;
+}
+.readoutTabs button {
+  font-size: 13px;
+  padding-bottom: 8px;
+}
+.graphReadout .lensPanel > p:not(.lensCaveat) {
+  font-size: clamp(20px, 4.6cqw, 26px);
+  margin: 4px 0 22px;
+}
+.routeSwitch {
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.routeSwitch button {
+  flex: 1;
+  font-size: 12px;
+  border-radius: 6px;
+  padding: 10px;
+}
+.lensInputControls {
+  font-size: 11px;
+}
+.lensFlow {
+  padding: 24px 0;
+  gap: 9px;
+}
+.lensFlow > div > span {
+  font-size: 10px;
+}
+.miniMatrix {
+  font-size: clamp(10px, 2.65cqw, 13px);
+  gap: 9px 6px;
+}
+.cleanVector {
+  gap: 9px;
+}
+.decodeStep {
+  font-size: 11px;
+  padding: 15px 0;
+  margin-bottom: 14px;
+}
+.logitBars {
+  gap: 14px;
+}
+.logitBars > div {
+  font-size: 13px;
+}
+.logitTrack {
+  height: 8px;
+  border-radius: 2px;
+}
+.logitBar {
+  height: 8px;
+  top: 0;
+  border-radius: 2px;
+}
+.logitBars b {
+  font-size: 11px;
+}
+.advanced {
+  margin-top: 24px;
+  border-top: 1px solid #ffffff10;
+  padding-top: 14px;
+  font-size: 11px;
+}
+.advanced summary {
+  cursor: pointer;
+}
+.advanced .lensMode {
+  padding-top: 12px;
+}
+.advanced button {
+  font-size: 11px;
+}
+.graphReadout .lensCaveat {
+  font-size: 10px;
+  color: #7d949f;
+  margin-top: 16px;
+  line-height: 1.8;
+}
+@media (max-width: 1150px) {
+  .graphDemo {
+    grid-template-columns: 1fr;
+  }
+  .graphReadout {
+    max-width: none;
+    width: 100%;
+    padding: 24px;
+  }
+  .lensFlow {
+    justify-content: flex-start;
+    gap: 24px;
+  }
+  .graphReadout .lensPanel > p:not(.lensCaveat) {
+    font-size: 24px;
+  }
+  .graphCanvas {
+    height: 58cqw;
+  }
+  .graphReadout {
+    container-type: normal;
+  }
+}
+@media (max-width: 650px) {
+  .graphScroller {
+    padding: 18px 10px;
+  }
+  .graphReadout {
+    padding: 18px;
+  }
+  .lensFlow {
+    gap: 10px;
+  }
+  .miniMatrix {
+    font-size: 11px;
+  }
+  .cleanVector {
+    font-size: 14px;
+  }
+  .graphReadout .lensPanel > p:not(.lensCaveat) {
+    font-size: 19px;
+  }
+}
+.graphScroller,
+.graphReadout {
+  background: #fff;
+  border-color: #dce4ef;
+  box-shadow: none;
+}
+.graphInstructions {
+  color: #0b193c;
+}
+.graphInstructions strong {
+  font-weight: 600;
+}
+.graphInstructions label {
+  color: #40587c;
+}
+.graphInstructions input {
+  accent-color: #ac103b;
+}
+.graphLayerName {
+  color: #17477d;
+}
+.graphToken {
+  color: #0b193c;
+}
+.graphToken small {
+  color: #405b83;
+}
+.hiddenNode {
+  background: #f0f5fc;
+  border-color: #c8daf0;
+  box-shadow: none;
+}
+.hiddenNode > span:first-child {
+  color: #10234a;
+}
+.hiddenNode small {
+  color: #46628a;
+}
+.inputNode {
+  background: #f5f7fa;
+  border-color: #d5dfec;
+}
+.selectedNode {
+  background: #e9f2fe;
+  border-color: #2777d1;
+  box-shadow: 0 0 0 1px #2777d1;
+}
+.inputNode.selectedNode {
+  background: #fff4f5;
+  border-color: #af163d;
+  box-shadow: 0 0 0 1px #af163d;
+}
+.inputNode.selectedNode > span:first-child {
+  color: #940b30;
+}
+.focusNode:after {
+  background: #2869af;
+  border-color: #fff;
+}
+.activeEdge {
+  stroke: #7389aa;
+  stroke-width: 0.22;
+  color: #7389aa;
+}
+.inactiveEdge {
+  stroke: #c6d3e5;
+  stroke-width: 0.14;
+  color: #a4b6d0;
+}
+.decoderNode {
+  background: #f6e9ed;
+  border-color: #a7133a;
+  box-shadow: none;
+}
+.decoderNode > span {
+  color: #810727;
+}
+.decoderNode small {
+  color: #8b2541;
+}
+.liftedHiddenNode,
+.logitsNode,
+.softmaxNode {
+  background: #850a2b;
+  border-color: #a7133a;
+  box-shadow: 0 3px 8px #850a2b12;
+}
+.liftedHiddenNode > span,
+.logitsNode > span,
+.softmaxNode > span {
+  color: #fff;
+}
+.liftedHiddenNode small,
+.logitsNode small,
+.softmaxNode small {
+  color: #fff0f3;
+}
+.poolNode {
+  background: #1b3f69;
+  border-color: #255587;
+}
+.poolNode > span {
+  color: #fff;
+}
+.poolNode small {
+  color: #dce9fa;
+}
+.unembeddingNode {
+  background: #f0dce2;
+  border-color: #ab1139;
+}
+.unembeddingNode > span,
+.unembeddingNode small {
+  color: #87092b;
+}
+.graphCanvas
+  > .decoderNode:not(.unembeddingNode):not(.liftedHiddenNode):not(
+    .logitsNode
+  ):not(.softmaxNode):not(.poolNode) {
+  background: #eaf0f7;
+  border-color: #93a9c9;
+}
+.graphCanvas
+  > .decoderNode:not(.unembeddingNode):not(.liftedHiddenNode):not(
+    .logitsNode
+  ):not(.softmaxNode):not(.poolNode)
+  > span {
+  color: #101f43;
+}
+.graphCanvas
+  > .decoderNode:not(.unembeddingNode):not(.liftedHiddenNode):not(
+    .logitsNode
+  ):not(.softmaxNode):not(.poolNode)
+  small {
+  color: #304c75;
+}
+.hiddenReadEdge,
+.directLensEdge {
+  stroke: #8e1334;
+  color: #8e1334;
+}
+.lensEdge {
+  stroke: #385e88;
+  color: #385e88;
+}
+.routeLabel,
+.directRouteLabel {
+  background: #fff;
+  color: #8d0b30;
+  font-weight: 600;
+}
+.routeLabel[aria-pressed="true"],
+.directRouteLabel[aria-pressed="true"] {
+  background: #fff7f8;
+  box-shadow: inset 0 0 0 1px #b8274c;
+}
+.graphLegend {
+  border-color: #e5ebf4;
+  color: #4d6388;
+}
+.graphHint {
+  color: #4f6486;
+}
+.averageControls > span {
+  color: #3d5479;
+}
+.averageControls button {
+  background: #fff;
+  border-color: #ad1940;
+  color: #172b50;
+}
+.averageControls button:first-of-type {
+  background: #ab143c;
+  color: #fff;
+}
+.averageControls button:hover {
+  border-color: #760522;
+}
+.readoutTabs {
+  border-color: #dce4ee;
+}
+.readoutTabs button {
+  color: #4c6184;
+}
+.readoutTabs button[aria-pressed="true"] {
+  color: #910a30;
+  box-shadow: 0 3px #b01842;
+  font-weight: 600;
+}
+.graphReadout h2 {
+  color: #10234a;
+}
+.graphReadout h2 small {
+  color: #5b6f8d;
+}
+.graphReadout section + section {
+  border-color: #e1e8f1;
+}
+.graphReadout section > p,
+.graphReadout .lensPanel > p:not(.lensCaveat) {
+  color: #0b183a;
+}
+.routeSwitch button {
+  background: #fff;
+  border-color: #c33356;
+  color: #0b193c;
+}
+.routeSwitch button[aria-pressed="true"] {
+  background: #a5123a;
+  border-color: #a5123a;
+  color: #fff;
+}
+.lensInputControls {
+  color: #4a6185;
+}
+.lensInputControls select {
+  background: #f4f7fb;
+  border-color: #bdcbe0;
+  color: #0b193c;
+}
+.lensInputControls input {
+  accent-color: #a5123a;
+}
+.cleanVector,
+.miniMatrix {
+  border-color: #53698b;
+  color: #0b193c;
+}
+.cleanVector:before,
+.miniMatrix:before {
+  filter: brightness(0.6);
+}
+.lensFlow > div > span {
+  color: #465e84;
+}
+.flowOperator {
+  color: #526787;
+}
+.decodeStep {
+  border-color: #dce4ef;
+  color: #a40e37;
+}
+.logitTrack {
+  background: #e9edf3;
+}
+.logitBars > div {
+  color: #0a193b;
+}
+.logitBars b {
+  color: #0b193c;
+}
+.zeroLine {
+  background: #8296b3;
+}
+.graphMatrix th {
+  color: #49618a;
+}
+.graphMatrix td,
+.graphMatrix th {
+  border-color: #e2e8f1;
+}
+.graphMatrix td {
+  color: #0b193c;
+}
+.graphReadout .matrixDetail,
+.graphReadout .lensCaveat {
+  color: #657c9f;
+}
+.advanced {
+  border-color: #e2e8f1;
+  color: #172b50;
+}
+.advanced .lensMode button {
+  color: #4e6388;
+}
+.advanced .lensMode button[aria-pressed="true"] {
+  color: #970b32;
+}
+.emptyMatrix {
+  border-color: #c9d5e6;
+  color: #50678a;
+}
+.noSelection {
+  color: #50678a;
+}

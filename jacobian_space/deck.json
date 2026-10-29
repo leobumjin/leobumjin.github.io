@@ -1,0 +1,855 @@
+{
+  "id": "jacobian-space",
+  "slug": "jacobian-space",
+  "title": "A Mathematical Theory of the Jacobian Lens",
+  "shortTitle": "Jacobian Lens",
+  "description": "Jacobian Lens의 선택성과 이를 검증하는 synthetic HMM, Bayes filter, Transformer 분석.",
+  "label": "Research · 27 pages",
+  "theme": {
+    "background": "#ffffff",
+    "foreground": "#182235",
+    "muted": "#68758a",
+    "accent": "#254f9d",
+    "glow": "transparent"
+  },
+  "slides": [
+    {
+      "eyebrow": "Overview · 논문의 질문",
+      "title": "Jacobian Lens가\n선택하는 방향",
+      "body": "표현의 동역학을 분석하고, 분석 가능한 synthetic world에서 그 선택성을 검증한다.",
+      "caption": "Ostrow et al. · A Mathematical Theory of the Jacobian Lens · arXiv:2610.31955v1"
+    },
+    {
+      "eyebrow": "Overview · 발표 구성",
+      "title": "개념과 검증",
+      "body": "",
+      "caption": "발표 구성",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "개념과 검증",
+        "sections": [
+          {
+            "heading": "1. Representation과 방향",
+            "content": "표현 공간에서 방향을 분석한다는 의미를 정리한다.",
+            "equation": "$h\\in\\mathbb R^d,\\quad v\\in\\mathbb R^d$"
+          },
+          {
+            "heading": "2. Gradient에서 Jacobian Lens로",
+            "content": "국소적인 변화 전달을 lag와 context에 걸쳐 평균한다.",
+            "equation": "$K\\;\\longmapsto\\;G_c\\;\\longmapsto\\;J_H$"
+          },
+          {
+            "heading": "3. 평균이 선택하는 방향",
+            "content": "크기와 두 coherence가 함께 lens weight를 결정한다.",
+            "equation": "$\\|J_Hv\\|=a(v)\\rho_\\tau(v)\\rho_c(v)$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "개념과 검증",
+        "sections": [
+          {
+            "heading": "4. Synthetic World",
+            "content": "기억, 이동, 문맥 의존성을 생성 규칙으로 분리한다.",
+            "equation": "$\\lambda,\\ v,\\ q,\\ \\varepsilon,\\ \\psi$"
+          },
+          {
+            "heading": "5. Bayes Filter",
+            "content": "생성 규칙을 이상적인 예측 계산으로 연결한다.",
+            "equation": "$m_t^{(j)}=\\mathbb E[\\phi_j(X_{t+1})\\mid Y_{1:t}]$"
+          },
+          {
+            "heading": "6–7. 결과와 확장",
+            "content": "Transformer와 비교하고 ω-J-lens로 분석 범위를 넓힌다.",
+            "equation": "$J_H^{(\\omega)}$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "생성 과정의 설계가 이론적 예측과 내부 표현 분석을 연결한다"
+      }
+    },
+    {
+      "eyebrow": "1.1 · Representation과 방향",
+      "title": "상태와 방향",
+      "body": "",
+      "caption": "§1, Corollary 1.1",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "상태와 방향",
+        "sections": [
+          {
+            "heading": "Representation",
+            "content": "특정 입력과 token 위치에서 얻는 hidden activation을 벡터로 본다.",
+            "equation": "$h_{\\ell,t}(x)\\in\\mathbb R^d$"
+          },
+          {
+            "heading": "Direction",
+            "content": "방향은 상태에 더할 수 있는 작은 변화다. 방향의 의미는 downstream 반응과 함께 해석한다.",
+            "equation": "$h_{\\ell,t}\\mapsto h_{\\ell,t}+\\delta v$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "상태와 방향",
+        "sections": [
+          {
+            "heading": "좌표와 의미",
+            "content": "하나의 neuron 축과 의미 있는 방향은 일반적으로 다르다.",
+            "equation": "$v=\\sum_i v_i e_i$"
+          },
+          {
+            "heading": "관측과 개입",
+            "content": "activation의 분산이 큰 방향과 작은 개입의 영향이 큰 방향은 다를 수 있다.",
+            "equation": "$\\operatorname{Var}(v^\\top h)\\quad\\text{vs.}\\quad\\|Kv\\|$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "방향을 읽는 기준에 따라 발견하는 구조가 달라진다"
+      }
+    },
+    {
+      "eyebrow": "2.1 · Gradient와 Jacobian",
+      "title": "변화의 전달",
+      "body": "",
+      "caption": "§1, Eq. 1",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "변화의 전달",
+        "sections": [
+          {
+            "heading": "Gradient",
+            "content": "스칼라 출력의 gradient는 어떤 입력 방향이 그 출력을 바꾸는지 나타낸다.",
+            "equation": "$\\delta f\\approx\\nabla_h f^\\top\\delta h$"
+          },
+          {
+            "heading": "Jacobian",
+            "content": "벡터 출력에는 각 입력 변화가 출력의 어느 방향으로 전달되는지도 필요하다.",
+            "equation": "$\\delta h_{L,t+\\tau}\\approx K(c,\\ell,\\tau)\\delta h_{\\ell,t}$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "변화의 전달",
+        "sections": [
+          {
+            "heading": "분석할 block",
+            "content": "입력 layer와 token을 고정하고, 최종 layer의 미래 token 반응을 측정한다.",
+            "equation": "$K(c,\\ell,\\tau)=\\frac{\\partial h_{L,t+\\tau}}{\\partial h_{\\ell,t}}$"
+          },
+          {
+            "heading": "Context",
+            "content": "같은 방향의 효과도 입력 sequence와 source 위치에 따라 달라질 수 있다.",
+            "equation": "$c=(x,t),\\quad T=L-\\ell$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "Jacobian은 고정한 context 주변의 국소적인 선형 반응이다"
+      }
+    },
+    {
+      "eyebrow": "2.2 · Jacobian Lens",
+      "title": "두 단계의 평균",
+      "body": "",
+      "caption": "§1, Eqs. 1–2, Fig. 1",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "두 단계의 평균",
+        "sections": [
+          {
+            "heading": "Lag 평균",
+            "content": "하나의 context 안에서 여러 미래 위치의 Jacobian을 평균한다.",
+            "equation": "$G_c=\\frac1H\\sum_{\\tau=0}^{H-1}K(c,\\ell,\\tau)$"
+          },
+          {
+            "heading": "Context 평균",
+            "content": "여러 prompt와 source 위치에 걸친 공통 반응을 남긴다.",
+            "equation": "$J_H(\\ell)=\\mathbb E_c[G_c]$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "두 단계의 평균",
+        "sections": [
+          {
+            "heading": "Lens 출력",
+            "content": "평균 연산자로 변환한 표현을 normalization과 unembedding을 거쳐 token으로 읽는다.",
+            "equation": "$\\mathrm{softmax}(W_U\\,\\mathrm{norm}(J_Hh_{\\ell,t}))$"
+          },
+          {
+            "heading": "평균의 해석",
+            "content": "평균 행렬의 singular direction이 개별 Jacobian들의 대표 방향이라는 보장은 없다.",
+            "equation": "$\\operatorname{SVD}(\\mathbb E K)\\ne\\mathbb E[\\operatorname{SVD}(K)]$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "평균 후에 남는 반응의 성질을 따로 분석해야 한다"
+      }
+    },
+    {
+      "eyebrow": "3.1 · 평균이 선택하는 방향",
+      "title": "Magnitude와 coherence",
+      "body": "",
+      "caption": "§1, Eqs. 10–11",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "Magnitude와 coherence",
+        "sections": [
+          {
+            "heading": "Magnitude",
+            "content": "단위 입력 방향에 대한 개별 반응의 평균 크기다.",
+            "equation": "$a(v)=\\mathbb E_{c,\\tau}\\|K(c,\\ell,\\tau)v\\|$"
+          },
+          {
+            "heading": "Lag coherence",
+            "content": "미래 위치의 반응을 평균할 때 얼마나 남는지 측정한다.",
+            "equation": "$\\rho_\\tau(v)=\\frac{\\mathbb E_c\\|G_cv\\|}{a(v)}$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "Magnitude와 coherence",
+        "sections": [
+          {
+            "heading": "Context coherence",
+            "content": "context별 평균 반응이 다시 평균할 때 얼마나 남는지 측정한다.",
+            "equation": "$\\rho_c(v)=\\frac{\\|\\mathbb E_c G_cv\\|}{\\mathbb E_c\\|G_cv\\|}$"
+          },
+          {
+            "heading": "정확한 분해",
+            "content": "세 비율이 telescoping한다. 분모가 0인 경우 coherence를 0으로 정의한다.",
+            "equation": "$\\|J_Hv\\|=a(v)\\rho_\\tau(v)\\rho_c(v)$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "$\\sigma_1(J_H)=\\max_{\\|v\\|=1}a(v)\rho_\tau(v)\rho_c(v)$"
+      }
+    },
+    {
+      "eyebrow": "3.2 · 상쇄의 직관",
+      "title": "큰 반응도 평균에서 사라진다",
+      "body": "",
+      "caption": "§1, Eqs. 6–7, Corollary 1.1",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "큰 반응도 평균에서 사라진다",
+        "sections": [
+          {
+            "heading": "Lag에서 상쇄",
+            "content": "반응이 token마다 부호를 바꾸면, 각 반응이 커도 평균은 작아진다.",
+            "equation": "$y(\\tau)=(-1)^\\tau u$"
+          },
+          {
+            "heading": "Context에서 상쇄",
+            "content": "같은 입력 방향이 context마다 반대 출력 방향으로 전달되어도 평균은 사라진다.",
+            "equation": "$G_{c_1}v=u,\\quad G_{c_2}v=-u$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "큰 반응도 평균에서 사라진다",
+        "sections": [
+          {
+            "heading": "평균의 주파수 선택",
+            "content": "lag 평균은 유한 window에서 zero-frequency Fourier coefficient를 읽는다.",
+            "equation": "$\\frac1H\\sum_\\tau y(\\tau)=\\frac1H\\widetilde y_H(0)$"
+          },
+          {
+            "heading": "분산과 lens weight",
+            "content": "선택한 방향이 설명하는 activation variance는 임의로 작거나 클 수 있다.",
+            "equation": "$\\sigma_i(J_H)\\ \\not\\Rightarrow\\ \\operatorname{Var}(v_i^\\top h)$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "중요한 정보가 평균에서 상쇄될 가능성도 함께 봐야 한다"
+      }
+    },
+    {
+      "eyebrow": "3.3 · Lyapunov 관점",
+      "title": "깊이의 증폭과 token의 회전",
+      "body": "",
+      "caption": "§1, Eqs. 3–5, 10–11",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "깊이의 증폭과 token의 회전",
+        "sections": [
+          {
+            "heading": "Depth",
+            "content": "Transformer의 layer를 진화 좌표로 보면 perturbation의 증폭률을 정의할 수 있다.",
+            "equation": "$\\chi_i(T)=\\frac1T\\log s_i(T)$"
+          },
+          {
+            "heading": "Token lag",
+            "content": "설명용 shared-mode 모형은 lag 반응을 감쇠와 회전으로 분리한다.",
+            "equation": "$\\gamma_i=\\mu_i+i\\theta_i$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "깊이의 증폭과 token의 회전",
+        "sections": [
+          {
+            "heading": "Shared mode의 가중치",
+            "content": "depth의 증폭과 lag 평균의 잔존량이 함께 mode weight를 결정한다.",
+            "equation": "$e^{T\\chi_i}f_H(\\gamma_i),\\quad f_H(\\gamma)=\\frac1H\\sum_\\tau e^{\\tau\\gamma}$"
+          },
+          {
+            "heading": "가정의 범위",
+            "content": "정확한 shared direction과 지수 분리는 설명용 가정이다. 세 factor의 분해는 이 가정 없이 성립한다.",
+            "equation": "$H|\\mu_i|,H|\\theta_i|\\ll1\\ \\Rightarrow\\ f_H\\approx1$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "J-lens는 depth에서 강하고 token·context에 걸쳐 일관된 반응을 선호한다"
+      }
+    },
+    {
+      "eyebrow": "3.4 · J-space와 token 방향",
+      "title": "Singular mode와 의미 라벨",
+      "body": "",
+      "caption": "§1.1, Eq. 12",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "Singular mode와 의미 라벨",
+        "sections": [
+          {
+            "heading": "Singular modes",
+            "content": "오른쪽 singular vector는 입력 방향, 왼쪽 singular vector는 출력 반응 방향이다.",
+            "equation": "$J_H=U\\Sigma V^*$"
+          },
+          {
+            "heading": "Token-indexed direction",
+            "content": "token의 unembedding 방향을 입력 표현 공간으로 당겨온다.",
+            "equation": "$j_q=J_H^*w_q$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "Singular mode와 의미 라벨",
+        "sections": [
+          {
+            "heading": "Coherent mode의 혼합",
+            "content": "token 방향은 singular value와 unembedding alignment로 가중한 혼합이다.",
+            "equation": "$j_q=\\sum_i\\sigma_i\\langle u_i,w_q\\rangle v_i$"
+          },
+          {
+            "heading": "J-space의 구성",
+            "content": "원래 J-space는 token-indexed direction의 sparse non-negative 조합을 사용한다.",
+            "equation": "$h\\approx\\sum_q a_q j_q,\\quad a_q\\ge0$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "선도 singular subspace와 token 기반 J-space는 구분해서 해석한다"
+      }
+    },
+    {
+      "eyebrow": "4.0 · 분석 가능한 Synthetic World",
+      "title": "무엇을 조절하면\n어떤 방향이 남을까?",
+      "body": "Hidden state의 동역학과 관측 과정을 분리하면, lens 선택성에 대한 이론적 예측을 먼저 만들 수 있다.",
+      "caption": "§2 · Task design"
+    },
+    {
+      "eyebrow": "4.1 · Hidden state의 생성",
+      "title": "Ring 위의 HMM",
+      "body": "",
+      "caption": "§2, Eq. 13",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "Ring 위의 HMM",
+        "sections": [
+          {
+            "heading": "독립적인 latent",
+            "content": "각 latent는 유한한 ring 위에서 독립적으로 움직인다.",
+            "equation": "$X_t^{(i)}\\in\\{0,\\ldots,n_i-1\\}$"
+          },
+          {
+            "heading": "지속과 reset",
+            "content": "확률 λ로 기존 상태에서 이동하고, 나머지 확률로 균일한 상태로 reset한다.",
+            "equation": "$X_{t+1}=\\begin{cases}X_t+v+D_t\\pmod n&\\text{w.p. }\\lambda\\\\ U_t&\\text{w.p. }1-\\lambda\\end{cases}$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "Ring 위의 HMM",
+        "sections": [
+          {
+            "heading": "이동과 diffusion",
+            "content": "v는 규칙적인 회전, q는 매 step의 국소적인 불확실성을 만든다.",
+            "equation": "$P(D_t=-1,0,1)=(q,1-2q,q)$"
+          },
+          {
+            "heading": "계산적 요구",
+            "content": "과거 상태의 유효성은 persistence에, 미래 위치별 변화는 velocity에 의존한다.",
+            "equation": "$\\theta=2\\pi v/n,\\quad U_t\\sim\\mathrm{Uniform}(\\mathbb Z_n)$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "동역학을 분리하면 기억의 크기와 lag 방향 변화를 따로 조절할 수 있다"
+      }
+    },
+    {
+      "eyebrow": "4.2 · Reveal과 null",
+      "title": "관측 사이의 기억",
+      "body": "",
+      "caption": "§2–3 · Unkeyed vocabulary: $1+\\prod_i n_i$",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "관측 사이의 기억",
+        "sections": [
+          {
+            "heading": "Reveal",
+            "content": "확률 ε로 모든 latent 상태를 보여주고 하나의 token으로 결합한다.",
+            "equation": "$B_t\\sim\\mathrm{Bernoulli}(\\varepsilon)$"
+          },
+          {
+            "heading": "Null",
+            "content": "reveal하지 않은 위치에는 null token을 준다. hidden state는 계속 움직인다.",
+            "equation": "$B_t=0\\ \\Rightarrow\\ Y_t=\\mathrm{null}$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "관측 사이의 기억",
+        "sections": [
+          {
+            "heading": "기억이 필요한 이유",
+            "content": "완전히 관측한 과거 상태를 저장하고 null 구간 동안 전이 규칙으로 예측해야 한다.",
+            "equation": "$P(X_{t+1}\\mid Y_{1:t})$"
+          },
+          {
+            "heading": "새 관측의 역할",
+            "content": "완전한 reveal은 현재 상태의 불확실성을 없애고 이전 관측의 기여를 끊는다.",
+            "equation": "$B_t=1\\ \\Rightarrow\\ P(X_t\\mid Y_{1:t})=\\delta_{X_t}$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "Null 구간이 과거 정보의 전달을 측정할 수 있는 환경을 만든다"
+      }
+    },
+    {
+      "eyebrow": "4.3 · Context dependency",
+      "title": "이전 key에 따른 관측 해석",
+      "body": "",
+      "caption": "§2.1, §4.3 · n=2 context sweep",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "이전 key에 따른 관측 해석",
+        "sections": [
+          {
+            "heading": "Key",
+            "content": "key는 매 token에서 관측 가능하지만, 현재 관측의 해석에는 이전 key가 필요하다.",
+            "equation": "$W_t\\in\\{-1,+1\\},\\quad P(W_t=1)=(1+\\psi)/2$"
+          },
+          {
+            "heading": "관측 변환",
+            "content": "이전 key가 음수이면 관측 상태를 ring의 반 바퀴만큼 이동한다.",
+            "equation": "$Y_t=X_t+\\frac n2\\mathbf1(W_{t-1}=-1)\\pmod n$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "이전 key에 따른 관측 해석",
+        "sections": [
+          {
+            "heading": "Context dependence",
+            "content": "현재 token이 같아도 이전 key에 따라 latent 상태의 해석이 달라진다.",
+            "equation": "$X_t=Y_t-\\frac n2\\mathbf1(W_{t-1}=-1)\\pmod n$"
+          },
+          {
+            "heading": "실험에서의 분리",
+            "content": "context sweep는 n=2에서 key bias만 바꾸어 일관성을 조절한다.",
+            "equation": "$\\psi\\in\\{0,0.75,1\\}$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "현재 관측과 이전 context를 결합하는 계산을 생성 과정에 넣는다"
+      }
+    },
+    {
+      "eyebrow": "5.0 · Bayes Filter의 역할",
+      "title": "생성 규칙을\n이상적인 계산으로",
+      "body": "Bayes filter는 이 세계에서 무엇을 기억하고 어떻게 갱신해야 최적의 next-token 예측을 하는지 명시한다.",
+      "caption": "§3 · 성능 기준과 Jacobian 분석의 기준"
+    },
+    {
+      "eyebrow": "5.1 · Bayes Filter의 일반형",
+      "title": "Belief의 예측과 갱신",
+      "body": "",
+      "caption": "§3, Appendix E · 일반형은 설명을 위한 표기",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "Belief의 예측과 갱신",
+        "sections": [
+          {
+            "heading": "Belief",
+            "content": "과거 관측으로부터 현재 hidden state에 대한 분포를 유지한다.",
+            "equation": "$b_t(x)=P(X_t=x\\mid Y_{1:t})$"
+          },
+          {
+            "heading": "Prediction",
+            "content": "상태 전이로 다음 상태의 prior를 계산한다.",
+            "equation": "$\\bar b_{t+1}(x^\\prime)=\\sum_x P(x^\\prime\\mid x)b_t(x)$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "Belief의 예측과 갱신",
+        "sections": [
+          {
+            "heading": "Observation update",
+            "content": "새 관측의 likelihood로 prior를 갱신하고 정규화한다.",
+            "equation": "$b_{t+1}(x^\\prime)\\propto P(Y_{t+1}\\mid x^\\prime)\\bar b_{t+1}(x^\\prime)$"
+          },
+          {
+            "heading": "이 환경의 단순화",
+            "content": "reveal에서는 현재 상태에 집중하고, null에서는 새 상태 정보 없이 prediction을 이어간다.",
+            "equation": "$b_t=\\begin{cases}\\delta_{X_t}&B_t=1\\\\ \\bar b_t&B_t=0\\end{cases}$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "관측 과정의 설계가 belief update를 분석 가능한 형태로 만든다"
+      }
+    },
+    {
+      "eyebrow": "5.2 · Fourier 표현",
+      "title": "분포의 변화를 mode로 분리",
+      "body": "",
+      "caption": "§3, Eqs. 14–16 · nonzero Fourier modes",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "분포의 변화를 mode로 분리",
+        "sections": [
+          {
+            "heading": "Ring의 기저",
+            "content": "회전 대칭성을 이용해 분포를 Fourier moment로 표현한다.",
+            "equation": "$\\phi_j(x)=e^{2\\pi ijx/n}$"
+          },
+          {
+            "heading": "논문의 belief 정의",
+            "content": "m_t는 t까지 관측한 뒤의 다음 상태 X_{t+1}에 대한 moment다.",
+            "equation": "$m_t^{(j)}=\\mathbb E[\\phi_j(X_{t+1})\\mid Y_{1:t}]$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "분포의 변화를 mode로 분리",
+        "sections": [
+          {
+            "heading": "Mode별 전이",
+            "content": "각 mode는 다른 mode와 섞이지 않고 하나의 복소 계수로 전이한다.",
+            "equation": "$\\alpha_j=\\lambda c_j e^{i\\theta_j},\\quad\\theta_j=2\\pi jv/n$"
+          },
+          {
+            "heading": "Diffusion과 reset",
+            "content": "nonzero mode에서 reset은 평균을 0으로 만들고 diffusion은 c_j를 곱한다.",
+            "equation": "$c_j=1-2q+2q\\cos(2\\pi j/n)$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "분포의 전이가 mode별 감쇠와 회전으로 정리된다"
+      }
+    },
+    {
+      "eyebrow": "5.3 · 이 세계의 최적 갱신",
+      "title": "Reveal에서는 교체, null에서는 전파",
+      "body": "",
+      "caption": "§3–3.1, Eqs. 16–17 · keyed 식은 n=2, j=1",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "Reveal에서는 교체, null에서는 전파",
+        "sections": [
+          {
+            "heading": "Unkeyed update",
+            "content": "reveal이면 관측 moment로 교체하고, null이면 이전 predictive belief를 이어간다.",
+            "equation": "$m_t^{(j)}=\\alpha_j[(1-B_t)m_{t-1}^{(j)}+B_t\\phi_j(X_t)]$"
+          },
+          {
+            "heading": "Null의 연속",
+            "content": "관측 없이 k step이 지나면 mode의 크기와 위상이 누적해서 변한다.",
+            "equation": "$m_{t+k}^{(j)}=\\alpha_j^k m_t^{(j)}$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "Reveal에서는 교체, null에서는 전파",
+        "sections": [
+          {
+            "heading": "Keyed update: n=2",
+            "content": "관측 moment의 부호를 이전 key로 복원한 뒤 같은 전이를 적용한다.",
+            "equation": "$m_t=\\alpha[(1-B_t)m_{t-1}+B_tW_{t-1}\\phi_1(Y_t)]$"
+          },
+          {
+            "heading": "Index의 의미",
+            "content": "m_t가 다음 상태 belief이므로 reveal한 시점에도 α를 한 번 곱한다.",
+            "equation": "$B_t=1\\ \\Rightarrow\\ m_t^{(j)}=\\alpha_j\\phi_j(X_t)$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "Bayes filter의 update 식에서 Jacobian을 직접 계산할 수 있다"
+      }
+    },
+    {
+      "eyebrow": "5.4 · Bayes Filter의 Jacobian",
+      "title": "다음 reveal이 기억을 끊는다",
+      "body": "",
+      "caption": "§3.2, Eq. 18 · 마지막 식은 Eq. 18에서 유도",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "다음 reveal이 기억을 끊는다",
+        "sections": [
+          {
+            "heading": "Source perturbation",
+            "content": "reveal된 source t의 evidence moment에 대한 미래 belief의 반응을 본다.",
+            "equation": "$K_j(c,\\tau)=\\frac{\\partial m_{t+\\tau}^{(j)}}{\\partial\\phi_j(X_t)}$"
+          },
+          {
+            "heading": "정확한 반응",
+            "content": "관측 사이에는 α를 반복해서 곱하고, 새 reveal 이후에는 source의 기여가 0이 된다.",
+            "equation": "$K_j(c,\\tau)=\\alpha_j^{\\tau+1}\\prod_{k=1}^\\tau(1-B_{t+k})$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "다음 reveal이 기억을 끊는다",
+        "sections": [
+          {
+            "heading": "Effective memory",
+            "content": "전이 감쇠와 다음 reveal까지 살아남을 확률이 합쳐진다.",
+            "equation": "$r_j=|\\alpha_j|(1-\\varepsilon)$"
+          },
+          {
+            "heading": "평균 반응",
+            "content": "unkeyed mode에서 τ=0부터 유한 H개 lag를 평균한 기대 반응이다.",
+            "equation": "$\\mathbb E_c K_j(c,\\tau)=\\alpha_j[(1-\\varepsilon)\\alpha_j]^\\tau$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "λ·q는 전이 크기, v는 회전, ε는 source 정보의 수명을 결정한다"
+      }
+    },
+    {
+      "eyebrow": "5.5 · 설계에서 이론적 예측으로",
+      "title": "세 개의 실험 손잡이",
+      "body": "",
+      "caption": "§3.2–4, Eq. 19 · 순서와 factor를 각각 검증",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "세 개의 실험 손잡이",
+        "sections": [
+          {
+            "heading": "Persistence sweep",
+            "content": "θ=0인 양의 전이에서 λ를 높이면 magnitude가 커진다.",
+            "equation": "$\\theta=0:\\quad\\rho_\\tau=1,\\quad\\rho_c=|\\psi|$"
+          },
+          {
+            "heading": "Velocity sweep",
+            "content": "회전하는 반응은 lag 평균에서 상쇄된다. 다른 factor도 일부 변할 수 있다.",
+            "equation": "$\\sum_\\tau r_j^\\tau e^{i\\tau\\theta_j}$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "세 개의 실험 손잡이",
+        "sections": [
+          {
+            "heading": "Key bias sweep",
+            "content": "n=2의 정지 mode에서 ψ를 바꾸면 context 평균에서 남는 비율이 바뀐다.",
+            "equation": "$\\rho_c=|\\psi|$"
+          },
+          {
+            "heading": "비교할 대상",
+            "content": "이상적 filter에서 계산한 순서가 학습한 Transformer에서도 나타나는지 측정한다.",
+            "equation": "$\\|J_Hv_j\\|=a_j\\rho_{\\tau,j}\\rho_{c,j}$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "생성 규칙을 안다는 사실만으로 Transformer의 내부 계산까지 알 수는 없다"
+      }
+    },
+    {
+      "eyebrow": "6.1 · Transformer와 비교",
+      "title": "성능과 표현을 따로 측정",
+      "body": "",
+      "caption": "§3.3–4, Appendices F–H",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "성능과 표현을 따로 측정",
+        "sections": [
+          {
+            "heading": "모델",
+            "content": "2-layer decoder-only Transformer를 HMM의 next-token prediction에 학습한다.",
+            "equation": "$d_{\\mathrm{res}}=128,\\quad n_{\\mathrm{heads}}=4$"
+          },
+          {
+            "heading": "성능 기준",
+            "content": "Bayes filter와의 cross-entropy 차이로 예측 성능을 확인한다.",
+            "equation": "$\\mathcal L_{\\mathrm{model}}-\\mathcal L_{\\mathrm{Bayes}}$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "성능과 표현을 따로 측정",
+        "sections": [
+          {
+            "heading": "표현 기준",
+            "content": "latent Fourier feature를 residual stream에 encoding하고 J-lens singular vector와 정렬을 비교한다.",
+            "equation": "$\\operatorname{span}(\\sin(2\\pi X/n),\\cos(2\\pi X/n))$"
+          },
+          {
+            "heading": "비교의 범위",
+            "content": "probability belief와 Transformer logit의 Jacobian은 척도가 다르므로 qualitative ordering을 중심으로 비교한다.",
+            "equation": "$\\mathrm d\\log p=\\mathrm dp/p$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "좋은 예측 성능과 예측한 J-lens 구조를 각각 확인한다"
+      }
+    },
+    {
+      "eyebrow": "6.2 · Magnitude sweep",
+      "title": "Persistence가 큰 latent를 먼저 포착",
+      "body": "",
+      "caption": "λ = 0.8, 0.9, 0.95 · magnitude와 lens weight 증가 · 두 coherence는 거의 일정 · Fig. 4, §4.1",
+      "layout": "image-focus",
+      "image": {
+        "src": "/slides/jacobian-space/figure-4.png",
+        "alt": "Persistence가 큰 latent를 먼저 포착"
+      }
+    },
+    {
+      "eyebrow": "6.3 · Lag coherence sweep",
+      "title": "빠른 회전은 평균에서 상쇄",
+      "body": "",
+      "caption": "n=8, v = 0, 2, 4 · θ = 0°, 90°, 180° · lag coherence에 따른 latent 순서 재현 · Fig. 5, §4.2",
+      "layout": "image-focus",
+      "image": {
+        "src": "/slides/jacobian-space/figure-5.png",
+        "alt": "빠른 회전은 평균에서 상쇄"
+      }
+    },
+    {
+      "eyebrow": "6.4 · Context coherence sweep",
+      "title": "Key bias에 따른 순서와 불완전한 일치",
+      "body": "",
+      "caption": "ψ = 0, 0.75, 1 · 순서는 재현하지만 Transformer의 coherence 범위는 압축 · Fig. 7, §4.3",
+      "layout": "image-focus",
+      "image": {
+        "src": "/slides/jacobian-space/figure-7.png",
+        "alt": "Key bias에 따른 순서와 불완전한 일치"
+      }
+    },
+    {
+      "eyebrow": "6.5 · 비교의 해석",
+      "title": "순서의 재현과 남는 차이",
+      "body": "",
+      "caption": "§4.3–4.4, Figs. 8, 19",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "순서의 재현과 남는 차이",
+        "sections": [
+          {
+            "heading": "재현한 예측",
+            "content": "세 sweep에서 latent 방향의 정렬 순서가 이론과 일치한다. 두 latent의 순위 교차도 근사적으로 예측한다.",
+            "equation": "$\\sigma_0(\\lambda_0^*)=\\sigma_1$"
+          },
+          {
+            "heading": "Context sweep의 차이",
+            "content": "ψ=0에서도 Transformer coherence가 남고, coherent latent의 값은 낮아진다.",
+            "equation": "$\\rho_c^{\\mathrm{Transformer}}\\ne\\rho_c^{\\mathrm{Bayes}}$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "순서의 재현과 남는 차이",
+        "sections": [
+          {
+            "heading": "다른 내부 방향",
+            "content": "일부 J-lens 방향은 latent belief 외에 reveal 및 key 상태에도 정렬된다.",
+            "equation": "$B_t,\\quad W_{t-1}$"
+          },
+          {
+            "heading": "해석의 한계",
+            "content": "동일한 예측 성능이 동일한 내부 좌표계나 완전한 filter 구현을 뜻하지는 않는다.",
+            "equation": "$\\text{prediction match}\\ \\not\\Rightarrow\\ \\text{identical representation}$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "이론은 선택 순서를 설명하고, 남는 차이는 학습된 표현의 특성을 드러낸다"
+      }
+    },
+    {
+      "eyebrow": "7.1 · ω-J-lens",
+      "title": "평균의 주파수를 바꾸기",
+      "body": "",
+      "caption": "§1.2, §4.2.1 · 정의는 Eq. 6을 Jacobian에 적용",
+      "layout": "two-column-academic",
+      "leftPanel": {
+        "title": "평균의 주파수를 바꾸기",
+        "sections": [
+          {
+            "heading": "기존 J-lens",
+            "content": "동일한 가중치로 lag를 더하면 zero-frequency 반응을 선택한다.",
+            "equation": "$J_H^{(0)}=\\mathbb E_c\\frac1H\\sum_{\\tau=0}^{H-1}K(c,\\ell,\\tau)$"
+          },
+          {
+            "heading": "Frequency-weighted lens",
+            "content": "회전하는 phase를 보정해서 특정 주파수의 반응을 남긴다.",
+            "equation": "$J_H^{(\\omega)}=\\mathbb E_c\\frac1H\\sum_{\\tau=0}^{H-1}e^{-i\\omega\\tau}K(c,\\ell,\\tau)$"
+          }
+        ]
+      },
+      "rightPanel": {
+        "title": "평균의 주파수를 바꾸기",
+        "sections": [
+          {
+            "heading": "선택성의 이동",
+            "content": "mode의 token 회전 θ와 lens frequency ω가 맞으면 lag 상쇄가 줄어든다.",
+            "equation": "$e^{i\\theta\\tau}e^{-i\\omega\\tau}=e^{i(\\theta-\\omega)\\tau}$"
+          },
+          {
+            "heading": "적용 범위",
+            "content": "toy task에서 빠른 방향을 회수한다. 실제 언어의 syntax 등을 찾는 것은 후속 검증이 필요하다.",
+            "equation": "$\\omega\\in[-\\pi,\\pi]\\quad\\text{rad/token}$"
+          }
+        ]
+      },
+      "footer": {
+        "emphasis": "분석 연산자를 바꾸면 평균이 놓친 방향을 다시 탐색할 수 있다"
+      }
+    },
+    {
+      "eyebrow": "7.2 · ω-J-lens 결과",
+      "title": "Lens frequency와 latent 회전의 정렬",
+      "body": "",
+      "caption": "각 θ에 맞는 ω에서 응답 증가 · Transformer 이론 곡선은 rescaling 후 비교 · Fig. 6",
+      "layout": "image-focus",
+      "image": {
+        "src": "/slides/jacobian-space/figure-6.png",
+        "alt": "Lens frequency와 latent 회전의 정렬"
+      }
+    },
+    {
+      "eyebrow": "7.3 · Synthetic 분석의 함의",
+      "title": "도구의 선택성과\n모델의 계산을 함께 보기",
+      "body": "J-lens는 magnitude와 coherence의 곱이 큰 방향을 선택한다. 생성 과정과 Bayes filter를 함께 설계하면, 이 선택성을 학습한 모델에서 검증할 수 있다.",
+      "caption": "이 결과만으로 Global Workspace의 존재나 부재를 판정하지는 않는다 · §1, Discussion"
+    }
+  ]
+}
