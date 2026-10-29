@@ -4,8 +4,6 @@
  */
 (() => {
   'use strict';
-  const concepts = ['Eagle', 'Penguin', 'Fly', 'Swim'];
-  const tokens = ['The', 'bird', 'can', 'fly', '.'];
   const states = [[.4, .4, .4, .1], [1, 1, 1, .1], [.2, .2, 1, .2], [.1, .1, 2, .1], [.3, .3, .5, .1]];
   const maps = {
     2: [[1, 1, 1, 1], [2, 2, .1, .1], [.8, .8, .5, .1], [.4, .4, 2, .1], [1, 1, 1, .1]],
@@ -28,6 +26,8 @@
   }
   const multiply = (matrix, h) => matrix.map(row => row.reduce((sum,x,i) => sum+x*h[i],0));
   for (const root of document.querySelectorAll('[data-jacobian-demo]')) {
+    const tokens = root.dataset.lang === 'kr' ? ['그', '새가', '하늘을', '난다', '.'] : ['The', 'bird', 'can', 'fly', '.'];
+    const concepts = root.dataset.lang === 'kr' ? ['독수리', '펭귄', '날다', '헤엄치다'] : ['Eagle', 'Penguin', 'Fly', 'Swim'];
     let layer = 2, source = 1, selected = [1], route = 'jacobian';
     const el = name => root.querySelector(`[data-jl-${name}]`);
     function nodes(row) {
@@ -73,7 +73,6 @@
       const empty=route === 'jacobian' && !selected.length;
       const matrix = route === 'direct' ? identity : (averageMatrix(layer,selected) || identity.map(row=>row.map(()=>0)));
       const h=states[source], result=matrix ? multiply(matrix,h) : null;
-      el('status').textContent = `Input: ${tokens[source]} · layer ${layer} outputs: ${selected.length ? selected.map(t=>tokens[t]+' ['+t+']').join(' + ') : 'none (zero placeholders)'}`;
       const probabilities=empty ? [0,0,0,0] : decode(result);
       el('route-label').textContent = route === 'direct' ? 'h' : 'Gₛh';
       el('route-detail').textContent = route === 'direct' ? `Input hidden: ${tokens[source]} · identity I` : `Mean of ${selected.length} Jacobian${selected.length === 1 ? '' : 's'} · layer ${layer}`;
