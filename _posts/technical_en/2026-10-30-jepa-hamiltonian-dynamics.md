@@ -7,35 +7,35 @@ mini-title: "JEPA & Hamiltonian Dynamics"
 
 ## 1. JEPA: Predicting representations
 
-Joint-Embedding Predictive Architecture (JEPA) learns to predict representations rather than reconstruct observations. In an action-conditioned world model, an encoder maps an observation $x_t$ to a latent state $z_t$, and a predictor estimates the representation of a future observation:
+Imagine watching a pendulum and predicting what it will do next. We could predict the pixels of its next image, or we could predict a representation of its state. Joint-Embedding Predictive Architecture (JEPA) takes the latter approach. In an action-conditioned world model, an encoder maps an observation $x_t$ to a latent state $z_t$, and a predictor advances that representation using the action $u_t$:
 
 $$
 z_t=\operatorname{Enc}_{\theta}(x_t),\qquad
 \hat z_{t+1}=F_{\phi}(z_t,u_t).
 $$
 
-The predicted representation is compared with a target obtained from the actual future observation. Schematically,
+To check the prediction, we encode the actual future observation and compare the two representations. Schematically, the prediction loss is
 
 $$
 \mathcal L_{\mathrm{pred}}
 =D\!\left(\hat z_{t+1},\operatorname{Enc}_{\theta}(x_{t+1})\right).
 $$
 
-This separates two questions: **what information should the encoder represent, and how should that representation evolve over time?** The prediction loss alone does not prevent a constant encoder from trivially satisfying the objective; practical JEPA systems need additional mechanisms to avoid encoder collapse.
+The encoder determines **what information describes the state**, while the predictor determines **how that state evolves**. Both matter: a constant encoder could make the prediction loss trivially small without representing anything useful, so practical JEPA systems need additional mechanisms to avoid encoder collapse.
 
 The demo below separates the prediction path from the target path. Press **Play prediction** to sweep through scene angles, or set the angle manually. Increase **Predictor fit** to bring the predicted representation toward the encoded future; the fit remains fixed during playback unless you adjust it. Select a block to inspect its role. This is an analytic illustration, not a trained model.
 
 {% include figures/jepa-prediction.html %}
 
-There is also a different problem at prediction time. An unconstrained predictor can achieve useful short-term predictions while progressively contracting the latent space during repeated rollouts. For example, $F(z)=0.9z$ reduces the magnitude of every state at each step:
+Now imagine feeding the predictor's output back into itself to look further ahead. Even if the encoder produces useful representations, the transition can gradually squeeze them together. A simple example is $F(z)=0.9z$: every step reduces the state magnitude, so repeated predictions give
 
 $$
 F^k(z)=0.9^kz\longrightarrow0.
 $$
 
-Distinct states then become increasingly difficult to distinguish. Preventing the encoder from collapsing during training does not, by itself, prevent this contraction during inference.
+Distinct states then become increasingly difficult to distinguish. **Preventing encoder collapse does not ensure that the predictor preserves distinctions during a rollout.** To address this second problem, we need to examine the transition itself.
 
-[LeHami](https://arxiv.org/abs/2610.15267), introduced by Yalovetzky, Balestriero, and LeCun (2026), addresses this problem by introducing Hamiltonian dynamics into a JEPA-style world model. It constrains the transition itself, so certain geometric properties hold regardless of the learned parameters.
+[LeHami](https://arxiv.org/abs/2610.15267), introduced by Yalovetzky, Balestriero, and LeCun (2026), builds that transition from Hamiltonian dynamics. The aim is to make certain geometric properties hold regardless of the learned parameters. To see how, we can start with the pendulum's position and momentum.
 
 ## 2. Hamiltonian dynamics: Learning under conservation
 
@@ -82,7 +82,7 @@ Set the initial angle and momentum below, then play the motion. **The same posit
 
 {% include figures/pendulum-state.html %}
 
-For an autonomous Hamiltonian, with no explicit time dependence,
+As the pendulum swings, energy moves between height and motion. Hamilton's equations explain why the total remains constant in the ideal continuous system. For an autonomous Hamiltonian, with no explicit time dependence,
 
 $$
 \begin{aligned}
@@ -114,11 +114,9 @@ $$
 \dot p=-\nabla_qV_{\phi}(q,u).
 $$
 
-Why learn these scalar functions rather than predict the next state directly? **Their gradients define a Hamiltonian vector field.** The networks determine the dynamics, while the equations restrict the transformations those dynamics can produce.
+Learning these scalars changes how the predictor is parameterized: **their gradients define a Hamiltonian vector field**, so the networks choose the dynamics within that structure. The numerical value of $H$ is not the prediction target; the two gradients can even be evaluated separately without computing their sum. The training signal still comes from future latent prediction errors, rather than ground-truth energy labels.
 
-The numerical value of $H$ is not the prediction target. The two gradients can even be evaluated separately without explicitly computing their sum. What matters is that they generate updates with a common Hamiltonian structure.
-
-Training uses future latent prediction errors rather than ground-truth energy labels. Consequently, the learned $H$ need not recover physical energy. With changing actions, it need not remain constant either: action conditioning can introduce explicit time dependence. The geometric property of the transition survives this distinction.
+The learned $H$ therefore need not recover physical energy, and changing actions can make it time-dependent. What LeHami inherits is the structure of the transition. Preserving that structure in an actual rollout requires one more choice: how to turn the continuous equations into discrete updates.
 
 ### 2.3. From Hamilton's equations to leapfrog
 
@@ -137,7 +135,7 @@ p_{t+1}
 \end{aligned}
 $$
 
-Momentum advances half a step, position advances a full step using the intermediate momentum, and momentum completes its remaining half step. Each stage uses the result of the previous one.
+Momentum advances half a step, position advances a full step using the intermediate momentum, and momentum completes its remaining half step. The momentum updates are called **kicks**, and the position update is a **drift**. These names describe the numerical splitting; they do not mean that the physical pendulum receives separate impacts. Each stage uses the result of the previous one.
 
 This update is **symplectic**: it preserves the geometric structure of Hamiltonian phase space. It generally does not conserve the original Hamiltonian exactly at a finite step size. Exact symplecticity and exact energy conservation are different claims.
 
@@ -147,7 +145,7 @@ Use **Play rollout** to follow the harmonic oscillator $H=(q^2+p^2)/2$. The smal
 
 ### 2.4. Why does the Jacobian determinant equal one?
 
-Consider a transition $z_{t+1}=F(z_t;u_t)$ with $z=(q,p)$. For a fixed action, its state Jacobian is
+The patch in the demo lets us see a group of nearby states move together. To measure whether that group is being squeezed or expanded, consider a transition $z_{t+1}=F(z_t;u_t)$ with $z=(q,p)$. For a fixed action, its state Jacobian is
 
 $$
 J_F=\frac{\partial F}{\partial z}.
@@ -209,7 +207,7 @@ $$
 
 Each leapfrog stage satisfies this symplectic condition when the scalar functions are sufficiently smooth. Volume preservation follows; determinant one alone would not establish symplecticity in higher dimensions.
 
-Nor does volume preservation mean every distance remains constant. Some directions can expand while others contract. The guarantee concerns the full phase space, not each coordinate or the position-like representation alone.
+This allows the patch to stretch in one direction while narrowing in another. Individual distances can change even though the full phase-space volume remains fixed. We can also use the same Jacobian calculation to understand why the Euler trajectory in the demo behaves differently.
 
 #### What changes with explicit Euler?
 
@@ -243,13 +241,11 @@ J_{\mathrm{Euler}}=
 \det J_{\mathrm{Euler}}=1+h^2K''(p)V''(q).
 $$
 
-The determinant can be greater than, equal to, or less than one, depending on the two curvatures. Local area change is measured by its absolute value, $\lvert\det J_{\mathrm{Euler}}\rvert$; a negative determinant additionally reverses orientation. The general distinction is that explicit Euler does not preserve symplectic structure in general, while the leapfrog construction does.
+The determinant can be greater than, equal to, or less than one, depending on the two curvatures. Local area change is measured by its absolute value, $\lvert\det J_{\mathrm{Euler}}\rvert$; a negative determinant additionally reverses orientation. The oscillator illustrates expansion, but the broader issue is the absence of a general symplectic guarantee for explicit Euler.
 
 ### 2.5. How are q and p obtained from images?
 
-In mechanics, $q$ and $p$ are physical position and canonical momentum. LeHami begins with images, so it must construct a latent pair instead.
-
-The encoder extracts a position-like representation. For a single-frame encoder,
+So far, the demos have supplied $q$ and $p$ directly. LeHami instead starts with images: it must learn a representation that can be advanced by this structured predictor. A single-frame encoder supplies the position-like component,
 
 $$
 q_t=\operatorname{Enc}_{\theta}(x_t).
@@ -262,33 +258,27 @@ p_t=\operatorname{SG}(q_{t-3},\ldots,q_t)
 \approx\frac{dq_t}{dt}.
 $$
 
-Thus, $q$ comes from visual observations, while $p$ describes temporal changes in their learned representation. Neither is supervised as a physical coordinate. In particular, defining $p$ through a temporal derivative does not establish that it is the true physical canonical momentum; it is a modeling choice for the latent state.
+The pair now carries both a visual representation and information about how it is changing. Neither component is supervised as a physical coordinate, so the derivative-based $p$ should be understood as a momentum-like modeling choice, not an identified physical canonical momentum.
 
-The Hamiltonian predictor advances this pair, and a multi-step prediction loss compares its outputs with latent targets constructed from future observations. The encoder and Hamiltonian are trained together, with representation regularization complementing the prediction objective.
-
-JEPA supplies the representation-learning objective. Hamiltonian mechanics constrains how the resulting state evolves.
+The Hamiltonian predictor advances this pair, and a multi-step prediction loss compares its outputs with latent targets constructed from future observations. Training the encoder and Hamiltonian together lets the representation adapt to the structured dynamics, with representation regularization complementing the prediction objective. This brings us back to the two parts of JEPA: learning what to represent and deciding how it can evolve.
 
 ## 3. Additional comments
 
-The central distinction is between **encouraging a property through training and enforcing it through the form of the model**. An unconstrained predictor may learn useful geometry. A symplectic predictor must preserve the specified geometry, even before it has learned accurate dynamics.
-
-Three limits help clarify what this buys us.
-
-First, energy conservation and phase-space volume preservation are different. **Define a region using intervals of possible positions and momenta, rather than following a single point.** For one coordinate–momentum pair, an initial rectangle can be written as
+Return to the patch moving through phase space in the rollout demo. Its preserved area is easier to interpret if we start with **intervals of possible positions and momenta, rather than a single point**. For one coordinate–momentum pair, these intervals define a rectangle:
 
 $$
 A_t=[q_{\min},q_{\max}]\times[p_{\min},p_{\max}],\qquad
 \operatorname{Area}(A_t)=(q_{\max}-q_{\min})(p_{\max}-p_{\min}).
 $$
 
-Apply the same action-conditioned transition to every point in this region:
+Each point represents a different possible state. When the same action-conditioned transition moves all of them forward, their destinations form a new region:
 
 $$
 A_{t+1}=F_{u_t}(A_t)
 =\{F(z;u_t):z\in A_t\}.
 $$
 
-The resulting region need not remain rectangular. **The quantity being compared is the area occupied by the state set at $t$ and at $t+1$, not the area swept out by one trajectory.** For a leapfrog transition,
+That region may be curved or stretched. **We compare the area occupied by the state set at $t$ with its area at $t+1$, not the area swept out by one trajectory.** The determinant calculation tells us how to make this comparison: for a leapfrog transition,
 
 $$
 \boxed{
@@ -298,22 +288,20 @@ $$
 }
 $$
 
-Changing $u_t$ changes where the region moves and how it deforms, but its area stays the same when the action is prescribed identically for every state and held fixed within each step. Across a changing action sequence,
+The action $u_t$ controls where the region moves and how it deforms. Changing the action changes the map, but every leapfrog map still preserves area when that action is shared by all states and held fixed within the step. Composing such maps therefore preserves area even across a changing action sequence:
 
 $$
-A_{t+k}=F_{u_{t+k-1}}\circ\cdots\circ F_{u_t}(A_t),\qquad
+A_{t+k}=\bigl(F_{u_{t+k-1}}\circ\cdots\circ F_{u_t}\bigr)(A_t),\qquad
 \operatorname{Area}(A_{t+k})=\operatorname{Area}(A_t).
 $$
 
-With $d$ coordinate–momentum pairs, area generalizes to phase-space volume, $\operatorname{Vol}(A)=\int_A d^dq\,d^dp$. The action can nevertheless change the energy. An autonomous continuous Hamiltonian conserves $H$; leapfrog preserves symplectic geometry without generally preserving that same $H$ exactly. State-dependent feedback actions are not automatically covered by the volume guarantee.
+With $d$ coordinate–momentum pairs, this area becomes phase-space volume, $\operatorname{Vol}(A)=\int_A d^dq\,d^dp$. Its preservation does not require energy to stay constant: the action can do work while the state region keeps the same volume. Even without changing actions, finite-step leapfrog preserves symplectic geometry without generally preserving the original $H$ exactly. A state-dependent policy adds another dependence to the transition, so its closed-loop map is not automatically covered by the shared-action argument.
 
-Second, geometric preservation does not guarantee semantic preservation. Stretching one direction while compressing another can preserve total volume while making some distinctions harder to read. Symplecticity also does not bound prediction error or prevent the encoder itself from learning an uninformative representation.
+For JEPA, the useful consequence is that this state region cannot be uniformly squeezed into a smaller volume during rollout. **The restriction comes from the form of the predictor, rather than a penalty that must be learned from data.** It still allows some directions to contract while others expand, which can make particular distinctions harder to read. Preserved volume therefore does not, by itself, establish semantic preservation, accurate prediction, or a useful encoder.
 
-Third, a learned Hamiltonian is not necessarily recovered physical energy. The latent coordinates and their temporal derivatives are learned or constructed without physical-coordinate supervision. Their usefulness must still be evaluated empirically.
+The same distinction applies to the learned Hamiltonian. Its role is to generate structured latent transitions; neither its value nor the latent coordinates are supervised to recover physical energy and coordinates. Their usefulness must be checked through prediction and control. The paper's pendulum experiments provide evidence in that setting, with task-dependent results rather than a guarantee of better planning everywhere.
 
-The paper's pendulum experiments illustrate both the promise and the limits: a geometric guarantee can coexist with task-dependent prediction and planning performance. It should not be read as evidence that all useful latent dynamics must be Hamiltonian.
-
-The broader question is which mathematical properties we want a learned representation to preserve as it evolves. LeHami offers one answer: define the transition through operations whose geometry already excludes certain failure modes, then learn the dynamics within that structure.
+LeHami thus makes a specific choice about JEPA's transition: learn the dynamics inside a class of maps that already excludes certain collapse modes. The geometry tells us what cannot happen to a region of states. The learning objective and evaluation still have to establish whether those states describe the world well.
 
 ## 4. Putting the flow together
 
