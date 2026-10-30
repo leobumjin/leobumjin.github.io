@@ -1,0 +1,26 @@
+<section class="dynamics-demo" data-jepa-demo aria-label="Interactive JEPA prediction example">
+  <div class="dy-heading"><span class="dy-eyebrow">01 / REPRESENTATION PREDICTION</span><strong>Predict the state, not the pixels.</strong><p>Play through different scenes. Adjust the predictor. Compare two paths into the same latent space.</p></div>
+  <div class="dy-controls">
+    <label>Scene angle <input data-jepa-angle type="range" min="-100" max="100" value="-35"><output data-jepa-angle-value></output></label>
+    <label>Predictor fit <input data-jepa-fit type="range" min="0" max="100" value="55"><output data-jepa-fit-value></output></label>
+  </div>
+  <div class="dy-jepa-flow">
+    <div class="dy-branch">
+      <div class="dy-scene"><span class="dy-label">OBSERVATION · xₜ</span><svg data-jepa-current viewBox="0 0 240 150" role="img" aria-label="Current pendulum observation"></svg></div>
+      <span class="dy-arrow" aria-hidden="true">↓</span>
+      <button type="button" class="dy-block" data-jepa-stage="encoder" aria-pressed="true"><small>SHARED ENCODER</small><strong>Enc(xₜ) → zₜ</strong><span data-jepa-state></span></button>
+      <span class="dy-arrow" aria-hidden="true">↓</span>
+      <button type="button" class="dy-block dy-accent" data-jepa-stage="predictor" aria-pressed="false"><small>PREDICTOR · F</small><strong>zₜ + action → ẑₜ₊₁</strong><span>Predict in representation space</span></button>
+    </div>
+    <div class="dy-latent-panel"><span class="dy-label">A SHARED LATENT SPACE</span><svg data-jepa-latent viewBox="0 0 300 280" role="img" aria-label="Current, predicted, and target representations"></svg><div class="dy-legend"><span><i class="dy-dot dy-blue"></i>Current</span><span><i class="dy-dot dy-red"></i>Predicted</span><span><i class="dy-dot dy-teal"></i>Target</span></div><div class="dy-loss"><span>Prediction loss · ‖ẑ − z‖²</span><strong data-jepa-loss></strong></div></div>
+    <div class="dy-branch">
+      <div class="dy-scene"><span class="dy-label">FUTURE OBSERVATION · xₜ₊₁</span><svg data-jepa-future viewBox="0 0 240 150" role="img" aria-label="Actual future pendulum observation"></svg></div>
+      <span class="dy-arrow" aria-hidden="true">↓</span>
+      <button type="button" class="dy-block" data-jepa-stage="target" aria-pressed="false"><small>SHARED ENCODER</small><strong>Enc(xₜ₊₁) → zₜ₊₁</strong><span data-jepa-target></span></button>
+      <div class="dy-target-note">Target from observation<br><span>Compare latents, without a pixel decoder.</span></div>
+    </div>
+  </div>
+  <div class="dy-actions"><button type="button" data-jepa-play aria-pressed="false">Play prediction</button><button type="button" data-jepa-reset>Reset</button></div>
+  <p class="dy-explanation" data-jepa-explanation aria-live="polite"></p>
+  <p class="dy-footnote">Constructed example, not a trained JEPA. The encoder is [sin θ, cos θ]; the predictor rotates this vector by a fitted angle. “Predictor fit” changes that angle by hand. Representation regularization and training are not simulated.</p>
+</section>

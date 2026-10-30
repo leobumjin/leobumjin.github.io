@@ -1,0 +1,18 @@
+<section class="dynamics-demo" data-pendulum-demo aria-label="Pendulum position and momentum demo">
+  <div class="dy-heading"><span class="dy-eyebrow">02 / POSITION & MOMENTUM</span><strong>Where it is. Where it is going.</strong><p>q locates the pendulum. p gives its direction and rate of motion.</p></div>
+  <div class="dy-controls">
+    <label>Initial angle q <input data-pend-angle type="range" min="-100" max="100" value="60"><output data-pend-angle-value>60°</output></label>
+    <label>Initial momentum p <input data-pend-momentum type="range" min="-200" max="200" step="5" value="0"><output data-pend-momentum-value>0.00</output></label>
+  </div>
+  <div class="dy-ham-grid">
+    <div class="dy-pend-scene"><svg data-pend-scene viewBox="0 0 400 340" role="img" aria-label="Pendulum with angle and tangential momentum arrow"></svg><div class="dy-legend"><span><i class="dy-dot dy-blue"></i>Angle q</span><span><i class="dy-line"></i>Momentum p</span></div></div>
+    <div class="dy-ham-readout">
+      <div class="dy-equation">dq/dt = p &nbsp; · &nbsp; dp/dt = −sin q</div>
+      <div class="dy-coordinates"><div><span>Angle q · radians</span><strong data-pend-q></strong></div><div><span>Angular momentum p</span><strong data-pend-p></strong></div></div>
+      <div class="dy-energy"><div><span>Kinetic · K = p²/2</span><strong data-pend-k></strong></div><div class="dy-energy-track"><i data-pend-k-bar class="dy-red"></i></div><div><span>Potential · V = 1 − cos q</span><strong data-pend-v></strong></div><div class="dy-energy-track"><i data-pend-v-bar class="dy-blue"></i></div></div>
+      <div class="dy-metrics"><div><span>Total energy · H = K + V</span><strong data-pend-energy></strong></div><div><span>Momentum change · dp/dt</span><strong data-pend-force></strong></div></div>
+      <p class="dy-pend-caption" data-pend-caption></p>
+    </div>
+  </div>
+  <div class="dy-actions"><button type="button" data-pend-play aria-pressed="false">Play pendulum</button><button type="button" data-pend-reset>Reset</button></div>
+</section>

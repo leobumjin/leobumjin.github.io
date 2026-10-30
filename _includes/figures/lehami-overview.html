@@ -1,0 +1,16 @@
+<section class="dynamics-demo dy-overview" data-lehami-overview aria-label="Action-conditioned Hamiltonian overview">
+  <div class="dy-heading"><span class="dy-eyebrow">04 / PUTTING IT TOGETHER</span><strong>One flow, forward and backward.</strong><p>Follow observations into a state trajectory, predict between frames, then retrace the flow.</p></div>
+  <div class="dy-controls"><label>Action strength <input data-flow-strength type="range" min="0" max="100" value="60"><output data-flow-strength-value>60%</output></label><span class="dy-overview-hint">Play forward, then retrace the flow backward. Select a frame to jump.</span></div>
+  <div class="dy-overview-grid">
+    <div class="dy-overview-main"><div class="dy-equation">H(q, p; u) = ½p² + 1 − cos q − uq</div><svg data-flow-phase viewBox="0 0 500 340" role="img" aria-label="Action-conditioned phase-space trajectory"></svg><div class="dy-legend"><span><i class="dy-dot dy-blue"></i>State trajectory</span><span><i class="dy-dot dy-teal"></i>Selected state</span></div>
+      <div class="dy-filmstrip" data-flow-frames role="group" aria-label="Select an observation frame"></div>
+      <svg data-flow-actions viewBox="0 0 500 70" role="img" aria-label="Prescribed piecewise-constant action sequence"></svg>
+      <p class="dy-flow-status" data-flow-status aria-live="polite"></p>
+    </div>
+    <div class="dy-property-panels">
+      <div class="dy-property"><span class="dy-label">I / BETWEEN OBSERVATIONS</span><svg data-flow-subframes viewBox="0 0 300 130" role="img" aria-label="Coarse states and finer sub-frame integration"></svg><div class="dy-legend"><span><i class="dy-dot dy-blue"></i>h = 0.15</span><span><i class="dy-dot dy-teal"></i>h/4</span></div><p>The same vector field also predicts between observation times. Finer integration need not exactly match the coarse path.</p></div>
+      <div class="dy-property"><span class="dy-label">II / BACKWARD IN TIME</span><svg data-flow-reverse viewBox="0 0 300 130" role="img" aria-label="Forward and backward trajectories over time"></svg><div class="dy-property-result"><span>Return error · ‖z′₀ − z₀‖</span><strong data-flow-error></strong></div><p>Blue: forward. Dashed burgundy: backward with −h and the actions in reverse order.</p></div>
+    </div>
+  </div>
+  <div class="dy-actions"><button type="button" data-flow-play aria-pressed="false">Play flow</button><button type="button" data-flow-reset>Reset</button></div>
+</section>

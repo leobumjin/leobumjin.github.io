@@ -1,6 +1,13 @@
 {
   "posts": [
     {
+      "title": "Modeling JEPA Transitions with Hamiltonian Dynamics",
+      "date": "2026-10-30",
+      "media": "Literature",
+      "tags": ["JEPA", "World Models", "Hamiltonian Dynamics"],
+      "en_link": "technical_en/2026-10-30-jepa-hamiltonian-dynamics.md"
+    },
+    {
       "title": "The Jacobian Lens: Response Magnitude and Coherence",
       "date": "2026-10-29",
       "media": "Literature",

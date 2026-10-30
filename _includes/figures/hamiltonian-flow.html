@@ -1,0 +1,13 @@
+<section class="dynamics-demo" data-hamiltonian-demo aria-label="Interactive Hamiltonian integration example">
+  <div class="dy-heading"><span class="dy-eyebrow">03 / STRUCTURED DYNAMICS</span><strong>Watch geometry survive the rollout.</strong><p>Play a harmonic oscillator rollout. Compare leapfrog with explicit Euler.</p></div>
+  <div class="dy-toolbar"><div class="dy-switch" role="group" aria-label="Integration method"><button type="button" data-ham-method="leapfrog" aria-pressed="true">Leapfrog</button><button type="button" data-ham-method="euler" aria-pressed="false">Explicit Euler</button></div><label>Step size h <input data-ham-h type="range" min="5" max="45" step="5" value="25"><output data-ham-h-value>0.25</output></label></div>
+  <div class="dy-ham-grid">
+    <div class="dy-phase"><span class="dy-label">PHASE SPACE · (q, p)</span><svg data-ham-phase viewBox="0 0 400 360" role="img" aria-label="Phase-space trajectory and a transported patch of nearby states"></svg><div class="dy-legend"><span><i class="dy-line"></i>Trajectory</span><span><i class="dy-dot dy-teal"></i>Transported patch</span></div></div>
+    <div class="dy-ham-readout"><div class="dy-equation">H(q, p) = ½p² + ½q²</div><div class="dy-coordinates"><div><span>Position q</span><strong data-ham-q></strong></div><div><span>Momentum p</span><strong data-ham-p></strong></div></div>
+      <div class="dy-stages" aria-label="Integration stages"><div data-ham-stage="0"><b>01</b><span>Half kick<small>p ← p − (h/2)q</small></span><span class="dy-kick-emoji" role="img" aria-label="Runner kicking a football">⚽ 🏃</span></div><div data-ham-stage="1"><b>02</b><span>Full drift<small>q ← q + hp</small></span></div><div data-ham-stage="2"><b>03</b><span>Half kick<small>p ← p − (h/2)q</small></span><span class="dy-kick-emoji" role="img" aria-label="Runner kicking a football">⚽ 🏃</span></div></div>
+      <div class="dy-metrics"><div><span>Patch area / initial area</span><strong data-ham-area></strong></div><div><span>Energy / initial energy</span><strong data-ham-energy></strong></div><div><span>Completed steps</span><strong data-ham-count></strong></div></div>
+    </div>
+  </div>
+  <div class="dy-actions"><button type="button" data-ham-play aria-pressed="false">Play rollout</button><button type="button" data-ham-reset>Reset</button></div>
+  <p class="dy-explanation" data-ham-explanation aria-live="polite"></p>
+</section>
